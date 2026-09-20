@@ -1,0 +1,2520 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <base target="_top">
+  <meta charset="UTF-8">
+  <title>NextSchool স্ট্যান্ডার্ড প্রশ্নপত্র জেনারেটর</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Tiro+Bangla&family=Kalpurush&family=Anek+Bangla:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    @font-face {
+      font-family: 'SolaimanLipi';
+      src: url('https://cdn.jsdelivr.net/gh/lipighor/fonts@main/SolaimanLipi.woff2') format('woff2'),
+           url('https://cdn.jsdelivr.net/gh/lipighor/fonts@main/SolaimanLipi.woff') format('woff');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    :root {
+      --primary-color: #0f172a;
+      --secondary-color: #1e293b;
+      --accent-color: #2563eb;
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --paper-font: 'Tiro Bangla', serif;
+      --paper-font-size: 12.5px;
+      --paper-line-height: 1.45;
+    }
+
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 0; background-color: var(--bg-color); font-family: var(--paper-font); color: #333; }
+
+    /* App Header */
+    .app-header {
+      background: linear-gradient(135deg, #0f172a, #2563eb);
+      color: white; padding: 10px 20px; display: flex; justify-content: space-between; align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15); flex-wrap: wrap; gap: 10px;
+    }
+    .app-header h1 { margin: 0; font-size: 18px; font-weight: 700; }
+
+    .main-container { display: flex; gap: 20px; max-width: 1700px; margin: 15px auto; padding: 0 15px; }
+    
+    /* Dual Sidebar Layout */
+    .sidebar { width: 450px; flex-shrink: 0; display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 75px); overflow-y: auto; padding-right: 5px; }
+    .card { background: var(--card-bg); border-radius: 8px; padding: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 1px solid #cbd5e1; }
+    .card h3 { margin-top: 0; margin-bottom: 10px; color: var(--primary-color); font-size: 14.5px; border-bottom: 2px solid var(--accent-color); padding-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
+
+    /* Main Navigation Tabs for Sidebar */
+    .sidebar-nav { display: flex; gap: 4px; background: #e2e8f0; padding: 4px; border-radius: 6px; }
+    .nav-tab-btn { flex: 1; padding: 8px 4px; font-weight: bold; border: none; background: transparent; cursor: pointer; border-radius: 4px; font-size: 12px; color: #475569; text-align: center; }
+    .nav-tab-btn.active { background: white; color: var(--accent-color); box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+    .tab-content { display: none; }
+    .tab-content.active { display: block; }
+
+    /* Form Controls */
+    .form-group { margin-bottom: 9px; }
+    .form-group label { display: block; font-weight: 600; margin-bottom: 3px; font-size: 12px; color: #475569; }
+    .form-control, select, textarea, input[type="text"], input[type="number"] {
+      width: 100%; padding: 6.5px 8px; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 12px; outline: none; transition: 0.2s; font-family: inherit;
+    }
+    .form-control:focus, select:focus, textarea:focus { border-color: var(--accent-color); box-shadow: 0 0 4px rgba(37,99,235,0.3); }
+    .row-2 { display: flex; gap: 8px; }
+    .row-2 .form-group { flex: 1; }
+    .row-3 { display: flex; gap: 6px; }
+    .row-3 .form-group { flex: 1; }
+
+    /* Toggle Switches Grid */
+    .toggle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; background: #f8fafc; padding: 8px; border-radius: 6px; border: 1px solid #e2e8f0; }
+    .toggle-item { display: flex; align-items: center; justify-content: space-between; font-size: 11.5px; font-weight: 600; color: #334155; }
+    .switch { position: relative; display: inline-block; width: 32px; height: 17px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .3s; border-radius: 17px; }
+    .slider:before { position: absolute; content: ""; height: 11px; width: 11px; left: 3px; bottom: 3px; background-color: white; transition: .3s; border-radius: 50%; }
+    input:checked + .slider { background-color: var(--accent-color); }
+    input:checked + .slider:before { transform: translateX(15px); }
+
+    /* Dynamic Forms for Questions */
+    .q-type-form { display: none; background: #f8fafc; padding: 10px; border-radius: 6px; border: 1px dashed #cbd5e1; margin-top: 8px; }
+    .q-type-form.active { display: block; }
+    .q-input-card { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; padding: 8px; margin-bottom: 8px; position: relative; }
+
+    /* Buttons */
+    .btn { background: var(--primary-color); color: white; border: none; padding: 7px 11px; border-radius: 5px; cursor: pointer; font-weight: 600; font-size: 12px; transition: 0.2s; display: inline-flex; justify-content: center; align-items: center; gap: 5px; font-family: inherit; }
+    .btn:hover { opacity: 0.9; }
+    .btn-add { background: #16a34a; width: 100%; margin-top: 5px; }
+    .btn-print { background: #0284c7; }
+    .btn-save { background: #9333ea; }
+    .btn-export { background: #0d9488; }
+    .btn-import { background: #6366f1; }
+    .btn-modal { background: #d97706; }
+    .btn-symbol { background: #4f46e5; width: 100%; margin-bottom: 8px; }
+    .btn-text-box { background: #059669; width: 100%; margin-bottom: 8px; }
+    .btn-image-box { background: #0284c7; width: 100%; margin-bottom: 8px; }
+    .btn-edit { background: #f59e0b; padding: 2px 6px; font-size: 10.5px; color: white; border: none; border-radius: 3px; cursor: pointer; }
+    .btn-danger { background: #ef4444; padding: 2px 6px; font-size: 10.5px; color: white; border: none; border-radius: 3px; cursor: pointer; }
+    .btn-move { background: #475569; padding: 2px 6px; font-size: 10.5px; color: white; border: none; border-radius: 3px; cursor: pointer; }
+
+    /* Tab Controls */
+    .tab-buttons { display: flex; gap: 4px; margin-bottom: 8px; border-bottom: 1px solid #ddd; padding-bottom: 6px; flex-wrap: wrap; }
+    .tab-btn { flex: 1; min-width: 45px; padding: 5px 2px; background: #e2e8f0; border: none; border-radius: 4px; font-size: 10.5px; font-weight: 600; cursor: pointer; text-align: center; }
+    .tab-btn.active { background: var(--accent-color); color: white; }
+
+    /* Preview Area */
+    .preview-area { flex-grow: 1; display: flex; flex-direction: column; align-items: center; overflow-x: auto; }
+    
+    /* Paper Layout Styling */
+    .paper-page {
+      background: white; width: 210mm; min-height: 297mm; padding: 12mm 15mm; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative; box-sizing: border-box; margin-bottom: 30px; font-family: var(--paper-font) !important;
+      font-size: var(--paper-font-size); line-height: var(--paper-line-height);
+    }
+    .paper-page.landscape { width: 297mm; min-height: 210mm; }
+    .paper-page * { font-family: var(--paper-font) !important; }
+
+    /* Watermark styling */
+    .watermark-container {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-30deg);
+      pointer-events: none; z-index: 0; user-select: none; text-align: center; width: 80%;
+    }
+    .watermark-text { font-size: 42px; color: rgba(0,0,0,0.05); font-weight: bold; }
+    .watermark-img { max-width: 250px; opacity: 0.06; filter: grayscale(100%); }
+
+    /* Header Section - Board Standard without Underlines */
+    .school-header-preview { text-align: center; position: relative; z-index: 1; margin-bottom: 8px; }
+    .top-meta-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 4px; font-size: 12px; font-weight: bold; }
+    .marks-box { border: 1px solid #000; padding: 3px 8px; border-radius: 3px; background: #fff; }
+    .set-code-badge { font-size: 13px; font-weight: bold; border: 1px solid #000; padding: 2px 8px; border-radius: 3px; display: inline-block; }
+
+    .school-logo { position: absolute; left: 0; top: 15px; max-height: 55px; max-width: 55px; object-fit: contain; }
+    .school-title { font-size: 22px; font-weight: 700; margin: 0; color: #000; outline: none; }
+    .school-sub { font-size: 12px; margin: 1px 0; color: #222; outline: none; }
+    
+    .exam-title-badge { font-size: 15px; font-weight: bold; margin-top: 3px; display: inline-block; outline: none; }
+    .class-title-badge { font-size: 14px; font-weight: bold; margin-top: 2px; }
+
+    /* Exam Meta Structure */
+    .exam-meta-bar { display: flex; justify-content: space-between; font-weight: 700; font-size: 12.5px; border-top: 1px dashed #666; border-bottom: none; padding: 4px 0; margin-top: 6px; margin-bottom: 10px; position: relative; z-index: 1; }
+
+    .subject-info-block { text-align: center; margin-top: 3px; }
+    .subject-title { font-size: 14.5px; font-weight: bold; }
+    .subject-code { font-size: 12px; font-weight: 600; margin-top: 1px; }
+
+    /* Student Info Bar */
+    .student-info-bar { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; margin-top: 4px; padding: 2px 0; }
+
+    /* Questions Flow */
+    .questions-wrapper { position: relative; z-index: 1; }
+    .column-1 { column-count: 1; }
+    .column-2 { column-count: 2; column-gap: 22px; column-rule: 1px solid #ccc; }
+
+    .sec-block { margin-bottom: 12px; break-inside: auto; page-break-inside: auto; -webkit-column-break-inside: auto; }
+    
+    /* Section Header */
+    .sec-header { font-weight: bold; font-size: 13.5px; text-align: left; border-bottom: none; padding-bottom: 2px; margin-top: 10px; margin-bottom: 8px; outline: none; cursor: text; }
+    .q-group-header { font-weight: bold; font-size: calc(var(--paper-font-size) + 0.5px); margin-bottom: 6px; display: flex; justify-content: space-between; align-items: flex-end; outline: none; border-bottom: none; }
+    .q-group-title { flex-grow: 1; }
+    .sec-instruction { font-size: calc(var(--paper-font-size) - 0.5px); font-style: normal; font-weight: bold; margin-left: 5px; display: inline-block; }
+    
+    .q-item { margin-bottom: 10px; font-size: var(--paper-font-size); line-height: var(--paper-line-height); break-inside: auto; page-break-inside: auto; -webkit-column-break-inside: auto; position: relative; padding-right: 15px; }
+    .q-item:hover .q-actions { display: inline-flex; }
+    .q-actions { display: none; position: absolute; right: 0; top: 0; background: #fff; border: 1px solid #ccc; border-radius: 4px; gap: 3px; z-index: 10; padding: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.15); }
+
+    /* Custom Image Block inside Questions Flow */
+    .custom-img-block { margin: 8px 0; text-align: center; }
+    .custom-img-block img { max-width: 100%; height: auto; border: 1px solid #e2e8f0; border-radius: 4px; }
+    .custom-img-caption { font-size: 11px; color: #475569; margin-top: 3px; font-style: italic; }
+
+    /* CQ Question Structure */
+    .cq-stem-box { margin-bottom: 4px; text-align: justify; }
+    .cq-sub-q { padding-left: 12px; margin-top: 3px; display: flex; justify-content: space-between; }
+
+    /* Passage Box Design */
+    .passage-box { background: transparent; border: none; padding: 4px 0; font-size: var(--paper-font-size); text-align: justify; margin-bottom: 8px; line-height: var(--paper-line-height); }
+    .clues-box { border: 1px solid #475569; padding: 5px 8px; text-align: center; font-weight: 600; margin: 5px 0 8px 0; border-radius: 4px; font-size: calc(var(--paper-font-size) - 1px); }
+
+    /* Question Formatting */
+    .mcq-options { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 8px; margin-top: 3px; padding-left: 12px; }
+    .mcq-statements { padding-left: 12px; margin-top: 2px; margin-bottom: 2px; font-weight: normal; }
+    .mcq-img, .cq-img { max-width: 100%; max-height: 120px; margin: 4px 0; display: block; border: 1px solid #ddd; }
+    .matching-table { width: 100%; border-collapse: collapse; margin-top: 4px; font-size: var(--paper-font-size); }
+    .matching-table td, .matching-table th { border: 1px solid #666; padding: 3px 5px; text-align: left; }
+
+    /* Config Box inside Question Forms */
+    .sec-config-box { background: #e2e8f0; border-radius: 5px; padding: 6px 8px; margin-bottom: 8px; border: 1px solid #cbd5e1; }
+    .sec-config-box h4 { margin: 0 0 5px 0; font-size: 11.5px; color: #1e293b; border-bottom: 1px solid #cbd5e1; padding-bottom: 2px; }
+
+    /* Modal Styles */
+    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 1000; }
+    .modal-card { background: white; width: 680px; max-width: 95%; border-radius: 8px; padding: 20px; max-height: 85vh; overflow-y: auto; box-shadow: 0 10px 25px rgba(0,0,0,0.3); }
+
+    /* Symbol Grid Styling */
+    .symbol-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(46px, 1fr)); gap: 5px; }
+    .sym-btn { padding: 6px 2px; font-size: 13px; background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 4px; cursor: pointer; text-align: center; font-weight: bold; transition: 0.15s; }
+    .sym-btn:hover { background: #2563eb; color: white; border-color: #2563eb; }
+
+    [contenteditable="true"]:hover { outline: 1px dashed #2563eb; background: #f0f9ff; }
+    [contenteditable="true"]:focus { outline: 2px solid #2563eb; background: #ffffff; }
+
+    @media (max-width: 900px) {
+      .main-container { flex-direction: column; }
+      .sidebar { width: 100%; max-height: none; }
+      .paper-page { width: 100%; min-height: auto; padding: 10px; }
+    }
+
+    /* Print CSS */
+    @media print {
+      html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
+      ::-webkit-scrollbar { display: none !important; }
+      * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+      body, .paper-page, .paper-page * { font-family: var(--paper-font) !important; }
+      .sidebar, .app-header, .q-actions, .modal-overlay { display: none !important; }
+      .main-container { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; display: block !important; }
+      .preview-area { width: 100% !important; display: block !important; overflow: visible !important; }
+      .paper-page { box-shadow: none !important; width: 100% !important; min-height: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
+      
+      .questions-wrapper.column-2 { column-count: 2 !important; column-gap: 20px !important; column-fill: auto !important; }
+      .sec-block, .q-item { break-inside: auto !important; page-break-inside: auto !important; -webkit-column-break-inside: auto !important; }
+      [contenteditable="true"]:hover, [contenteditable="true"]:focus { outline: none !important; background: transparent !important; }
+      @page { size: A4 portrait; margin: 10mm 12mm 10mm 12mm; }
+      body.print-landscape @page { size: A4 landscape; margin: 10mm 12mm 10mm 12mm; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-header">
+    <h1>NextSchool প্রশ্ন জেনারেটর</h1>
+    <div style="display: flex; gap: 6px;">
+      <button class="btn btn-export" onclick="exportData()">📤 এক্সপোর্ট JSON</button>
+      <button class="btn btn-import" onclick="document.getElementById('importFile').click()">📥 ইমপোর্ট JSON</button>
+      <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importData(event)">
+      <button class="btn btn-print" onclick="window.print()">🖨️ প্রিন্ট / PDF</button>
+    </div>
+  </div>
+
+  <div class="main-container">
+    
+    <!-- কন্ট্রোল সাইডবার -->
+    <div class="sidebar">
+
+      <!-- ৩টি প্রধান ট্যাব -->
+      <div class="sidebar-nav">
+        <button class="nav-tab-btn active" onclick="switchNavTab('add-q')">সাধারণ প্রশ্ন</button>
+        <button class="nav-tab-btn" onclick="switchNavTab('eng-q')">English Questions</button>
+        <button class="nav-tab-btn" onclick="switchNavTab('settings')">⚙️ সেটিংস ও হেডার</button>
+      </div>
+
+      <!-- ১. বাংলা ও সাধারণ প্রশ্ন যুক্ত করার ফর্ম -->
+      <div id="tab-add-q" class="tab-content active card">
+        <h3>সাধারণ ও গণিত প্রশ্নাবলি</h3>
+        
+        <!-- Extra Text Box, Image Box and Symbol Toolbar Buttons -->
+        <button class="btn btn-text-box" onclick="addExtraTextBox()">📝 Extra Text Box (যেকোনো ফ্রি টেক্সট) যোগ করুন</button>
+        <button class="btn btn-image-box" onclick="openImageModal()">📷 ইমেজ যোগ করুন (URL / ফাইল আপলোড)</button>
+        <button class="btn btn-symbol" onclick="openSymbolModal()">🔣 গাণিতিক ও বিশেষ সিম্বল টুলবার (Advanced)</button>
+
+        <div class="tab-buttons">
+          <button class="tab-btn active" id="tabbtn-cq" onclick="switchQTab('cq')">CQ</button>
+          <button class="tab-btn" id="tabbtn-mcq" onclick="switchQTab('mcq')">MCQ</button>
+          <button class="tab-btn" id="tabbtn-short" onclick="switchQTab('short')">সংক্ষিপ্ত</button>
+          <button class="tab-btn" id="tabbtn-descriptive" onclick="switchQTab('descriptive')">বর্ণনামূলক</button>
+          <button class="tab-btn" id="tabbtn-gaps" onclick="switchQTab('gaps')">শূন্যস্থান</button>
+          <button class="tab-btn" id="tabbtn-tf" onclick="switchQTab('tf')">সত্য/মিথ্যা</button>
+          <button class="tab-btn" id="tabbtn-match" onclick="switchQTab('match')">মিলকরণ</button>
+        </div>
+
+        <!-- CQ Form -->
+        <div id="form-cq" class="q-type-form active">
+          <div class="sec-config-box">
+            <h4>সৃজনশীল সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা (যেমন: CQ এর সৃজনশীল প্রশ্নের উত্তর দাও)</label>
+              <input type="text" id="cqHeader" class="form-control" value="নিচের উদ্দীপকগুলো পড়ে যেকোনো [ক]টি প্রশ্নের উত্তর দাও:" placeholder="যেমন: CQ এর সৃজনশীল প্রশ্নের উত্তর দাও">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="cqAnswerCount" class="form-control" value="৫" placeholder="যেমন: ৫">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="cqMarkPerItem" class="form-control" value="১০" placeholder="যেমন: ১০">
+              </div>
+            </div>
+          </div>
+
+          <div id="cqInputsWrapper">
+            <div class="q-input-card cq-block">
+              <div class="form-group">
+                <label>উদ্দীপক / অনুচ্ছেদ</label>
+                <textarea class="form-control cq-stem" rows="3" placeholder="উদ্দীপকটি লিখুন..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>উদ্দীপকের ছবি (URL - ঐচ্ছিক)</label>
+                <input type="text" class="form-control cq-img-input" placeholder="https://...">
+              </div>
+              <div class="form-group"><input type="text" class="form-control cq-a" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
+              <div class="form-group"><input type="text" class="form-control cq-b" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
+              <div class="form-group"><input type="text" class="form-control cq-c" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
+              <div class="form-group"><input type="text" class="form-control cq-d" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
+            </div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreCQBlock()">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnCQSubmit" onclick="addQuestion('cq')">+ সৃজনশীল প্রশ্ন যোগ করুন</button>
+        </div>
+
+        <!-- MCQ Form -->
+        <div id="form-mcq" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>MCQ সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা</label>
+              <input type="text" id="mcqHeader" class="form-control" value="বহুনির্বাচনী প্রশ্নের উত্তর দাও:" placeholder="যেমন: সঠিক উত্তরটি বেছে নাও">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="mcqAnswerCount" class="form-control" value="১৫" placeholder="যেমন: ১৫">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="mcqMarkPerItem" class="form-control" value="১" placeholder="যেমন: ১">
+              </div>
+            </div>
+          </div>
+
+          <div id="mcqInputsWrapper">
+            <div class="q-input-card mcq-block">
+              <div class="form-group">
+                <label>MCQ টাইপ</label>
+                <select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)">
+                  <option value="single">সাধারণ MCQ (একপদী)</option>
+                  <option value="multi">বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>মূল প্রশ্ন</label>
+                <textarea class="form-control mcq-title" rows="2" placeholder="প্রশ্ন লিখুন..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>ছবি (URL - ঐচ্ছিক)</label>
+                <input type="text" class="form-control mcq-img-input" placeholder="https://...">
+              </div>
+
+              <!-- Multi-statement MCQ Inputs -->
+              <div class="multi-statements-wrap" style="display:none; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
+                <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
+                <div class="form-group"><input type="text" class="form-control mcq-stmt1" placeholder="i. প্রথম তথ্য"></div>
+                <div class="form-group"><input type="text" class="form-control mcq-stmt2" placeholder="ii. দ্বিতীয় তথ্য"></div>
+                <div class="form-group"><input type="text" class="form-control mcq-stmt3" placeholder="iii. তৃতীয় তথ্য"></div>
+              </div>
+
+              <div class="row-2">
+                <div class="form-group"><input type="text" class="form-control mcq-opt1" placeholder="অপশন ১ / (ক)"></div>
+                <div class="form-group"><input type="text" class="form-control mcq-opt2" placeholder="অপশন ২ / (খ)"></div>
+              </div>
+              <div class="row-2">
+                <div class="form-group"><input type="text" class="form-control mcq-opt3" placeholder="অপশন ৩ / (গ)"></div>
+                <div class="form-group"><input type="text" class="form-control mcq-opt4" placeholder="অপশন ৪ / (ঘ)"></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreMCQBlock()">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnMCQSubmit" onclick="addQuestion('mcq')">+ MCQ প্রশ্ন যোগ করুন</button>
+        </div>
+
+        <!-- Short Questions Form -->
+        <div id="form-short" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>সংক্ষিপ্ত সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা</label>
+              <input type="text" id="shortHeader" class="form-control" value="নিচের প্রশ্নগুলোর সংক্ষিপ্ত উত্তর দাও:" placeholder="যেমন: সংক্ষিপ্ত উত্তর দাও">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="shortAnswerCount" class="form-control" value="৫" placeholder="যেমন: ৫">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="shortMarkPerItem" class="form-control" value="২" placeholder="যেমন: ২">
+              </div>
+            </div>
+          </div>
+          <div id="shortInputsWrapper">
+            <div class="form-group"><input type="text" class="form-control short-item" placeholder="সংক্ষিপ্ত প্রশ্ন লিখুন..."></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('shortInputsWrapper', 'short-item', 'পরবর্তী সংক্ষিপ্ত প্রশ্ন...')">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnShortSubmit" onclick="addQuestion('short')">+ সংক্ষিপ্ত প্রশ্ন সেকশন যোগ করুন</button>
+        </div>
+
+        <!-- Descriptive Questions Form -->
+        <div id="form-descriptive" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>বর্ণনামূলক সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা</label>
+              <input type="text" id="descriptiveHeader" class="form-control" value="নিচের প্রশ্নগুলোর উত্তর দাও: " placeholder="যেমন: যেকোনো ৩টি প্রশ্নের উত্তর দাও">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="descAnswerCount" class="form-control" value="৩" placeholder="যেমন: ৩">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="descMarkPerItem" class="form-control" value="৫" placeholder="যেমন: ৫">
+              </div>
+            </div>
+          </div>
+          <div id="descInputsWrapper">
+            <div class="form-group"><textarea class="form-control desc-item" rows="2" placeholder="বর্ণনামূলক / রচনামূলক প্রশ্ন লিখুন..."></textarea></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('descInputsWrapper', 'desc-item', 'পরবর্তী বর্ণনামূলক প্রশ্ন...', true)">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnDescSubmit" onclick="addQuestion('descriptive')">+ বর্ণনামূলক প্রশ্ন সেকশন যোগ করুন</button>
+        </div>
+
+        <!-- Gaps Form -->
+        <div id="form-gaps" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>শূন্যস্থান সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা</label>
+              <input type="text" id="gapsHeader" class="form-control" value="উপযুক্ত শব্দ বসিয়ে শূন্যস্থান পূরণ করো:" placeholder="যেমন: শূন্যস্থান পূরণ করো">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="gapsAnswerCount" class="form-control" value="৫" placeholder="যেমন: ৫">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="gapsMarkPerItem" class="form-control" value="১" placeholder="যেমন: ১">
+              </div>
+            </div>
+          </div>
+          <label style="font-size:11px; font-weight:bold; color:#64748b;">বাক্য লিখুন এবং শূন্যস্থানের জায়গায় [......] দিন</label>
+          <div id="gapsInputsWrapper">
+            <div class="form-group"><input type="text" class="form-control gap-item" placeholder="বাংলাদেশ একটি [......] দেশ।"></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('gapsInputsWrapper', 'gap-item', 'শূন্যস্থান প্রশ্ন...')">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnGapsSubmit" onclick="addQuestion('gaps')">+ শূন্যস্থান সেকশন যোগ করুন</button>
+        </div>
+
+        <!-- True/False Form -->
+        <div id="form-tf" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>সত্য/মিথ্যা সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা</label>
+              <input type="text" id="tfHeader" class="form-control" value="নিচের বাক্যগুলো সত্য হলে 'স' এবং মিথ্যা হলে 'মি' লেখো:" placeholder="যেমন: সত্য বা মিথ্যা নির্ণয় করো">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="tfAnswerCount" class="form-control" value="৫" placeholder="যেমন: ৫">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="tfMarkPerItem" class="form-control" value="১" placeholder="যেমন: ১">
+              </div>
+            </div>
+          </div>
+          <div id="tfInputsWrapper">
+            <div class="form-group"><input type="text" class="form-control tf-item" placeholder="সূর্য পূর্ব দিকে ওঠে।"></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('tfInputsWrapper', 'tf-item', 'পরবর্তী বাক্য...')">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnTFSubmit" onclick="addQuestion('tf')">+ সত্য/মিথ্যা সেকশন যোগ করুন</button>
+        </div>
+
+        <!-- Matching Form -->
+        <div id="form-match" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>মিলকরণ সেকশন সেটিংস</h4>
+            <div class="form-group">
+              <label>প্রশ্ন হেডার / নির্দেশনা</label>
+              <input type="text" id="matchHeader" class="form-control" value="বাম পাশের বাক্যাংশের সাথে ডান পাশের বাক্যাংশ মিল করো:" placeholder="যেমন: বাম ও ডান স্তম্ভ মিলাও">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>উত্তর দিতে হবে (কয়টি)</label>
+                <input type="number" id="matchAnswerCount" class="form-control" value="৫" placeholder="যেমন: ৫">
+              </div>
+              <div class="form-group">
+                <label>প্রতিটির মার্কস</label>
+                <input type="number" id="matchMarkPerItem" class="form-control" value="১" placeholder="যেমন: ১">
+              </div>
+            </div>
+          </div>
+          <div id="matchRowsWrapper">
+            <div class="row-2" style="margin-bottom:4px;">
+              <input type="text" class="form-control match-left" placeholder="বাম কলাম">
+              <input type="text" class="form-control match-right" placeholder="ডান কলাম">
+            </div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMatchRow()">+ প্রশ্ন বাড়ান</button>
+          <button class="btn btn-add" id="btnMatchSubmit" onclick="addQuestion('match')">+ মিলকরণ সেকশন যোগ করুন</button>
+        </div>
+
+      </div>
+
+      <!-- ২. English Subjects Question Tab -->
+      <div id="tab-eng-q" class="tab-content card">
+        <h3>English Board Questions</h3>
+
+        <!-- Buttons for English Section -->
+        <button class="btn btn-text-box" onclick="addExtraTextBox()">📝 Extra Text Box (Custom Text) Add</button>
+        <button class="btn btn-image-box" onclick="openImageModal()">📷 Add Image (URL / Direct Upload)</button>
+
+        <div class="tab-buttons">
+          <button class="tab-btn active" id="tabbtn-eng-passage" onclick="switchEngQTab('passage')">Passage</button>
+          <button class="tab-btn" id="tabbtn-eng-mcq" onclick="switchEngQTab('mcq')">MCQ</button>
+          <button class="tab-btn" id="tabbtn-eng-qa" onclick="switchEngQTab('qa')">Q&A</button>
+          <button class="tab-btn" id="tabbtn-eng-tf" onclick="switchEngQTab('tf')">True/False</button>
+          <button class="tab-btn" id="tabbtn-eng-gaps" onclick="switchEngQTab('gaps')">Gaps</button>
+          <button class="tab-btn" id="tabbtn-eng-match" onclick="switchEngQTab('match')">Matching</button>
+          <button class="tab-btn" id="tabbtn-eng-writing" onclick="switchEngQTab('writing')">Writing</button>
+          <button class="tab-btn" id="tabbtn-eng-rearrange" onclick="switchEngQTab('rearrange')">Rearrange</button>
+        </div>
+
+        <!-- English Passage Form -->
+        <div id="form-eng-passage" class="q-type-form active">
+          <div class="form-group">
+            <label>Passage Header/Title</label>
+            <input type="text" id="engPassageHeader" class="form-control" value="Read the passage carefully and answer the following questions:">
+          </div>
+          <div class="form-group">
+            <label>Passage Text (Seen / Unseen)</label>
+            <textarea id="engPassageText" class="form-control" rows="5" placeholder="Enter the unseen/seen passage here..."></textarea>
+          </div>
+          <button class="btn btn-add" onclick="addEngPassage()">+ Add Passage to Paper</button>
+        </div>
+
+        <!-- English MCQ Form -->
+        <div id="form-eng-mcq" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>English MCQ Section Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engMcqHeader" class="form-control" value="Choose the correct answer from the alternatives:">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Items Count</label>
+                <input type="number" id="engMcqCount" class="form-control" value="5">
+              </div>
+              <div class="form-group">
+                <label>Marks Per Item</label>
+                <input type="number" id="engMcqMark" class="form-control" value="1">
+              </div>
+            </div>
+          </div>
+
+          <div id="engMcqInputsWrapper">
+            <div class="q-input-card eng-mcq-block">
+              <div class="form-group">
+                <label>Question Title</label>
+                <textarea class="form-control eng-mcq-title" rows="2" placeholder="Choose the correct answer from the alternatives..."></textarea>
+              </div>
+              <div class="form-group">
+                <label>Image (URL - Optional)</label>
+                <input type="text" class="form-control eng-mcq-img-input" placeholder="https://...">
+              </div>
+              <div class="row-2">
+                <div class="form-group"><input type="text" class="form-control eng-mcq-opt1" placeholder="Option A"></div>
+                <div class="form-group"><input type="text" class="form-control eng-mcq-opt2" placeholder="Option B"></div>
+              </div>
+              <div class="row-2">
+                <div class="form-group"><input type="text" class="form-control eng-mcq-opt3" placeholder="Option C"></div>
+                <div class="form-group"><input type="text" class="form-control eng-mcq-opt4" placeholder="Option D"></div>
+              </div>
+            </div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreEngMcqBlock()">+ Add More MCQ</button>
+          <button class="btn btn-add" onclick="addEngMcq()">+ Add English MCQ Section</button>
+        </div>
+
+        <!-- English Q&A Form -->
+        <div id="form-eng-qa" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>Question & Answer Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engQaHeader" class="form-control" value="Answer the following questions:">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Total Questions</label>
+                <input type="number" id="engQaCount" class="form-control" value="5">
+              </div>
+              <div class="form-group">
+                <label>Marks Per Item</label>
+                <input type="number" id="engQaMark" class="form-control" value="2">
+              </div>
+            </div>
+          </div>
+          <div id="engQaWrapper">
+            <div class="form-group"><input type="text" class="form-control eng-qa-item" placeholder="a) What is the main theme of the text?"></div>
+            <div class="form-group"><input type="text" class="form-control eng-qa-item" placeholder="b) Why did the author write this?"></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('engQaWrapper', 'eng-qa-item', 'Next question...')">+ Add More Question</button>
+          <button class="btn btn-add" onclick="addEngQA()">+ Add Question-Answer Section</button>
+        </div>
+
+        <!-- English True/False Form -->
+        <div id="form-eng-tf" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>True/False Section Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engTfHeader" class="form-control" value="Write True or False for the following statements:">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Items Count</label>
+                <input type="number" id="engTfCount" class="form-control" value="5">
+              </div>
+              <div class="form-group">
+                <label>Marks Per Item</label>
+                <input type="number" id="engTfMark" class="form-control" value="1">
+              </div>
+            </div>
+          </div>
+          <div id="engTfWrapper">
+            <div class="form-group"><input type="text" class="form-control eng-tf-item" placeholder="a) The sun rises in the east."></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('engTfWrapper', 'eng-tf-item', 'Next statement...')">+ Add Statement</button>
+          <button class="btn btn-add" onclick="addEngTF()">+ Add True/False Section</button>
+        </div>
+
+        <!-- English Fill in the Gaps -->
+        <div id="form-eng-gaps" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>Fill in the Gaps Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engGapsHeader" class="form-control" value="Fill in the blanks with suitable words from the box:">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Items Count</label>
+                <input type="number" id="engGapsCount" class="form-control" value="5">
+              </div>
+              <div class="form-group">
+                <label>Marks Per Item</label>
+                <input type="number" id="engGapsMark" class="form-control" value="1">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Clues Box Words (Optional - Comma Separated)</label>
+            <input type="text" id="engGapsClues" class="form-control" placeholder="e.g. good, student, country, honest, sincerity">
+          </div>
+          <div id="engGapsWrapper">
+            <div class="form-group"><input type="text" class="form-control eng-gap-item" placeholder="Bangladesh is a [......] country."></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('engGapsWrapper', 'eng-gap-item', 'Next sentence with [......]...')">+ Add Sentence</button>
+          <button class="btn btn-add" onclick="addEngGaps()">+ Add Fill in the Gaps Section</button>
+        </div>
+
+        <!-- English Column Matching -->
+        <div id="form-eng-match" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>Matching Table Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engMatchHeader" class="form-control" value="Match the phrases in Column A with Column B:">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Items Count</label>
+                <input type="number" id="engMatchCount" class="form-control" value="5">
+              </div>
+              <div class="form-group">
+                <label>Marks Per Item</label>
+                <input type="number" id="engMatchMark" class="form-control" value="1">
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Table Mode</label>
+              <select id="engMatchCols" class="form-control" onchange="toggleEngMatchColC()">
+                <option value="2">2 Columns (Column A & Column B)</option>
+                <option value="3">3 Columns (Column A, Column B & Column C)</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="engMatchRowsWrapper">
+            <div class="row-3 eng-match-row" style="margin-bottom:4px;">
+              <input type="text" class="form-control match-col-a" placeholder="Column A">
+              <input type="text" class="form-control match-col-b" placeholder="Column B">
+              <input type="text" class="form-control match-col-c" placeholder="Column C" style="display:none;">
+            </div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addEngMatchRow()">+ Add Row</button>
+          <button class="btn btn-add" onclick="addEngMatch()">+ Add Matching Section</button>
+        </div>
+
+        <!-- English Writing -->
+        <div id="form-eng-writing" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>Writing Item Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engWritingHeader" class="form-control" value="">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Category</label>
+                <select id="engWritingType" class="form-control">
+                  <option value="Paragraph">Paragraph</option>
+                  <option value="Composition / Essay">Composition / Essay</option>
+                  <option value="Formal Letter / Application">Formal Letter / Application</option>
+                  <option value="Informal Letter / Email">Informal Letter / Email</option>
+                  <option value="Dialogue Writing">Dialogue Writing</option>
+                  <option value="Completing Story">Completing Story</option>
+                  <option value="Summary Writing">Summary Writing</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Marks</label>
+                <input type="number" id="engWritingMark" class="form-control" value="10">
+              </div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Topic / Title / Heading</label>
+            <input type="text" id="engWritingTitle" class="form-control" placeholder="Write a paragraph on 'A School Library'">
+          </div>
+          <div class="form-group">
+            <label>Instruction / Clues / Prompts (Optional)</label>
+            <textarea id="engWritingPrompt" class="form-control" rows="3" placeholder="Answer the following questions to write the paragraph..."></textarea>
+          </div>
+          <button class="btn btn-add" onclick="addEngWriting()">+ Add Writing Section</button>
+        </div>
+
+        <!-- English Rearrange -->
+        <div id="form-eng-rearrange" class="q-type-form">
+          <div class="sec-config-box">
+            <h4>Rearrange Sentences Settings</h4>
+            <div class="form-group">
+              <label>Question Header / Instruction</label>
+              <input type="text" id="engRearrangeHeader" class="form-control" value="Rearrange the following sentences to make a coherent story:">
+            </div>
+            <div class="row-2">
+              <div class="form-group">
+                <label>Total Sentences</label>
+                <input type="number" id="engRearrangeCount" class="form-control" value="8">
+              </div>
+              <div class="form-group">
+                <label>Total Marks</label>
+                <input type="number" id="engRearrangeMark" class="form-control" value="8">
+              </div>
+            </div>
+          </div>
+          <p style="font-size:11px; color:#64748b; margin:2px 0 6px 0;">Enter jumbled sentences in order below (they will be numbered automatically):</p>
+          <div id="engRearrangeWrapper">
+            <div class="form-group"><input type="text" class="form-control eng-rearrange-item" placeholder="Sentence 1..."></div>
+            <div class="form-group"><input type="text" class="form-control eng-rearrange-item" placeholder="Sentence 2..."></div>
+          </div>
+          <button class="btn" style="background:#64748b; margin-bottom:5px; width:100%;" onclick="addMoreInput('engRearrangeWrapper', 'eng-rearrange-item', 'Next sentence...')">+ Add Sentence</button>
+          <button class="btn btn-add" onclick="addEngRearrange()">+ Add Rearrange Section</button>
+        </div>
+
+      </div>
+
+      <!-- ৩. সেটিংস ও হেডার কনফিগারেশন ট্যাব -->
+      <div id="tab-settings" class="tab-content">
+        
+        <!-- টগল ভিজিবিলিটি -->
+        <div class="card">
+          <h3>১. অন/অফ ভিজিবিলিটি টগল</h3>
+          <div class="toggle-grid">
+            <div class="toggle-item"><span>স্কুল নাম</span><label class="switch"><input type="checkbox" id="togSchool" checked onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>ঠিকানা</span><label class="switch"><input type="checkbox" id="togAddress" onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>ফোন নম্বর</span><label class="switch"><input type="checkbox" id="togPhone" onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>বিষয় কোড</span><label class="switch"><input type="checkbox" id="togSubCode" onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>সেট কোড</span><label class="switch"><input type="checkbox" id="togSetCode" onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>শিক্ষার্থীর তথ্য</span><label class="switch"><input type="checkbox" id="togStudentInfo" onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>পরীক্ষার নাম/সাল</span><label class="switch"><input type="checkbox" id="togExam" checked onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+            <div class="toggle-item"><span>প্রাপ্ত নম্বর বক্স</span><label class="switch"><input type="checkbox" id="togObtainedMarks" onchange="toggleHeaderElements()"><span class="slider"></span></label></div>
+          </div>
+        </div>
+
+        <!-- ফন্ট, স্পেসিং, পেজ ওরিয়েন্টেশন ও নাম্বারিং -->
+        <div class="card">
+          <h3>২. ফন্ট, স্পেসিং ও পেজ লেআউট</h3>
+          <div class="row-2">
+            <div class="form-group">
+              <label>বাংলা/ইংরেজি ফন্ট</label>
+              <select id="fontSelect" onchange="changeFont()">
+                <option value="'Tiro Bangla', serif" selected>Tiro Bangla (Default)</option>
+                <option value="'SolaimanLipi', 'Hind Siliguri', sans-serif">SolaimanLipi</option>
+                <option value="'Hind Siliguri', sans-serif">Hind Siliguri</option>
+                <option value="'Kalpurush', sans-serif">Kalpurush</option>
+                <option value="'Anek Bangla', sans-serif">Anek Bangla</option>
+                <option value="'Times New Roman', serif">Times New Roman (English)</option>
+                <option value="'Poppins', sans-serif">Poppins (Modern English)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>ফন্ট সাইজ (Font Size)</label>
+              <select id="fontSizeSelect" onchange="changeFontSize()">
+                <option value="11px">11 px (ছোট)</option>
+                <option value="12px">12 px</option>
+                <option value="12.5px" selected>12.5 px (ডিফল্ট)</option>
+                <option value="13px">13 px</option>
+                <option value="14px">14 px (বড়)</option>
+                <option value="15px">15 px</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>লাইন স্পেসিং (Spacing)</label>
+              <select id="lineHeightSelect" onchange="changeLineHeight()">
+                <option value="1.2">1.2 (ঘন)</option>
+                <option value="1.35">1.35</option>
+                <option value="1.45" selected>1.45 (ডিফল্ট)</option>
+                <option value="1.6">1.6 (ফাঁকা)</option>
+                <option value="1.8">1.8 (অধিক ফাঁকা)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>পেজ ওরিয়েন্টেশন (Page Orientation)</label>
+              <select id="orientationSelect" onchange="changeOrientation()">
+                <option value="portrait" selected>Portrait (লম্বালম্বি)</option>
+                <option value="landscape">Landscape (আড়াআড়ি)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>মূল প্রশ্ন নম্বর স্টাইল</label>
+              <select id="mainNumStyle" onchange="renderQuestions()">
+                <option value="bn_num" selected>১, ২, ৩ (বাংলা)</option>
+                <option value="en_num">1, 2, 3 (English)</option>
+                <option value="roman">i, ii, iii (Roman)</option>
+                <option value="bn_alpha">ক, খ, গ (বাংলা অক্ষর)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>সাব-প্রশ্ন / অপশন নম্বর</label>
+              <select id="subNumStyle" onchange="renderQuestions()">
+                <option value="bn_alpha" selected>ক, খ, গ, ঘ</option>
+                <option value="en_alpha">a, b, c, d</option>
+                <option value="bn_num">১, ২, ৩, ৪</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>কলাম মোড</label>
+            <select id="columnMode" onchange="applyLayoutSettings()">
+              <option value="column-2" selected>Two Columns (২ কলাম)</option>
+              <option value="column-1">Single Column (১ কলাম)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- ওয়াটারমার্ক সেটিংস -->
+        <div class="card">
+          <h3>৩. ওয়াটারমার্ক সেটিংস</h3>
+          <div class="form-group">
+            <label>ওয়াটারমার্ক টাইপ</label>
+            <select id="wmType" onchange="updateWatermark()">
+              <option value="text">টেক্সট ওয়াটারমার্ক</option>
+              <option value="image">ইমেজ ওয়াটারমার্ক (URL)</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>ওয়াটারমার্ক ইনপুট (টেক্সট বা ছবি URL)</label>
+            <input type="text" id="wmValue" class="form-control" placeholder="টেক্সট অথবা https://... ছবির লিংক" oninput="updateWatermark()">
+          </div>
+          <div class="form-group">
+            <label>সাইজ অ্যাডজাস্টমেন্ট (Size/Scale)</label>
+            <input type="range" id="wmScale" min="20" max="100" value="45" oninput="updateWatermark()" style="width:100%;">
+          </div>
+        </div>
+
+        <!-- হেডার ডাটা ইনপুট -->
+        <div class="card">
+          <h3>৪. হেডার ডাটা ইনপুট</h3>
+          <div class="form-group">
+            <label>প্রতিষ্ঠানের নাম</label>
+            <input type="text" id="schoolNameInput" class="form-control" value="প্রতিষ্ঠানের নাম" oninput="updateHeaderData()">
+          </div>
+          <div class="row-2">
+            <div class="form-group">
+              <label>ঠিকানা</label>
+              <input type="text" id="schoolAddressInput" class="form-control" value="প্রতিষ্ঠানের ঠিকানা" oninput="updateHeaderData()">
+            </div>
+            <div class="form-group">
+              <label>মোবাইল</label>
+              <input type="text" id="schoolPhoneInput" class="form-control" value="01700000000" oninput="updateHeaderData()">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>স্কুল লোগো (URL)</label>
+            <input type="text" id="logoUrl" class="form-control" placeholder="https://..." oninput="updateHeaderData()">
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>পরীক্ষার নাম</label>
+              <input type="text" id="examSelect" class="form-control" value="বার্ষিক পরীক্ষা" oninput="updateHeaderData()">
+            </div>
+            <div class="form-group">
+              <label>সাল/বছর</label>
+              <input type="text" id="examYear" class="form-control" value="২০২৬" oninput="updateHeaderData()">
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>শ্রেণি</label>
+              <input type="text" id="classSelect" class="form-control" value="দশম" oninput="updateHeaderData()">
+            </div>
+            <div class="form-group">
+              <label>বিষয়</label>
+              <input type="text" id="subjectSelect" class="form-control" value="বাংলা" oninput="updateHeaderData()">
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>বিষয় কোড</label>
+              <input type="text" id="subCodeInput" class="form-control" value="১০১" oninput="updateHeaderData()">
+            </div>
+            <div class="form-group">
+              <label>সেট কোড</label>
+              <input type="text" id="setCodeInput" class="form-control" value="ক" oninput="updateHeaderData()">
+            </div>
+          </div>
+
+          <div class="row-2">
+            <div class="form-group">
+              <label>সময়</label>
+              <input type="text" id="timeInput" class="form-control" value="২ ঘণ্টা ৩০ মিনিট" oninput="updateHeaderData()">
+            </div>
+            <div class="form-group">
+              <label>পূর্ণমান</label>
+              <input type="text" id="marksInput" class="form-control" value="১০০" oninput="updateHeaderData()">
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- প্রশ্নপত্র লাইভ প্রিভিউ -->
+    <div class="preview-area">
+      <div class="paper-page" id="paperPage">
+        
+        <!-- Watermark Container -->
+        <div id="watermarkContainer" class="watermark-container"></div>
+
+        <!-- Top Meta Row -->
+        <div class="top-meta-row">
+          <div class="marks-box" id="displayObtainedMarks">প্রাপ্ত নম্বর: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+          <div class="set-code-badge" id="displaySetCodeWrap">সেট: <span id="displaySetCode" contenteditable="false" onblur="saveDraftToLocalStorage()">ক</span></div>
+        </div>
+
+        <!-- School Header -->
+        <div class="school-header-preview">
+          <img id="displayLogo" class="school-logo" src="" style="display:none;">
+          <h1 class="school-title" id="displaySchoolName" onblur="saveDraftToLocalStorage()">প্রতিষ্ঠানের নাম</h1>
+          <div class="school-sub" id="displaySchoolAddress" contenteditable="true" onblur="saveDraftToLocalStorage()">প্রতিষ্ঠানের ঠিকানা</div>
+          <div class="school-sub" id="displaySchoolPhoneWrap">মোবাইল: <span id="displaySchoolPhone" contenteditable="true" onblur="saveDraftToLocalStorage()">...</span></div>
+          
+          <div class="exam-title-badge" id="displayExamBadge">
+            <span id="displayExamName" contenteditable="true" onblur="saveDraftToLocalStorage()">পরীক্ষার নাম</span> - <span id="displayExamYear" contenteditable="true" onblur="saveDraftToLocalStorage()">২০২৬</span>
+          </div>
+
+          <div class="class-title-badge">
+            শ্রেণি: <span id="displayClass" contenteditable="true" onblur="saveDraftToLocalStorage()">...</span>
+          </div>
+        </div>
+
+        <!-- Subject Info -->
+        <div class="subject-info-block">
+          <div class="subject-title">বিষয়: <span id="displaySubject" contenteditable="true" onblur="saveDraftToLocalStorage()">...</span></div>
+          <div class="subject-code" id="displaySubCodeWrap">বিষয় কোড: <span id="displaySubCode" contenteditable="true" onblur="saveDraftToLocalStorage()">১০১</span></div>
+        </div>
+
+        <!-- Time & Marks Row -->
+        <div class="exam-meta-bar">
+          <div>সময়: <span id="displayTime" contenteditable="true" onblur="saveDraftToLocalStorage()">২ ঘণ্টা ৩০ মিনিট</span></div>
+          <div>পূর্ণমান: <span id="displayMarks" contenteditable="true" onblur="saveDraftToLocalStorage()">১০০</span></div>
+        </div>
+
+        <!-- Student Info Bar -->
+        <div class="student-info-bar" id="displayStudentBar">
+          <span>পরীক্ষার্থীর নাম: ................................................</span>
+          <span>রোল: ................</span>
+          <span>শাখা: ................</span>
+        </div>
+
+        <!-- Dynamic Questions Container -->
+        <div class="questions-wrapper column-2" id="questionsContainer" style="margin-top: 10px;"></div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Extra Text Box Modal -->
+  <div class="modal-overlay" id="extraTextModal">
+    <div class="modal-card" style="width: 520px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="margin:0;">📝 Extra Text Box যোগ করুন</h3>
+        <button class="btn btn-danger" onclick="closeExtraTextModal()">বন্ধ করুন</button>
+      </div>
+      <div class="form-group">
+        <label>কী টেক্সট/নির্দেশনা যোগ করতে চান?</label>
+        <textarea id="extraTextContent" class="form-control" rows="4" placeholder="যেমন: বিশেষ দ্রষ্টব্য: সকল প্রশ্নের মান সমান। অথবা যেকোনো কাস্টম নির্দেশনা..."></textarea>
+      </div>
+      <button class="btn btn-add" onclick="submitExtraTextBox()">+ টেক্সট যোগ করুন</button>
+    </div>
+  </div>
+
+  <!-- Image Upload / Link Modal -->
+  <div class="modal-overlay" id="imageModal">
+    <div class="modal-card" style="width: 520px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="margin:0;">📷 প্রশ্নপত্রে ইমেজ/ছবি যোগ করুন</h3>
+        <button class="btn btn-danger" onclick="closeImageModal()">বন্ধ করুন</button>
+      </div>
+      
+      <div class="form-group">
+        <label>ছবির সূত্র টাইপ (Source):</label>
+        <select id="imgSourceType" class="form-control" onchange="toggleImgSourceInputs()">
+          <option value="url">ইমেজ URL লিংক</option>
+          <option value="upload">কম্পিউটার/মোবাইল থেকে সরাসরি ফাইল আপলোড</option>
+        </select>
+      </div>
+
+      <div class="form-group" id="imgUrlInputGroup">
+        <label>ইমেজ URL (https://...)</label>
+        <input type="text" id="imgUrlVal" class="form-control" placeholder="https://example.com/image.png">
+      </div>
+
+      <div class="form-group" id="imgFileInputGroup" style="display:none;">
+        <label>ছবি সিলেক্ট করুন (PNG, JPG, WEBP)</label>
+        <input type="file" id="imgFileVal" accept="image/*" class="form-control">
+      </div>
+
+      <div class="row-2">
+        <div class="form-group">
+          <label>ছবি প্রদর্শন সাইজ (Width)</label>
+          <select id="imgWidthSelect" class="form-control">
+            <option value="30%">৩০% (ছোট)</option>
+            <option value="50%">৫০% (মাঝারি)</option>
+            <option value="75%">৭৫% (বড়)</option>
+            <option value="100%" selected>১০০% (পূর্ণ কলাম)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>অ্যালাইনমেন্ট (Alignment)</label>
+          <select id="imgAlignSelect" class="form-control">
+            <option value="center" selected>মাঝখানে (Center)</option>
+            <option value="left">বামে (Left)</option>
+            <option value="right">ডানে (Right)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>ছবির নিচে ক্যাপশন/বিবরণ (ঐচ্ছিক)</label>
+        <input type="text" id="imgCaptionVal" class="form-control" placeholder="যেমন: চিত্র: ১.১ মানবদেহের হৃদপিণ্ড">
+      </div>
+
+      <button class="btn btn-add" onclick="submitCustomImage()">+ ছবি প্রশ্নপত্রে যোগ করুন</button>
+    </div>
+  </div>
+
+  <!-- Symbol Toolbar Modal -->
+  <div class="modal-overlay" id="symbolModal">
+    <div class="modal-card" style="width: 600px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-color); padding-bottom: 8px; margin-bottom: 12px;">
+        <h3 style="margin:0;">🔣 ম্যাথ, ফাংশন ও বিজ্ঞান সিম্বল টুলবার</h3>
+        <button class="btn btn-danger" onclick="closeSymbolModal()">বন্ধ করুন</button>
+      </div>
+      <p style="font-size:11.5px; color:#64748b; margin-top:0;">ইনপুট বক্সে কার্সার রেখে যেকোনো চিহ্নে ক্লিক করুন:</p>
+      
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div>
+          <strong style="font-size:12px; display:block; margin-bottom:4px; color:#1e293b;">ফাংশন ও ট্রাইগোনোমেট্রি (Functions & Trigonometry):</strong>
+          <div class="symbol-grid">
+            <button type="button" class="sym-btn" onclick="insertSymbol('f(x)')">f(x)</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('g(x)')">g(x)</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('sin')">sin</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('cos')">cos</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('tan')">tan</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('sec')">sec</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('csc')">csc</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('cot')">cot</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('log')">log</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('ln')">ln</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('lim_{x→0}')">lim</button>
+          </div>
+        </div>
+
+        <div>
+          <strong style="font-size:12px; display:block; margin-bottom:4px; color:#1e293b;">রেডিক্যাল, ইন্টিগ্রাল ও ক্যালকুলাস (Radicals, Integrals & Calculus):</strong>
+          <div class="symbol-grid">
+            <button type="button" class="sym-btn" onclick="insertSymbol('√')">√</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∛')">∛</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∜')">∜</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∫')">∫</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∬')">∬</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∭')">∭</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('oint')">oint</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('d/dx')">d/dx</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∂')">∂</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∑')">∑</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∏')">∏</button>
+          </div>
+        </div>
+
+        <div>
+          <strong style="font-size:12px; display:block; margin-bottom:4px; color:#1e293b;">পাওয়ার, সাবস্ক্রিপ্ট ও ভগ্নাংশ (Scripts & Fractions):</strong>
+          <div class="symbol-grid">
+            <button type="button" class="sym-btn" onclick="insertSymbol('²')">x²</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('³')">x³</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('ⁿ')">xⁿ</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('₁')">x₁</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('₂')">x₂</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('₃')">x₃</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('½')">½</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('⅓')">⅓</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('¼')">¼</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('¾')">¾</button>
+          </div>
+        </div>
+
+        <div>
+          <strong style="font-size:12px; display:block; margin-bottom:4px; color:#1e293b;">সাধারণ ও জ্যামিতিক সিম্বল:</strong>
+          <div class="symbol-grid">
+            <button type="button" class="sym-btn" onclick="insertSymbol('+')">+</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('-')">-</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('×')">×</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('÷')">÷</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('±')">±</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('=')">=</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('≠')">≠</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('≈')">≈</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('<')">&lt;</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('>')">&gt;</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('≤')">≤</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('≥')">≥</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∞')">∞</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('α')">α</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('β')">β</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('θ')">θ</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('π')">π</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('Δ')">Δ</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∠')">∠</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('⊥')">⊥</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∥')">∥</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∴')">∴</button>
+            <button type="button" class="sym-btn" onclick="insertSymbol('∵')">∵</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+  let questionsList = [];
+  let editingQuestionId = null;
+  let lastFocusedInput = null;
+  const LOCAL_STORAGE_KEY = 'bd_qgen_draft_v2';
+
+  let sectionConfigs = {
+    cq: { answerCount: 5, markPerItem: 10, header: "নিচের উদ্দীপকগুলো পড়ে যেকোনো [ক]টি প্রশ্নের উত্তর দাও:" },
+    mcq: { answerCount: 15, markPerItem: 1, header: "সঠিক উত্তরে টিক (✓) চিহ্ন দাও:" },
+    short: { answerCount: 5, markPerItem: 2, header: "নিচের প্রশ্নগুলোর সংক্ষিপ্ত উত্তর দাও:" },
+    descriptive: { answerCount: 3, markPerItem: 5, header: "নিচের প্রশ্নগুলোর উত্তর দাও:" },
+    gaps: { answerCount: 5, markPerItem: 1, header: "উপযুক্ত শব্দ বসিয়ে শূন্যস্থান পূরণ করো:" },
+    tf: { answerCount: 5, markPerItem: 1, header: "নিচের বাক্যগুলো সত্য হলে 'স' এবং মিথ্যা হলে 'মি' লেখো:" },
+    match: { answerCount: 5, markPerItem: 1, header: "বাম পাশের বাক্যাংশের সাথে ডান পাশের বাক্যাংশ মিল করো:" },
+    
+    // English Section Configs
+    eng_mcq: { answerCount: 5, markPerItem: 1, header: "Choose the correct answer from the alternatives:" },
+    eng_qa: { answerCount: 5, markPerItem: 2, header: "Answer the following questions:" },
+    eng_tf: { answerCount: 5, markPerItem: 1, header: "Write True or False for the following statements:" },
+    eng_gaps: { answerCount: 5, markPerItem: 1, header: "Fill in the blanks with suitable words from the box:" },
+    eng_match: { answerCount: 5, markPerItem: 1, header: "Match the phrases in Column A with Column B:" },
+    eng_writing: { answerCount: 1, markPerItem: 10, header: "Write on the following topic as instructed:" },
+    eng_rearrange: { answerCount: 8, markPerItem: 1, header: "Rearrange the following sentences to make a coherent story:" }
+  };
+
+  document.addEventListener('focusin', function(e) {
+    if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+      lastFocusedInput = e.target;
+    }
+  });
+
+  window.onload = function() {
+    loadDraftFromLocalStorage();
+    updateHeaderData(false);
+    toggleHeaderElements(false);
+  };
+
+  function toggleMcqTypeInputs(selectEl) {
+    let card = selectEl.closest('.mcq-block');
+    let multiWrap = card.querySelector('.multi-statements-wrap');
+    if (selectEl.value === 'multi') {
+      multiWrap.style.display = 'block';
+    } else {
+      multiWrap.style.display = 'none';
+    }
+  }
+
+  function openSymbolModal() { document.getElementById('symbolModal').style.display = 'flex'; }
+  function closeSymbolModal() { document.getElementById('symbolModal').style.display = 'none'; }
+
+  function insertSymbol(sym) {
+    if (!lastFocusedInput) {
+      alert('প্রথমে প্রশ্ন তৈরির যেকোনো ইনপুট ঘরে কার্সার রাখুন, তারপর সিম্বল নির্বাচন করুন!');
+      return;
+    }
+
+    if (lastFocusedInput.isContentEditable) {
+      lastFocusedInput.focus();
+      document.execCommand('insertText', false, sym);
+    } else {
+      let start = lastFocusedInput.selectionStart || 0;
+      let end = lastFocusedInput.selectionEnd || 0;
+      let text = lastFocusedInput.value;
+      lastFocusedInput.value = text.substring(0, start) + sym + text.substring(end);
+      lastFocusedInput.selectionStart = lastFocusedInput.selectionEnd = start + sym.length;
+      lastFocusedInput.focus();
+    }
+  }
+
+  /* EXTRA TEXT BOX POPUP HANDLERS */
+  function addExtraTextBox() {
+    document.getElementById('extraTextContent').value = '';
+    document.getElementById('extraTextModal').style.display = 'flex';
+  }
+  function closeExtraTextModal() {
+    document.getElementById('extraTextModal').style.display = 'none';
+  }
+  function submitExtraTextBox() {
+    let text = document.getElementById('extraTextContent').value.trim();
+    if (!text) {
+      alert('অনুগ্রহ করে কিছু টেক্সট লিখুন!');
+      return;
+    }
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'extra_text',
+      content: text
+    });
+
+    closeExtraTextModal();
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  /* IMAGE MODAL HANDLERS */
+  function openImageModal() {
+    document.getElementById('imageModal').style.display = 'flex';
+  }
+  function closeImageModal() {
+    document.getElementById('imageModal').style.display = 'none';
+  }
+  function toggleImgSourceInputs() {
+    let type = document.getElementById('imgSourceType').value;
+    document.getElementById('imgUrlInputGroup').style.display = type === 'url' ? 'block' : 'none';
+    document.getElementById('imgFileInputGroup').style.display = type === 'upload' ? 'block' : 'none';
+  }
+
+  function submitCustomImage() {
+    let srcType = document.getElementById('imgSourceType').value;
+    let width = document.getElementById('imgWidthSelect').value;
+    let align = document.getElementById('imgAlignSelect').value;
+    let caption = document.getElementById('imgCaptionVal').value.trim();
+
+    if (srcType === 'url') {
+      let url = document.getElementById('imgUrlVal').value.trim();
+      if (!url) return alert('ইমেজের URL দিন!');
+      addImageBlockToPaper(url, width, align, caption);
+    } else {
+      let fileInput = document.getElementById('imgFileVal');
+      if (!fileInput.files || fileInput.files.length === 0) return alert('একটি ছবি সিলেক্ট করুন!');
+      let file = fileInput.files[0];
+      let reader = new FileReader();
+      reader.onload = function(e) {
+        addImageBlockToPaper(e.target.result, width, align, caption);
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  function addImageBlockToPaper(src, width, align, caption) {
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'image_block',
+      src: src,
+      width: width,
+      align: align,
+      caption: caption
+    });
+
+    closeImageModal();
+    document.getElementById('imgUrlVal').value = '';
+    document.getElementById('imgCaptionVal').value = '';
+    document.getElementById('imgFileVal').value = '';
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function exportData() {
+    if (questionsList.length === 0) {
+      if(!confirm("প্রশ্নপত্রে কোনো প্রশ্ন নেই। তবুও কি এক্সপোর্ট করতে চান?")) return;
+    }
+    
+    let draft = getDraftData();
+    let dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(draft, null, 2));
+    let downloadAnchor = document.createElement('a');
+    let sub = document.getElementById('subjectSelect').value || 'Question';
+    let cls = document.getElementById('classSelect').value || '';
+    let fileName = `Question_${sub}_${cls}_${Date.now()}.json`.replace(/\s+/g, '_');
+    
+    downloadAnchor.setAttribute("href", dataStr);
+    downloadAnchor.setAttribute("download", fileName);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+  }
+
+  function importData(event) {
+    let file = event.target.files[0];
+    if (!file) return;
+
+    let reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        let draft = JSON.parse(e.target.result);
+        applyDraftData(draft);
+        alert('প্রশ্নপত্র সফলভাবে ইমপোর্ট করা হয়েছে!');
+      } catch (err) {
+        alert('ভুল অথবা অকার্যকর JSON ফাইল সিলেক্ট করা হয়েছে!');
+      }
+      event.target.value = '';
+    };
+    reader.readAsText(file);
+  }
+
+  function getDraftData() {
+    return {
+      questionsList: questionsList,
+      sectionConfigs: sectionConfigs,
+      headerData: {
+        schoolName: document.getElementById('schoolNameInput').value,
+        schoolAddress: document.getElementById('schoolAddressInput').value,
+        schoolPhone: document.getElementById('schoolPhoneInput').value,
+        displaySchoolName: document.getElementById('displaySchoolName').innerText,
+        displaySchoolAddress: document.getElementById('displaySchoolAddress').innerText,
+        displaySchoolPhone: document.getElementById('displaySchoolPhone').innerText,
+        examName: document.getElementById('examSelect').value,
+        examYear: document.getElementById('examYear').value,
+        className: document.getElementById('classSelect').value,
+        subjectName: document.getElementById('subjectSelect').value,
+        subCode: document.getElementById('subCodeInput').value,
+        setCode: document.getElementById('setCodeInput').value,
+        time: document.getElementById('timeInput').value,
+        marks: document.getElementById('marksInput').value,
+        logoUrl: document.getElementById('logoUrl').value
+      },
+      settings: {
+        font: document.getElementById('fontSelect').value,
+        fontSize: document.getElementById('fontSizeSelect').value,
+        lineHeight: document.getElementById('lineHeightSelect').value,
+        orientation: document.getElementById('orientationSelect').value,
+        mainStyle: document.getElementById('mainNumStyle').value,
+        subStyle: document.getElementById('subNumStyle').value,
+        columnMode: document.getElementById('columnMode').value,
+        wmType: document.getElementById('wmType').value,
+        wmValue: document.getElementById('wmValue').value,
+        wmScale: document.getElementById('wmScale').value,
+        toggles: {
+          school: document.getElementById('togSchool').checked,
+          address: document.getElementById('togAddress').checked,
+          phone: document.getElementById('togPhone').checked,
+          subCode: document.getElementById('togSubCode').checked,
+          setCode: document.getElementById('togSetCode').checked,
+          studentInfo: document.getElementById('togStudentInfo').checked,
+          exam: document.getElementById('togExam').checked,
+          obtainedMarks: document.getElementById('togObtainedMarks').checked
+        }
+      }
+    };
+  }
+
+  function applyDraftData(draft) {
+    if (!draft) return;
+    if (draft.questionsList) questionsList = draft.questionsList;
+    if (draft.sectionConfigs) sectionConfigs = draft.sectionConfigs;
+
+    if (draft.headerData) {
+      if(draft.headerData.schoolName !== undefined) document.getElementById('schoolNameInput').value = draft.headerData.schoolName;
+      if(draft.headerData.schoolAddress !== undefined) document.getElementById('schoolAddressInput').value = draft.headerData.schoolAddress;
+      if(draft.headerData.schoolPhone !== undefined) document.getElementById('schoolPhoneInput').value = draft.headerData.schoolPhone;
+      
+      if(draft.headerData.displaySchoolName) document.getElementById('displaySchoolName').innerText = draft.headerData.displaySchoolName;
+      if(draft.headerData.displaySchoolAddress) document.getElementById('displaySchoolAddress').innerText = draft.headerData.displaySchoolAddress;
+      if(draft.headerData.displaySchoolPhone) document.getElementById('displaySchoolPhone').innerText = draft.headerData.displaySchoolPhone;
+
+      if(draft.headerData.examName !== undefined) document.getElementById('examSelect').value = draft.headerData.examName;
+      if(draft.headerData.examYear !== undefined) document.getElementById('examYear').value = draft.headerData.examYear;
+      if(draft.headerData.className !== undefined) document.getElementById('classSelect').value = draft.headerData.className;
+      if(draft.headerData.subjectName !== undefined) document.getElementById('subjectSelect').value = draft.headerData.subjectName;
+      if(draft.headerData.subCode !== undefined) document.getElementById('subCodeInput').value = draft.headerData.subCode;
+      if(draft.headerData.setCode !== undefined) document.getElementById('setCodeInput').value = draft.headerData.setCode;
+      if(draft.headerData.time !== undefined) document.getElementById('timeInput').value = draft.headerData.time;
+      if(draft.headerData.marks !== undefined) document.getElementById('marksInput').value = draft.headerData.marks;
+      if(draft.headerData.logoUrl !== undefined) document.getElementById('logoUrl').value = draft.headerData.logoUrl;
+    }
+
+    if (draft.settings) {
+      if(draft.settings.font) {
+        document.getElementById('fontSelect').value = draft.settings.font;
+        changeFont(false);
+      }
+      if(draft.settings.fontSize) {
+        document.getElementById('fontSizeSelect').value = draft.settings.fontSize;
+        changeFontSize(false);
+      }
+      if(draft.settings.lineHeight) {
+        document.getElementById('lineHeightSelect').value = draft.settings.lineHeight;
+        changeLineHeight(false);
+      }
+      if(draft.settings.orientation) {
+        document.getElementById('orientationSelect').value = draft.settings.orientation;
+        changeOrientation(false);
+      }
+      if(draft.settings.mainStyle) document.getElementById('mainNumStyle').value = draft.settings.mainStyle;
+      if(draft.settings.subStyle) document.getElementById('subNumStyle').value = draft.settings.subStyle;
+      if(draft.settings.columnMode) {
+        document.getElementById('columnMode').value = draft.settings.columnMode;
+        applyLayoutSettings(false);
+      }
+      if(draft.settings.wmType) document.getElementById('wmType').value = draft.settings.wmType;
+      if(draft.settings.wmValue) document.getElementById('wmValue').value = draft.settings.wmValue;
+      if(draft.settings.wmScale) document.getElementById('wmScale').value = draft.settings.wmScale;
+      updateWatermark();
+
+      if(draft.settings.toggles) {
+        document.getElementById('togSchool').checked = draft.settings.toggles.school;
+        document.getElementById('togAddress').checked = draft.settings.toggles.address;
+        document.getElementById('togPhone').checked = draft.settings.toggles.phone;
+        document.getElementById('togSubCode').checked = draft.settings.toggles.subCode;
+        document.getElementById('togSetCode').checked = draft.settings.toggles.setCode;
+        document.getElementById('togStudentInfo').checked = draft.settings.toggles.studentInfo;
+        document.getElementById('togExam').checked = draft.settings.toggles.exam;
+        document.getElementById('togObtainedMarks').checked = draft.settings.toggles.obtainedMarks;
+      }
+    }
+
+    updateHeaderData(false);
+    toggleHeaderElements(false);
+    renderQuestions(false);
+  }
+
+  function saveDraftToLocalStorage() {
+    let draft = getDraftData();
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(draft));
+  }
+
+  function loadDraftFromLocalStorage() {
+    let raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      let draft = JSON.parse(raw);
+      applyDraftData(draft);
+    } catch(e) {
+      console.error('Failed to parse draft from storage', e);
+    }
+  }
+
+  function switchNavTab(tabName) {
+    document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    let btnIndex = tabName === 'add-q' ? 0 : tabName === 'eng-q' ? 1 : 2;
+    let btns = document.querySelectorAll('.nav-tab-btn');
+    if (btns[btnIndex]) btns[btnIndex].classList.add('active');
+
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+
+  function switchQTab(tab, isBtnClick = true) {
+    document.querySelectorAll('#tab-add-q .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#tab-add-q .q-type-form').forEach(f => f.classList.remove('active'));
+    
+    let targetBtn = document.getElementById('tabbtn-' + tab);
+    if(targetBtn) targetBtn.classList.add('active');
+    document.getElementById('form-' + tab).classList.add('active');
+
+    if(isBtnClick && editingQuestionId) {
+      resetSubmitButtons();
+    }
+  }
+
+  function switchEngQTab(tab) {
+    document.querySelectorAll('#tab-eng-q .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#tab-eng-q .q-type-form').forEach(f => f.classList.remove('active'));
+    
+    let targetBtn = document.getElementById('tabbtn-eng-' + tab);
+    if(targetBtn) targetBtn.classList.add('active');
+    document.getElementById('form-eng-' + tab).classList.add('active');
+  }
+
+  function toggleEngMatchColC() {
+    let cols = document.getElementById('engMatchCols').value;
+    document.querySelectorAll('#engMatchRowsWrapper .match-col-c').forEach(c => {
+      c.style.display = cols === '3' ? 'block' : 'none';
+    });
+  }
+
+  function addEngMatchRow() {
+    let cols = document.getElementById('engMatchCols').value;
+    let wrap = document.getElementById('engMatchRowsWrapper');
+    let div = document.createElement('div');
+    div.className = 'row-3 eng-match-row';
+    div.style.marginBottom = '4px';
+    div.innerHTML = `
+      <input type="text" class="form-control match-col-a" placeholder="Column A">
+      <input type="text" class="form-control match-col-b" placeholder="Column B">
+      <input type="text" class="form-control match-col-c" placeholder="Column C" style="${cols === '3' ? '' : 'display:none;'}">
+    `;
+    wrap.appendChild(div);
+  }
+
+  function updateHeaderData(shouldSave = true) {
+    document.getElementById('displaySchoolName').innerText = document.getElementById('schoolNameInput').value || 'প্রতিষ্ঠানের নাম';
+    document.getElementById('displaySchoolAddress').innerText = document.getElementById('schoolAddressInput').value || 'প্রতিষ্ঠানের ঠিকানা';
+    document.getElementById('displaySchoolPhone').innerText = document.getElementById('schoolPhoneInput').value || '...';
+    document.getElementById('displayExamName').innerText = document.getElementById('examSelect').value || 'পরীক্ষার নাম';
+    document.getElementById('displayExamYear').innerText = document.getElementById('examYear').value || '২০২৬';
+    document.getElementById('displayClass').innerText = document.getElementById('classSelect').value || '...';
+    document.getElementById('displaySubject').innerText = document.getElementById('subjectSelect').value || '...';
+    document.getElementById('displaySubCode').innerText = document.getElementById('subCodeInput').value;
+    document.getElementById('displaySetCode').innerText = document.getElementById('setCodeInput').value;
+    document.getElementById('displayTime').innerText = document.getElementById('timeInput').value;
+    document.getElementById('displayMarks').innerText = document.getElementById('marksInput').value;
+
+    let logoUrl = document.getElementById('logoUrl').value.trim();
+    let logoImg = document.getElementById('displayLogo');
+    if(logoUrl !== '') {
+      logoImg.src = logoUrl;
+      logoImg.style.display = 'block';
+    } else {
+      logoImg.style.display = 'none';
+    }
+
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function toggleHeaderElements(shouldSave = true) {
+    document.getElementById('displaySchoolName').style.display = document.getElementById('togSchool').checked ? 'block' : 'none';
+    document.getElementById('displaySchoolAddress').style.display = document.getElementById('togAddress').checked ? 'block' : 'none';
+    document.getElementById('displaySchoolPhoneWrap').style.display = document.getElementById('togPhone').checked ? 'block' : 'none';
+    document.getElementById('displaySubCodeWrap').style.display = document.getElementById('togSubCode').checked ? 'inline-block' : 'none';
+    document.getElementById('displaySetCodeWrap').style.display = document.getElementById('togSetCode').checked ? 'inline-block' : 'none';
+    document.getElementById('displayStudentBar').style.display = document.getElementById('togStudentInfo').checked ? 'flex' : 'none';
+    document.getElementById('displayExamBadge').style.display = document.getElementById('togExam').checked ? 'inline-block' : 'none';
+    document.getElementById('displayObtainedMarks').style.display = document.getElementById('togObtainedMarks').checked ? 'block' : 'none';
+
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function updateWatermark() {
+    let type = document.getElementById('wmType').value;
+    let val = document.getElementById('wmValue').value.trim();
+    let scale = document.getElementById('wmScale').value;
+    let container = document.getElementById('watermarkContainer');
+
+    if (!val) {
+      container.innerHTML = '';
+      return;
+    }
+
+    if (type === 'text') {
+      container.innerHTML = `<div class="watermark-text" style="font-size: ${scale}px;">${val}</div>`;
+    } else {
+      container.innerHTML = `<img src="${val}" class="watermark-img" style="max-width: ${scale * 5}px;">`;
+    }
+  }
+
+  function changeFont(shouldSave = true) {
+    let font = document.getElementById('fontSelect').value;
+    document.documentElement.style.setProperty('--paper-font', font);
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function changeFontSize(shouldSave = true) {
+    let sz = document.getElementById('fontSizeSelect').value;
+    document.documentElement.style.setProperty('--paper-font-size', sz);
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function changeLineHeight(shouldSave = true) {
+    let lh = document.getElementById('lineHeightSelect').value;
+    document.documentElement.style.setProperty('--paper-line-height', lh);
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function changeOrientation(shouldSave = true) {
+    let ori = document.getElementById('orientationSelect').value;
+    let paper = document.getElementById('paperPage');
+    if (ori === 'landscape') {
+      paper.classList.add('landscape');
+      document.body.classList.add('print-landscape');
+    } else {
+      paper.classList.remove('landscape');
+      document.body.classList.remove('print-landscape');
+    }
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function applyLayoutSettings(shouldSave = true) {
+    let col = document.getElementById('columnMode').value;
+    let container = document.getElementById('questionsContainer');
+    container.className = 'questions-wrapper ' + col;
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function formatNum(num, style) {
+    const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+    const bnAlpha = ['ক','খ','গ','ঘ','ঙ','চ','ছ','জ','ঝ','ঞ','ট','ঠ','ড','ঢ','ণ','ত','থ','দ','ধ','ন','প','ফ','ব','ভ','ম'];
+    const enAlpha = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    const romanNums = ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii','xiv','xv','xvi','xvii','xviii','xix','xx'];
+
+    if (style === 'bn_num') {
+      return num.toString().split('').map(d => bnDigits[d] || d).join('');
+    } else if (style === 'en_num') {
+      return num.toString();
+    } else if (style === 'roman') {
+      return romanNums[num - 1] || num.toString();
+    } else if (style === 'bn_alpha') {
+      return bnAlpha[num - 1] || num.toString();
+    } else if (style === 'en_alpha') {
+      return enAlpha[num - 1] || num.toString();
+    }
+    return num.toString();
+  }
+
+  function updateSectionConfigFromInput(type) {
+    if (sectionConfigs[type]) {
+      let countEl = document.getElementById(type + 'AnswerCount') || document.getElementById('eng' + type.charAt(0).toUpperCase() + type.slice(1) + 'Count');
+      let markEl = document.getElementById(type + 'MarkPerItem') || document.getElementById('eng' + type.charAt(0).toUpperCase() + type.slice(1) + 'Mark');
+      let headerEl = document.getElementById(type + 'Header') || document.getElementById('eng' + type.charAt(0).toUpperCase() + type.slice(1) + 'Header');
+      
+      if(countEl && markEl) {
+        sectionConfigs[type].answerCount = parseInt(countEl.value) || 0;
+        sectionConfigs[type].markPerItem = parseInt(markEl.value) || 0;
+      }
+      if(headerEl) {
+        sectionConfigs[type].header = headerEl.value.trim();
+      }
+    }
+  }
+
+  function resetSubmitButtons() {
+    editingQuestionId = null;
+    document.getElementById('btnCQSubmit').innerText = '+ সৃজনশীল প্রশ্ন যোগ করুন';
+    document.getElementById('btnMCQSubmit').innerText = '+ MCQ প্রশ্ন যোগ করুন';
+    document.getElementById('btnShortSubmit').innerText = '+ সংক্ষিপ্ত প্রশ্ন সেকশন যোগ করুন';
+    document.getElementById('btnDescSubmit').innerText = '+ বর্ণনামূলক প্রশ্ন সেকশন যোগ করুন';
+    document.getElementById('btnGapsSubmit').innerText = '+ শূন্যস্থান সেকশন যোগ করুন';
+    document.getElementById('btnTFSubmit').innerText = '+ সত্য/মিথ্যা সেকশন যোগ করুন';
+    document.getElementById('btnMatchSubmit').innerText = '+ মিলকরণ সেকশন যোগ করুন';
+  }
+
+  function addMoreCQBlock() {
+    let wrap = document.getElementById('cqInputsWrapper');
+    let div = document.createElement('div');
+    div.className = 'q-input-card cq-block';
+    div.innerHTML = `
+      <div class="form-group"><label>উদ্দীপক / অনুচ্ছেদ</label><textarea class="form-control cq-stem" rows="3" placeholder="উদ্দীপকটি লিখুন..."></textarea></div>
+      <div class="form-group"><label>উদ্দীপকের ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control cq-img-input" placeholder="https://..."></div>
+      <div class="form-group"><input type="text" class="form-control cq-a" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
+      <div class="form-group"><input type="text" class="form-control cq-b" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
+      <div class="form-group"><input type="text" class="form-control cq-c" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
+      <div class="form-group"><input type="text" class="form-control cq-d" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addMoreMCQBlock() {
+    let wrap = document.getElementById('mcqInputsWrapper');
+    let div = document.createElement('div');
+    div.className = 'q-input-card mcq-block';
+    div.innerHTML = `
+      <div class="form-group">
+        <label>MCQ টাইপ</label>
+        <select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)">
+          <option value="single">সাধারণ MCQ (একপদী)</option>
+          <option value="multi">বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>মূল প্রশ্ন</label><textarea class="form-control mcq-title" rows="2" placeholder="প্রশ্ন লিখুন..."></textarea></div>
+      <div class="form-group"><label>ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control mcq-img-input" placeholder="https://..."></div>
+
+      <div class="multi-statements-wrap" style="display:none; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
+        <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
+        <div class="form-group"><input type="text" class="form-control mcq-stmt1" placeholder="i. প্রথম তথ্য"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-stmt2" placeholder="ii. দ্বিতীয় তথ্য"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-stmt3" placeholder="iii. তৃতীয় তথ্য"></div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control mcq-opt1" placeholder="অপশন ১ / (ক)"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-opt2" placeholder="অপশন ২ / (খ)"></div>
+      </div>
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control mcq-opt3" placeholder="অপশন ৩ / (গ)"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-opt4" placeholder="অপশন ৪ / (ঘ)"></div>
+      </div>
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addMoreEngMcqBlock() {
+    let wrap = document.getElementById('engMcqInputsWrapper');
+    let div = document.createElement('div');
+    div.className = 'q-input-card eng-mcq-block';
+    div.innerHTML = `
+      <div class="form-group"><label>Question Title</label><textarea class="form-control eng-mcq-title" rows="2" placeholder="Question title..."></textarea></div>
+      <div class="form-group"><label>Image (URL - Optional)</label><input type="text" class="form-control eng-mcq-img-input" placeholder="https://..."></div>
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt1" placeholder="Option A"></div>
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt2" placeholder="Option B"></div>
+      </div>
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt3" placeholder="Option C"></div>
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt4" placeholder="Option D"></div>
+      </div>
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addMoreInput(wrapperId, className, placeholderText, isTextArea = false) {
+    let wrap = document.getElementById(wrapperId);
+    let div = document.createElement('div');
+    div.className = 'form-group';
+    if(isTextArea) {
+      div.innerHTML = `<textarea class="form-control ${className}" rows="2" placeholder="${placeholderText}"></textarea>`;
+    } else {
+      div.innerHTML = `<input type="text" class="form-control ${className}" placeholder="${placeholderText}">`;
+    }
+    wrap.appendChild(div);
+  }
+
+  function addMatchRow() {
+    let wrap = document.getElementById('matchRowsWrapper');
+    let div = document.createElement('div');
+    div.className = 'row-2';
+    div.style.marginBottom = '4px';
+    div.innerHTML = `
+      <input type="text" class="form-control match-left" placeholder="বাম কলাম">
+      <input type="text" class="form-control match-right" placeholder="ডান কলাম">
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addQuestion(type) {
+    updateSectionConfigFromInput(type);
+
+    if (type === 'cq') {
+      let blocks = document.querySelectorAll('.cq-block');
+      let addedAny = false;
+
+      blocks.forEach(block => {
+        let stem = block.querySelector('.cq-stem').value.trim();
+        if (stem) {
+          let qObj = {
+            id: editingQuestionId ? editingQuestionId : 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            type: 'cq',
+            header: document.getElementById('cqHeader').value.trim(),
+            stem: stem,
+            img: block.querySelector('.cq-img-input').value.trim(),
+            a: block.querySelector('.cq-a').value.trim(),
+            b: block.querySelector('.cq-b').value.trim(),
+            c: block.querySelector('.cq-c').value.trim(),
+            d: block.querySelector('.cq-d').value.trim()
+          };
+          if(editingQuestionId) {
+            let idx = questionsList.findIndex(q => q.id === editingQuestionId);
+            if(idx !== -1) questionsList[idx] = qObj;
+          } else {
+            questionsList.push(qObj);
+          }
+          addedAny = true;
+        }
+      });
+
+      if(!addedAny && !editingQuestionId) return alert('কমপক্ষে একটি উদ্দীপক লিখুন!');
+    } 
+    else if (type === 'mcq') {
+      let blocks = document.querySelectorAll('.mcq-block');
+      let addedAny = false;
+
+      blocks.forEach(block => {
+        let title = block.querySelector('.mcq-title').value.trim();
+        let mcqType = block.querySelector('.mcq-type-select').value;
+        if (title) {
+          let optsRaw = [
+            block.querySelector('.mcq-opt1').value.trim(),
+            block.querySelector('.mcq-opt2').value.trim(),
+            block.querySelector('.mcq-opt3').value.trim(),
+            block.querySelector('.mcq-opt4').value.trim()
+          ];
+          let opts = optsRaw.filter(o => o !== '');
+
+          let stmts = [];
+          if (mcqType === 'multi') {
+            let s1 = block.querySelector('.mcq-stmt1').value.trim();
+            let s2 = block.querySelector('.mcq-stmt2').value.trim();
+            let s3 = block.querySelector('.mcq-stmt3').value.trim();
+            if (s1) stmts.push(s1);
+            if (s2) stmts.push(s2);
+            if (s3) stmts.push(s3);
+          }
+
+          let qObj = {
+            id: editingQuestionId ? editingQuestionId : 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            type: 'mcq',
+            header: document.getElementById('mcqHeader').value.trim(),
+            mcqType: mcqType,
+            title: title,
+            img: block.querySelector('.mcq-img-input').value.trim(),
+            stmts: stmts,
+            opts: opts
+          };
+          if(editingQuestionId) {
+            let idx = questionsList.findIndex(q => q.id === editingQuestionId);
+            if(idx !== -1) questionsList[idx] = qObj;
+          } else {
+            questionsList.push(qObj);
+          }
+          addedAny = true;
+        }
+      });
+
+      if(!addedAny && !editingQuestionId) return alert('কমপক্ষে একটি প্রশ্ন লিখুন!');
+    } 
+    else {
+      let qObj = { 
+        id: editingQuestionId ? editingQuestionId : 'q_' + Date.now(), 
+        type: type,
+        header: document.getElementById(type + 'Header') ? document.getElementById(type + 'Header').value.trim() : ''
+      };
+
+      if (type === 'short' || type === 'descriptive' || type === 'gaps' || type === 'tf') {
+        let className = type === 'short' ? 'short-item' : type === 'descriptive' ? 'desc-item' : type === 'gaps' ? 'gap-item' : 'tf-item';
+        let inputs = document.querySelectorAll('.' + className);
+        let items = [];
+        inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+        if (items.length === 0) return alert('কমপক্ষে একটি ইনপুট দিন!');
+        qObj.items = items;
+      }
+      else if (type === 'match') {
+        let lefts = document.querySelectorAll('.match-left');
+        let rights = document.querySelectorAll('.match-right');
+        let pairs = [];
+        for(let i=0; i<lefts.length; i++) {
+          if(lefts[i].value.trim() || rights[i].value.trim()) {
+            pairs.push({ left: lefts[i].value.trim(), right: rights[i].value.trim() });
+          }
+        }
+        if (pairs.length === 0) return alert('কমপক্ষে একটি জোড়া দিন!');
+        qObj.pairs = pairs;
+      }
+
+      if(editingQuestionId) {
+        let idx = questionsList.findIndex(q => q.id === editingQuestionId);
+        if(idx !== -1) questionsList[idx] = qObj;
+      } else {
+        questionsList.push(qObj);
+      }
+    }
+
+    resetSubmitButtons();
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  /* ENGLISH QUESTION ADD HANDLERS */
+  function addEngPassage() {
+    let header = document.getElementById('engPassageHeader').value.trim();
+    let text = document.getElementById('engPassageText').value.trim();
+    if(!text) return alert('Enter passage text!');
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_passage',
+      header: header,
+      text: text
+    });
+
+    document.getElementById('engPassageText').value = '';
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngMcq() {
+    let count = parseInt(document.getElementById('engMcqCount').value) || 5;
+    let mark = parseInt(document.getElementById('engMcqMark').value) || 1;
+    let header = document.getElementById('engMcqHeader').value.trim();
+    let blocks = document.querySelectorAll('.eng-mcq-block');
+    let addedAny = false;
+
+    blocks.forEach(block => {
+      let title = block.querySelector('.eng-mcq-title').value.trim();
+      if (title) {
+        let optsRaw = [
+          block.querySelector('.eng-mcq-opt1').value.trim(),
+          block.querySelector('.eng-mcq-opt2').value.trim(),
+          block.querySelector('.eng-mcq-opt3').value.trim(),
+          block.querySelector('.eng-mcq-opt4').value.trim()
+        ];
+        let opts = optsRaw.filter(o => o !== '');
+
+        questionsList.push({
+          id: 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          type: 'eng_mcq',
+          header: header,
+          title: title,
+          img: block.querySelector('.eng-mcq-img-input').value.trim(),
+          opts: opts,
+          mark: mark
+        });
+        addedAny = true;
+      }
+    });
+
+    if(!addedAny) return alert('Enter at least one English MCQ question!');
+    sectionConfigs.eng_mcq = { answerCount: count, markPerItem: mark, header: header };
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngQA() {
+    let count = parseInt(document.getElementById('engQaCount').value) || 5;
+    let mark = parseInt(document.getElementById('engQaMark').value) || 2;
+    let header = document.getElementById('engQaHeader').value.trim();
+    let inputs = document.querySelectorAll('.eng-qa-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+    if(items.length === 0) return alert('Enter at least one question!');
+
+    sectionConfigs.eng_qa = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_qa',
+      header: header,
+      items: items,
+      totalMark: count * mark,
+      count: count,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngTF() {
+    let count = parseInt(document.getElementById('engTfCount').value) || 5;
+    let mark = parseInt(document.getElementById('engTfMark').value) || 1;
+    let header = document.getElementById('engTfHeader').value.trim();
+    let inputs = document.querySelectorAll('.eng-tf-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+    if(items.length === 0) return alert('Enter at least one statement!');
+
+    sectionConfigs.eng_tf = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_tf',
+      header: header,
+      items: items,
+      totalMark: count * mark,
+      count: count,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngGaps() {
+    let count = parseInt(document.getElementById('engGapsCount').value) || 5;
+    let mark = parseInt(document.getElementById('engGapsMark').value) || 1;
+    let header = document.getElementById('engGapsHeader').value.trim();
+    let clues = document.getElementById('engGapsClues').value.trim();
+    let inputs = document.querySelectorAll('.eng-gap-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+    if(items.length === 0) return alert('Enter at least one sentence!');
+
+    sectionConfigs.eng_gaps = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_gaps',
+      header: header,
+      clues: clues,
+      items: items,
+      totalMark: count * mark,
+      count: count,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngMatch() {
+    let count = parseInt(document.getElementById('engMatchCount').value) || 5;
+    let mark = parseInt(document.getElementById('engMatchMark').value) || 1;
+    let header = document.getElementById('engMatchHeader').value.trim();
+    let rows = document.querySelectorAll('.eng-match-row');
+    let colsMode = document.getElementById('engMatchCols').value;
+    let rowsData = [];
+
+    rows.forEach(r => {
+      let a = r.querySelector('.match-col-a').value.trim();
+      let b = r.querySelector('.match-col-b').value.trim();
+      let c = r.querySelector('.match-col-c').value.trim();
+      if(a || b || c) {
+        rowsData.push({ a, b, c });
+      }
+    });
+
+    if(rowsData.length === 0) return alert('Enter at least one row!');
+
+    sectionConfigs.eng_match = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_match',
+      header: header,
+      colsMode: colsMode,
+      rows: rowsData,
+      totalMark: count * mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngWriting() {
+    let header = document.getElementById('engWritingHeader').value.trim();
+    let typeCategory = document.getElementById('engWritingType').value;
+    let mark = parseInt(document.getElementById('engWritingMark').value) || 10;
+    let title = document.getElementById('engWritingTitle').value.trim();
+    let prompt = document.getElementById('engWritingPrompt').value.trim();
+
+    if(!title) return alert('Enter title / topic!');
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_writing',
+      header: header,
+      category: typeCategory,
+      title: title,
+      prompt: prompt,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngRearrange() {
+    let count = parseInt(document.getElementById('engRearrangeCount').value) || 8;
+    let mark = parseInt(document.getElementById('engRearrangeMark').value) || 8;
+    let header = document.getElementById('engRearrangeHeader').value.trim();
+    let inputs = document.querySelectorAll('.eng-rearrange-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+
+    if(items.length === 0) return alert('Enter sentences!');
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_rearrange',
+      header: header,
+      items: items,
+      totalMark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  /* RENDER QUESTIONS ON PAPER PREVIEW */
+  function renderQuestions(shouldSave = true) {
+    let container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
+
+    let mainStyle = document.getElementById('mainNumStyle').value;
+    let subStyle = document.getElementById('subNumStyle').value;
+
+    let questionNumber = 1;
+
+    questionsList.forEach((q, index) => {
+      let qDiv = document.createElement('div');
+      qDiv.className = 'q-item';
+      qDiv.dataset.id = q.id;
+
+      // Action buttons (edit button added)
+      let actionsHtml = `
+        <div class="q-actions">
+          <button class="btn-move" title="উপরে তুলুন" onclick="moveQuestion(${index}, -1)">▲</button>
+          <button class="btn-move" title="নিচে নামান" onclick="moveQuestion(${index}, 1)">▼</button>
+          <button class="btn-edit" title="এডিট করুন" onclick="editQuestion('${q.id}')">✎</button>
+          <button class="btn-danger" title="মুছে ফেলুন" onclick="deleteQuestion('${q.id}')">🗑️</button>
+        </div>
+      `;
+
+      let numLabel = formatNum(questionNumber, mainStyle);
+
+      if (q.type === 'cq') {
+        let config = sectionConfigs.cq;
+        let totalMark = config.answerCount * config.markPerItem;
+        let headerText = q.header || config.header || "নিচের উদ্দীপকগুলো পড়ে যেকোনো [ক]টি প্রশ্নের উত্তর দাও:";
+        headerText = headerText.replace('[ক]', formatNum(config.answerCount, mainStyle));
+
+        let html = `
+          ${actionsHtml}
+          ${index === 0 || questionsList[index-1].type !== 'cq' ? `
+            <div class="q-group-header">
+              <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+              <div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>
+            </div>
+          ` : ''}
+          <div style="font-weight:bold; margin-bottom:2px;">
+            ${numLabel}. <span class="cq-stem-box" contenteditable="true" onblur="updateQuestionContent('${q.id}', 'stem', this.innerText)">${q.stem}</span>
+          </div>
+          ${q.img ? `<img src="${q.img}" class="cq-img">` : ''}
+          ${q.a ? `<div class="cq-sub-q"><span>(${formatNum(1, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'a', this.innerText)">${q.a}</span></span> <span></span></div>` : ''}
+          ${q.b ? `<div class="cq-sub-q"><span>(${formatNum(2, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'b', this.innerText)">${q.b}</span></span> <span></span></div>` : ''}
+          ${q.c ? `<div class="cq-sub-q"><span>(${formatNum(3, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'c', this.innerText)">${q.c}</span></span> <span></span></div>` : ''}
+          ${q.d ? `<div class="cq-sub-q"><span>(${formatNum(4, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'd', this.innerText)">${q.d}</span></span> <span></span></div>` : ''}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'mcq') {
+        let config = sectionConfigs.mcq;
+        let totalMark = config.answerCount * config.markPerItem;
+        let headerText = q.header || config.header || "সঠিক উত্তরে টিক (✓) চিহ্ন দাও:";
+
+        let stmtsHtml = '';
+        if (q.stmts && q.stmts.length > 0) {
+          stmtsHtml = `<div class="mcq-statements">`;
+          q.stmts.forEach((s, sIdx) => {
+            stmtsHtml += `<div>${formatNum(sIdx+1, 'roman')}. ${s}</div>`;
+          });
+          stmtsHtml += `</div>`;
+        }
+
+        let optsHtml = '<div class="mcq-options">';
+        q.opts.forEach((opt, oIdx) => {
+          optsHtml += `<div>(${formatNum(oIdx+1, subStyle)}) <span contenteditable="true">${opt}</span></div>`;
+        });
+        optsHtml += '</div>';
+
+        let html = `
+          ${actionsHtml}
+          ${index === 0 || questionsList[index-1].type !== 'mcq' ? `
+            <div class="q-group-header">
+              <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+              <div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>
+            </div>
+          ` : ''}
+          <div><strong>${numLabel}.</strong> <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'title', this.innerText)">${q.title}</span></div>
+          ${q.img ? `<img src="${q.img}" class="mcq-img">` : ''}
+          ${stmtsHtml}
+          ${optsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (['short', 'descriptive', 'gaps', 'tf'].includes(q.type)) {
+        let config = sectionConfigs[q.type];
+        let totalMark = config ? config.answerCount * config.markPerItem : 0;
+        let headerText = q.header || (config ? config.header : '');
+
+        let itemsHtml = '';
+        if (q.items) {
+          q.items.forEach((item, iIdx) => {
+            let itemNum = formatNum(iIdx + 1, subStyle);
+            itemsHtml += `<div style="margin-top:4px;"><strong>(${itemNum})</strong> <span contenteditable="true">${item}</span></div>`;
+          });
+        }
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+            ${totalMark ? `<div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>` : ''}
+          </div>
+          ${itemsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'match') {
+        let config = sectionConfigs.match;
+        let totalMark = config ? config.answerCount * config.markPerItem : 0;
+        let headerText = q.header || (config ? config.header : '');
+
+        let rowsHtml = '';
+        if (q.pairs) {
+          q.pairs.forEach(p => {
+            rowsHtml += `<tr><td>${p.left}</td><td>${p.right}</td></tr>`;
+          });
+        }
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+            ${totalMark ? `<div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>` : ''}
+          </div>
+          <table class="matching-table">
+            <thead><tr><th>বাম কলাম</th><th>ডান কলাম</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_passage') {
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+          </div>
+          <div class="passage-box" contenteditable="true" onblur="q.text = this.innerText; saveDraftToLocalStorage()">${q.text}</div>
+        `;
+        qDiv.innerHTML = html;
+      }
+      else if (q.type === 'eng_mcq') {
+        let optsHtml = '<div class="mcq-options">';
+        q.opts.forEach((opt, oIdx) => {
+          optsHtml += `<div>(${formatNum(oIdx+1, 'en_alpha')}) <span contenteditable="true">${opt}</span></div>`;
+        });
+        optsHtml += '</div>';
+
+        let html = `
+          ${actionsHtml}
+          ${index === 0 || questionsList[index-1].type !== 'eng_mcq' ? `
+            <div class="q-group-header">
+              <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header || 'Choose the correct answer:'}</div>
+            </div>
+          ` : ''}
+          <div><strong>${numLabel}.</strong> <span contenteditable="true">${q.title}</span></div>
+          ${q.img ? `<img src="${q.img}" class="mcq-img">` : ''}
+          ${optsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (['eng_qa', 'eng_tf', 'eng_gaps'].includes(q.type)) {
+        let itemsHtml = '';
+        if (q.items) {
+          q.items.forEach((item, iIdx) => {
+            itemsHtml += `<div style="margin-top:3px;"><strong>(${formatNum(iIdx+1, 'en_alpha')})</strong> <span contenteditable="true">${item}</span></div>`;
+          });
+        }
+
+        let cluesHtml = q.clues ? `<div class="clues-box">${q.clues}</div>` : '';
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.count || q.items.length} × ${q.mark || 1} = ${q.totalMark || (q.items.length * (q.mark||1))}]</div>
+          </div>
+          ${cluesHtml}
+          ${itemsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_match') {
+        let rowsHtml = '';
+        if(q.rows) {
+          q.rows.forEach(r => {
+            if(q.colsMode === '3') {
+              rowsHtml += `<tr><td>${r.a}</td><td>${r.b}</td><td>${r.c}</td></tr>`;
+            } else {
+              rowsHtml += `<tr><td>${r.a}</td><td>${r.b}</td></tr>`;
+            }
+          });
+        }
+
+        let theadHtml = q.colsMode === '3' ? 
+          `<thead><tr><th>Column A</th><th>Column B</th><th>Column C</th></tr></thead>` :
+          `<thead><tr><th>Column A</th><th>Column B</th></tr></thead>`;
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.totalMark || ''}]</div>
+          </div>
+          <table class="matching-table">
+            ${theadHtml}
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_writing') {
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.mark}]</div>
+          </div>
+          <div style="font-weight:bold; margin-bottom:2px;">
+            ${numLabel}. <span contenteditable="true" onblur="q.title = this.innerText; saveDraftToLocalStorage()">${q.title}</span>
+          </div>
+          ${q.prompt ? `<div style="font-size:11.5px; font-style:italic; color:#475569; margin-left:12px;" contenteditable="true" onblur="q.prompt = this.innerText; saveDraftToLocalStorage()">${q.prompt}</div>` : ''}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_rearrange') {
+        let itemsHtml = '';
+        if(q.items) {
+          q.items.forEach((item, iIdx) => {
+            itemsHtml += `<div style="margin-top:2px;"><strong>(${formatNum(iIdx+1, 'en_alpha')})</strong> <span contenteditable="true">${item}</span></div>`;
+          });
+        }
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.totalMark}]</div>
+          </div>
+          ${itemsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'extra_text') {
+        let html = `
+          ${actionsHtml}
+          <div class="passage-box" style="font-weight:600; font-style:italic;" contenteditable="true" onblur="q.content = this.innerText; saveDraftToLocalStorage()">${q.content}</div>
+        `;
+        qDiv.innerHTML = html;
+      }
+      else if (q.type === 'image_block') {
+        let alignStyle = q.align === 'center' ? 'margin: 0 auto;' : q.align === 'right' ? 'margin-left: auto; margin-right: 0;' : 'margin-right: auto; margin-left: 0;';
+        let html = `
+          ${actionsHtml}
+          <div class="custom-img-block">
+            <img src="${q.src}" style="width: ${q.width || '100%'}; ${alignStyle}">
+            ${q.caption ? `<div class="custom-img-caption">${q.caption}</div>` : ''}
+          </div>
+        `;
+        qDiv.innerHTML = html;
+      }
+
+      container.appendChild(qDiv);
+    });
+
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function editQuestion(id) {
+    let q = questionsList.find(item => item.id === id);
+    if (!q) return;
+
+    editingQuestionId = id;
+    switchNavTab('add-q');
+    switchQTab(q.type, false);
+
+    if (q.type === 'cq') {
+      document.getElementById('cqHeader').value = q.header || '';
+      let wrap = document.getElementById('cqInputsWrapper');
+      wrap.innerHTML = `
+        <div class="q-input-card cq-block">
+          <div class="form-group"><label>উদ্দীপক / অনুচ্ছেদ</label><textarea class="form-control cq-stem" rows="3">${q.stem || ''}</textarea></div>
+          <div class="form-group"><label>উদ্দীপকের ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control cq-img-input" value="${q.img || ''}"></div>
+          <div class="form-group"><input type="text" class="form-control cq-a" value="${q.a || ''}" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
+          <div class="form-group"><input type="text" class="form-control cq-b" value="${q.b || ''}" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
+          <div class="form-group"><input type="text" class="form-control cq-c" value="${q.c || ''}" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
+          <div class="form-group"><input type="text" class="form-control cq-d" value="${q.d || ''}" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
+        </div>
+      `;
+      document.getElementById('btnCQSubmit').innerText = '💾 আপডেট করুন';
+    } else if (q.type === 'mcq') {
+      document.getElementById('mcqHeader').value = q.header || '';
+      let wrap = document.getElementById('mcqInputsWrapper');
+      let stmts = q.stmts || [];
+      wrap.innerHTML = `
+        <div class="q-input-card mcq-block">
+          <div class="form-group">
+            <label>MCQ টাইপ</label>
+            <select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)">
+              <option value="single" ${q.mcqType === 'single' ? 'selected' : ''}>সাধারণ MCQ (একপদী)</option>
+              <option value="multi" ${q.mcqType === 'multi' ? 'selected' : ''}>বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>মূল প্রশ্ন</label><textarea class="form-control mcq-title" rows="2">${q.title || ''}</textarea></div>
+          <div class="form-group"><label>ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control mcq-img-input" value="${q.img || ''}"></div>
+          <div class="multi-statements-wrap" style="display:${q.mcqType === 'multi' ? 'block' : 'none'}; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
+            <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
+            <div class="form-group"><input type="text" class="form-control mcq-stmt1" value="${stmts[0] || ''}" placeholder="i. প্রথম তথ্য"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-stmt2" value="${stmts[1] || ''}" placeholder="ii. দ্বিতীয় তথ্য"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-stmt3" value="${stmts[2] || ''}" placeholder="iii. তৃতীয় তথ্য"></div>
+          </div>
+          <div class="row-2">
+            <div class="form-group"><input type="text" class="form-control mcq-opt1" value="${q.opts && q.opts[0] ? q.opts[0] : ''}" placeholder="অপশন ১ / (ক)"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-opt2" value="${q.opts && q.opts[1] ? q.opts[1] : ''}" placeholder="অপশন ২ / (খ)"></div>
+          </div>
+          <div class="row-2">
+            <div class="form-group"><input type="text" class="form-control mcq-opt3" value="${q.opts && q.opts[2] ? q.opts[2] : ''}" placeholder="অপশন ৩ / (গ)"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-opt4" value="${q.opts && q.opts[3] ? q.opts[3] : ''}" placeholder="অপশন ৪ / (ঘ)"></div>
+          </div>
+        </div>
+      `;
+      document.getElementById('btnMCQSubmit').innerText = '💾 আপডেট করুন';
+    } else if (['short', 'descriptive', 'gaps', 'tf'].includes(q.type)) {
+      if (document.getElementById(q.type + 'Header')) document.getElementById(q.type + 'Header').value = q.header || '';
+      let wrapperId = q.type + 'InputsWrapper';
+      let wrap = document.getElementById(wrapperId);
+      let className = q.type === 'short' ? 'short-item' : q.type === 'descriptive' ? 'desc-item' : q.type === 'gaps' ? 'gap-item' : 'tf-item';
+      wrap.innerHTML = '';
+      if (q.items && q.items.length > 0) {
+        q.items.forEach(item => {
+          let div = document.createElement('div');
+          div.className = 'form-group';
+          if (q.type === 'descriptive') {
+            div.innerHTML = `<textarea class="form-control ${className}" rows="2">${item}</textarea>`;
+          } else {
+            div.innerHTML = `<input type="text" class="form-control ${className}" value="${item}">`;
+          }
+          wrap.appendChild(div);
+        });
+      }
+      let btnId = 'btn' + q.type.charAt(0).toUpperCase() + q.type.slice(1) + 'Submit';
+      if (document.getElementById(btnId)) document.getElementById(btnId).innerText = '💾 আপডেট করুন';
+    } else if (q.type === 'match') {
+      document.getElementById('matchHeader').value = q.header || '';
+      let wrap = document.getElementById('matchRowsWrapper');
+      wrap.innerHTML = '';
+      if (q.pairs && q.pairs.length > 0) {
+        q.pairs.forEach(p => {
+          let div = document.createElement('div');
+          div.className = 'row-2';
+          div.style.marginBottom = '4px';
+          div.innerHTML = `
+            <input type="text" class="form-control match-left" value="${p.left || ''}" placeholder="বাম কলাম">
+            <input type="text" class="form-control match-right" value="${p.right || ''}" placeholder="ডান কলাম">
+          `;
+          wrap.appendChild(div);
+        });
+      }
+      document.getElementById('btnMatchSubmit').innerText = '💾 আপডেট করুন';
+    }
+  }
+
+  function updateQuestionContent(id, prop, val) {
+    let q = questionsList.find(item => item.id === id);
+    if(q) {
+      q[prop] = val;
+      saveDraftToLocalStorage();
+    }
+  }
+
+  function deleteQuestion(id) {
+    if(confirm('আপনি কি এই প্রশ্নটি মুছে ফেলতে চান?')) {
+      questionsList = questionsList.filter(q => q.id !== id);
+      renderQuestions();
+      saveDraftToLocalStorage();
+    }
+  }
+
+  function moveQuestion(index, direction) {
+    let newIndex = index + direction;
+    if(newIndex >= 0 && newIndex < questionsList.length) {
+      let temp = questionsList[index];
+      questionsList[index] = questionsList[newIndex];
+      questionsList[newIndex] = temp;
+      renderQuestions();
+      saveDraftToLocalStorage();
+    }
+  }
+</script>
+</body>
+</html>
