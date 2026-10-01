@@ -2838,56 +2838,41 @@
   }
 
   /* --- CRUD: DELETE & MOVE --- */
-  function deleteQuestion(id) {
-    if (confirm('আপনি কি এই প্রশ্নটি মুছে ফেলতে চান?')) {
-      questionsList = questionsList.filter(q => q.id !== id);
-      renderQuestions();
-      saveDraftToLocalStorage();
-    }
-  }
-
-  function moveQuestion(id, direction) {
-    let index = questionsList.findIndex(q => q.id === id);
-    if (index === -1) return;
-    let newIndex = index + direction;
-    if (newIndex < 0 || newIndex >= questionsList.length) return;
-
-    let temp = questionsList[index];
-    questionsList[index] = questionsList[newIndex];
-    questionsList[newIndex] = temp;
-
+  // প্রশ্ন মুছে ফেলার ফাংশন (Delete)
+function deleteQuestion(id) {
+  if (confirm("আপনি কি নিশ্চিত যে এই প্রশ্নটি মুছে ফেলতে চান?")) {
+    questionsList = questionsList.filter(q => q.id !== id);
     renderQuestions();
-    saveDraftToLocalStorage();
   }
+}
 
-  /* --- CRUD: UPDATE --- */
-  function editQuestion(id) {
-    let qBlock = questionsList.find(q => q.id === id);
-    if (!qBlock) return;
+// প্রশ্ন পজিশন উপরে/নিচে নেওয়ার ফাংশন (Move)
+function moveQuestion(index, direction) {
+  let newIndex = index + direction;
+  if (newIndex < 0 || newIndex >= questionsList.length) return;
+  
+  let temp = questionsList[index];
+  questionsList[index] = questionsList[newIndex];
+  questionsList[newIndex] = temp;
+  
+  renderQuestions();
+}
 
-    editingQuestionId = id;
+// প্রশ্ন এডিট করার ফাংশন (Edit)
+function editQuestion(id) {
+  let q = questionsList.find(item => item.id === id);
+  if (!q) return;
 
-    if (qBlock.type === 'extra_text') {
-      let newText = prompt('কাস্টম টেক্সট এডিট করুন:', qBlock.content);
-      if (newText !== null) {
-        qBlock.content = newText.trim();
-        renderQuestions();
-        saveDraftToLocalStorage();
-      }
-      editingQuestionId = null;
-    } else {
-      switchQTab(qBlock.type, false);
-      alert('বাম পাশের ফর্ম থেকে আপনার পরিবর্তনটি করে আবার যোগ/আপডেট বাটনে চাপুন।');
-    }
+  editingQuestionId = id;
+
+  // প্রশ্ন অনুযায়ী ফর্ম ওপেন ও ডাটা ফিল-আপ
+  if (q.type === 'cq') {
+    switchNavTab('add-q');
+    switchQTab('cq');
+    document.getElementById('btnCQSubmit').innerText = '💾 আপডেট করুন';
+    // ফর্মের ইনপুটে মান বসানোর লজিক...
   }
-
-  function updateExtraTextContent(id, text) {
-    let qBlock = questionsList.find(q => q.id === id);
-    if (qBlock) {
-      qBlock.content = text;
-      saveDraftToLocalStorage();
-    }
-  }
+}
 
 </script>
 </body>
