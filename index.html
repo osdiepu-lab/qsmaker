@@ -215,6 +215,14 @@
     @media print {
       html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
       ::-webkit-scrollbar { display: none !important; }
+      /* সকল টেক্সট, ফন্ট এবং কালার ১০০% পিওর ব্ল্যাক নিশ্চিত করার জন্য */
+  body, .paper-page, .paper-page * { 
+    font-family: var(--paper-font) !important;
+    color: #000000 !important;
+    border-color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
       * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
       body, .paper-page, .paper-page * { font-family: var(--paper-font) !important; }
       .sidebar, .app-header, .q-actions, .modal-overlay { display: none !important; }
