@@ -9,7 +9,6 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;600;700&family=Tiro+Bangla&family=Kalpurush&family=Anek+Bangla:wght@400;600;700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
-  <link href="https://fonts.maateen.me/solaiman-lipi/font.css" rel="rel="stylesheet"">
   
   <style>
     @font-face {
@@ -22,9 +21,9 @@
     }
 
     :root {
-      --primary-color: #2563eb;
-      --secondary-color: #475569;
-      --accent-color: #0d9488;
+      --primary-color: #0f172a;
+      --secondary-color: #1e293b;
+      --accent-color: #2563eb;
       --bg-color: #f1f5f9;
       --card-bg: #ffffff;
       --paper-font: 'Tiro Bangla', serif;
@@ -32,9 +31,7 @@
       --paper-line-height: 1.45;
     }
 
-   * {
-  box-sizing: border-box;
-   }
+    * { box-sizing: border-box; }
     body { margin: 0; padding: 0; background-color: var(--bg-color); font-family: var(--paper-font); color: #333; }
 
     /* App Header */
@@ -116,7 +113,6 @@
       background: white; width: 210mm; min-height: 297mm; padding: 12mm 15mm; box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       position: relative; box-sizing: border-box; margin-bottom: 30px; font-family: var(--paper-font) !important;
       font-size: var(--paper-font-size); line-height: var(--paper-line-height);
-      color: #000000 !important;
     }
     .paper-page.landscape { width: 297mm; min-height: 210mm; }
     .paper-page * { font-family: var(--paper-font) !important; }
@@ -212,84 +208,22 @@
     }
 
     /* Print CSS */
-    /* ১০০% গাঢ় কালো এবং স্পষ্ট প্রিন্ট নিশ্চিত করার প্রিন্ট CSS */
-@media print {
-  /* পেজের সাইজ ও মার্জিন */
-  @page {
-    size: A4 portrait;
-    margin: 10mm 12mm 10mm 12mm;
-  }
-  body.print-landscape @page {
-    size: A4 landscape;
-    margin: 10mm 12mm 10mm 12mm;
-  }
-
-  /* ব্যাকগ্রাউন্ড ও স্ক্রোলবার লেআউট রিসেট */
-  html, body {
-    height: auto !important;
-    overflow: visible !important;
-    background: #ffffff !important;
-    color: #000000 !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* প্রিন্ট মোডে সাইডবার, হেডার, বাটন ইত্যাদি হাইড করা */
-  .sidebar, .app-header, .q-actions, .modal-overlay, ::-webkit-scrollbar {
-    display: none !important;
-  }
-
-  /* লেআউট প্রিন্ট ফিট */
-  .main-container, .preview-area {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    max-width: 100% !important;
-    display: block !important;
-    overflow: visible !important;
-  }
-
-  .paper-page {
-    box-shadow: none !important;
-    border: none !important;
-    width: 100% !important;
-    min-height: auto !important;
-    height: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-    background: #ffffff !important;
-  }
-
-  /* প্রতিটি উপাদান ও টেক্সট ১০০% গভীর কালো করা */
-  .paper-page, .paper-page * {
-    color: #000000 !important;
-    border-color: #000000 !important;
-    text-shadow: none !important;
-    filter: none !important;
-    -webkit-filter: none !important;
-  }
-
-  /* কলাম এবং পেজ ব্রেক সেটিংস */
-  .questions-wrapper.column-2 {
-    column-count: 2 !important;
-    column-gap: 20px !important;
-    column-fill: auto !important;
-  }
-
-  .sec-block, .q-item {
-    break-inside: avoid !important;
-    page-break-inside: avoid !important;
-    -webkit-column-break-inside: avoid !important;
-  }
-
-  /* ইডিটেবল বর্ডার ও আউটলাইন হাইড করা */
-  [contenteditable="true"]:hover, 
-  [contenteditable="true"]:focus {
-    outline: none !important;
-    background: transparent !important;
-  }
-}
+    @media print {
+      html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
+      ::-webkit-scrollbar { display: none !important; }
+      * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
+      body, .paper-page, .paper-page * { font-family: var(--paper-font) !important; }
+      .sidebar, .app-header, .q-actions, .modal-overlay { display: none !important; }
+      .main-container { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; display: block !important; }
+      .preview-area { width: 100% !important; display: block !important; overflow: visible !important; }
+      .paper-page { box-shadow: none !important; width: 100% !important; min-height: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
+      
+      .questions-wrapper.column-2 { column-count: 2 !important; column-gap: 20px !important; column-fill: auto !important; }
+      .sec-block, .q-item { break-inside: auto !important; page-break-inside: auto !important; -webkit-column-break-inside: auto !important; }
+      [contenteditable="true"]:hover, [contenteditable="true"]:focus { outline: none !important; background: transparent !important; }
+      @page { size: A4 portrait; margin: 10mm 12mm 10mm 12mm; }
+      body.print-landscape @page { size: A4 landscape; margin: 10mm 12mm 10mm 12mm; }
+    }
   </style>
 </head>
 <body>
@@ -1250,7 +1184,7 @@
 
   let sectionConfigs = {
     cq: { answerCount: 5, markPerItem: 10, header: "নিচের উদ্দীপকগুলো পড়ে যেকোনো [ক]টি প্রশ্নের উত্তর দাও:" },
-    mcq: { answerCount: 15, markPerItem: 1, header: "বহুনির্বাচনী প্রশ্নের উত্তর দাও:" },
+    mcq: { answerCount: 15, markPerItem: 1, header: "সঠিক উত্তরে টিক (✓) চিহ্ন দাও:" },
     short: { answerCount: 5, markPerItem: 2, header: "নিচের প্রশ্নগুলোর সংক্ষিপ্ত উত্তর দাও:" },
     descriptive: { answerCount: 3, markPerItem: 5, header: "নিচের প্রশ্নগুলোর উত্তর দাও:" },
     gaps: { answerCount: 5, markPerItem: 1, header: "উপযুক্ত শব্দ বসিয়ে শূন্যস্থান পূরণ করো:" },
@@ -1279,50 +1213,6 @@
     toggleHeaderElements(false);
   };
 
-  function switchNavTab(tabId) {
-    document.querySelectorAll('.sidebar-nav .nav-tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.sidebar .tab-content').forEach(c => c.classList.remove('active'));
-    
-    if (tabId === 'add-q') {
-      document.querySelectorAll('.sidebar-nav .nav-tab-btn')[0].classList.add('active');
-      document.getElementById('tab-add-q').classList.add('active');
-    } else if (tabId === 'eng-q') {
-      document.querySelectorAll('.sidebar-nav .nav-tab-btn')[1].classList.add('active');
-      document.getElementById('tab-eng-q').classList.add('active');
-    } else if (tabId === 'settings') {
-      document.querySelectorAll('.sidebar-nav .nav-tab-btn')[2].classList.add('active');
-      document.getElementById('tab-settings').classList.add('active');
-    }
-  }
-
-  function switchQTab(type) {
-    const tabs = ['cq', 'mcq', 'short', 'descriptive', 'gaps', 'tf', 'match'];
-    tabs.forEach(t => {
-      let btn = document.getElementById('tabbtn-' + t);
-      let form = document.getElementById('form-' + t);
-      if (btn) btn.classList.remove('active');
-      if (form) form.classList.remove('active');
-    });
-    let curBtn = document.getElementById('tabbtn-' + type);
-    let curForm = document.getElementById('form-' + type);
-    if (curBtn) curBtn.classList.add('active');
-    if (curForm) curForm.classList.add('active');
-  }
-
-  function switchEngQTab(type) {
-    const tabs = ['passage', 'mcq', 'qa', 'tf', 'gaps', 'match', 'writing', 'rearrange'];
-    tabs.forEach(t => {
-      let btn = document.getElementById('tabbtn-eng-' + t);
-      let form = document.getElementById('form-eng-' + t);
-      if (btn) btn.classList.remove('active');
-      if (form) form.classList.remove('active');
-    });
-    let curBtn = document.getElementById('tabbtn-eng-' + type);
-    let curForm = document.getElementById('form-eng-' + type);
-    if (curBtn) curBtn.classList.add('active');
-    if (curForm) curForm.classList.add('active');
-  }
-
   function toggleMcqTypeInputs(selectEl) {
     let card = selectEl.closest('.mcq-block');
     let multiWrap = card.querySelector('.multi-statements-wrap');
@@ -1331,99 +1221,6 @@
     } else {
       multiWrap.style.display = 'none';
     }
-  }
-
-  function toggleEngMatchColC() {
-    let cols = document.getElementById('engMatchCols').value;
-    let colCEls = document.querySelectorAll('#engMatchRowsWrapper .match-col-c');
-    colCEls.forEach(el => {
-      el.style.display = (cols === '3') ? 'block' : 'none';
-    });
-  }
-
-  function addMoreCQBlock() {
-    let container = document.getElementById('cqInputsWrapper');
-    let div = document.createElement('div');
-    div.className = 'q-input-card cq-block';
-    div.innerHTML = `
-      <div style="text-align:right;"><button class="btn btn-danger" style="padding:1px 5px; font-size:10px;" onclick="this.closest('.cq-block').remove()">মুছুন</button></div>
-      <div class="form-group"><label>উদ্দীপক / অনুচ্ছেদ</label><textarea class="form-control cq-stem" rows="3" placeholder="উদ্দীপকটি লিখুন..."></textarea></div>
-      <div class="form-group"><label>উদ্দীপকের ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control cq-img-input" placeholder="https://..."></div>
-      <div class="form-group"><input type="text" class="form-control cq-a" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
-      <div class="form-group"><input type="text" class="form-control cq-b" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
-      <div class="form-group"><input type="text" class="form-control cq-c" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
-      <div class="form-group"><input type="text" class="form-control cq-d" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
-    `;
-    container.appendChild(div);
-  }
-
-  function addMoreMCQBlock() {
-    let container = document.getElementById('mcqInputsWrapper');
-    let div = document.createElement('div');
-    div.className = 'q-input-card mcq-block';
-    div.innerHTML = `
-      <div style="text-align:right;"><button class="btn btn-danger" style="padding:1px 5px; font-size:10px;" onclick="this.closest('.mcq-block').remove()">মুছুন</button></div>
-      <div class="form-group"><label>MCQ টাইপ</label><select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)"><option value="single">সাধারণ MCQ (একপদী)</option><option value="multi">বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option></select></div>
-      <div class="form-group"><label>মূল প্রশ্ন</label><textarea class="form-control mcq-title" rows="2" placeholder="প্রশ্ন লিখুন..."></textarea></div>
-      <div class="form-group"><label>ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control mcq-img-input" placeholder="https://..."></div>
-      <div class="multi-statements-wrap" style="display:none; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
-        <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
-        <div class="form-group"><input type="text" class="form-control mcq-stmt1" placeholder="i. প্রথম তথ্য"></div>
-        <div class="form-group"><input type="text" class="form-control mcq-stmt2" placeholder="ii. দ্বিতীয় তথ্য"></div>
-        <div class="form-group"><input type="text" class="form-control mcq-stmt3" placeholder="iii. তৃতীয় তথ্য"></div>
-      </div>
-      <div class="row-2"><div class="form-group"><input type="text" class="form-control mcq-opt1" placeholder="অপশন ১ / (ক)"></div><div class="form-group"><input type="text" class="form-control mcq-opt2" placeholder="অপশন ২ / (খ)"></div></div>
-      <div class="row-2"><div class="form-group"><input type="text" class="form-control mcq-opt3" placeholder="অপশন ৩ / (গ)"></div><div class="form-group"><input type="text" class="form-control mcq-opt4" placeholder="অপশন ৪ / (ঘ)"></div></div>
-    `;
-    container.appendChild(div);
-  }
-
-  function addMoreEngMcqBlock() {
-    let container = document.getElementById('engMcqInputsWrapper');
-    let div = document.createElement('div');
-    div.className = 'q-input-card eng-mcq-block';
-    div.innerHTML = `
-      <div style="text-align:right;"><button class="btn btn-danger" style="padding:1px 5px; font-size:10px;" onclick="this.closest('.eng-mcq-block').remove()">Delete</button></div>
-      <div class="form-group"><label>Question Title</label><textarea class="form-control eng-mcq-title" rows="2" placeholder="Choose the correct answer..."></textarea></div>
-      <div class="form-group"><label>Image (URL - Optional)</label><input type="text" class="form-control eng-mcq-img-input" placeholder="https://..."></div>
-      <div class="row-2"><div class="form-group"><input type="text" class="form-control eng-mcq-opt1" placeholder="Option A"></div><div class="form-group"><input type="text" class="form-control eng-mcq-opt2" placeholder="Option B"></div></div>
-      <div class="row-2"><div class="form-group"><input type="text" class="form-control eng-mcq-opt3" placeholder="Option C"></div><div class="form-group"><input type="text" class="form-control eng-mcq-opt4" placeholder="Option D"></div></div>
-    `;
-    container.appendChild(div);
-  }
-
-  function addMoreInput(containerId, inputClass, placeholderText, isTextarea = false) {
-    let container = document.getElementById(containerId);
-    let div = document.createElement('div');
-    div.className = 'form-group';
-    div.style.display = 'flex';
-    div.style.gap = '4px';
-
-    let inputHtml = isTextarea 
-      ? `<textarea class="form-control ${inputClass}" rows="2" placeholder="${placeholderText}"></textarea>` 
-      : `<input type="text" class="form-control ${inputClass}" placeholder="${placeholderText}">`;
-
-    div.innerHTML = `${inputHtml}<button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-    container.appendChild(div);
-  }
-
-  function addMatchRow() {
-    let container = document.getElementById('matchRowsWrapper');
-    let div = document.createElement('div');
-    div.className = 'row-2';
-    div.style.marginBottom = '4px';
-    div.innerHTML = `<input type="text" class="form-control match-left" placeholder="বাম কলাম"><input type="text" class="form-control match-right" placeholder="ডান কলাম"><button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-    container.appendChild(div);
-  }
-
-  function addEngMatchRow() {
-    let container = document.getElementById('engMatchRowsWrapper');
-    let cols = document.getElementById('engMatchCols').value;
-    let div = document.createElement('div');
-    div.className = 'row-3 eng-match-row';
-    div.style.marginBottom = '4px';
-    div.innerHTML = `<input type="text" class="form-control match-col-a" placeholder="Column A"><input type="text" class="form-control match-col-b" placeholder="Column B"><input type="text" class="form-control match-col-c" placeholder="Column C" style="${cols === '3' ? '' : 'display:none;'}"><button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-    container.appendChild(div);
   }
 
   function openSymbolModal() { document.getElementById('symbolModal').style.display = 'flex'; }
@@ -1527,809 +1324,6 @@
     saveDraftToLocalStorage();
   }
 
-  /* ADD GENERAL QUESTIONS (CQ, MCQ, Short, Desc, Gaps, TF, Match) */
-  function addQuestion(type) {
-    if (type === 'cq') {
-      sectionConfigs.cq.header = document.getElementById('cqHeader').value;
-      sectionConfigs.cq.answerCount = document.getElementById('cqAnswerCount').value;
-      sectionConfigs.cq.markPerItem = document.getElementById('cqMarkPerItem').value;
-
-      let blocks = document.querySelectorAll('#cqInputsWrapper .cq-block');
-      let items = [];
-      blocks.forEach(b => {
-        let stem = b.querySelector('.cq-stem').value.trim();
-        let img = b.querySelector('.cq-img-input').value.trim();
-        let a = b.querySelector('.cq-a').value.trim();
-        let bb = b.querySelector('.cq-b').value.trim();
-        let c = b.querySelector('.cq-c').value.trim();
-        let d = b.querySelector('.cq-d').value.trim();
-        if (stem || a || bb || c || d) {
-          items.push({ stem, img, a, b: bb, c, d });
-        }
-      });
-
-      if (items.length === 0) return alert('কমপক্ষে একটি প্রশ্ন পূর্ণাঙ্গভাবে পূরণ করুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'cq', items: items });
-
-    } else if (type === 'mcq') {
-      sectionConfigs.mcq.header = document.getElementById('mcqHeader').value;
-      sectionConfigs.mcq.answerCount = document.getElementById('mcqAnswerCount').value;
-      sectionConfigs.mcq.markPerItem = document.getElementById('mcqMarkPerItem').value;
-
-      let blocks = document.querySelectorAll('#mcqInputsWrapper .mcq-block');
-      let items = [];
-      blocks.forEach(b => {
-        let mcqType = b.querySelector('.mcq-type-select').value;
-        let title = b.querySelector('.mcq-title').value.trim();
-        let img = b.querySelector('.mcq-img-input').value.trim();
-        let stmt1 = b.querySelector('.mcq-stmt1') ? b.querySelector('.mcq-stmt1').value.trim() : '';
-        let stmt2 = b.querySelector('.mcq-stmt2') ? b.querySelector('.mcq-stmt2').value.trim() : '';
-        let stmt3 = b.querySelector('.mcq-stmt3') ? b.querySelector('.mcq-stmt3').value.trim() : '';
-        let opt1 = b.querySelector('.mcq-opt1').value.trim();
-        let opt2 = b.querySelector('.mcq-opt2').value.trim();
-        let opt3 = b.querySelector('.mcq-opt3').value.trim();
-        let opt4 = b.querySelector('.mcq-opt4').value.trim();
-
-        if (title || opt1) {
-          items.push({ mcqType, title, img, stmts: [stmt1, stmt2, stmt3], options: [opt1, opt2, opt3, opt4] });
-        }
-      });
-
-      if (items.length === 0) return alert('কমপক্ষে একটি MCQ প্রশ্ন পূরণ করুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'mcq', items: items });
-
-    } else if (type === 'short') {
-      sectionConfigs.short.header = document.getElementById('shortHeader').value;
-      sectionConfigs.short.answerCount = document.getElementById('shortAnswerCount').value;
-      sectionConfigs.short.markPerItem = document.getElementById('shortMarkPerItem').value;
-
-      let inputs = document.querySelectorAll('#shortInputsWrapper .short-item');
-      let items = [];
-      inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-      if (items.length === 0) return alert('কমপক্ষে একটি সংক্ষিপ্ত প্রশ্ন লিখুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'short', items: items });
-
-    } else if (type === 'descriptive') {
-      sectionConfigs.descriptive.header = document.getElementById('descriptiveHeader').value;
-      sectionConfigs.descriptive.answerCount = document.getElementById('descAnswerCount').value;
-      sectionConfigs.descriptive.markPerItem = document.getElementById('descMarkPerItem').value;
-
-      let inputs = document.querySelectorAll('#descInputsWrapper .desc-item');
-      let items = [];
-      inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-      if (items.length === 0) return alert('কমপক্ষে একটি বর্ণনামূলক প্রশ্ন লিখুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'descriptive', items: items });
-
-    } else if (type === 'gaps') {
-      sectionConfigs.gaps.header = document.getElementById('gapsHeader').value;
-      sectionConfigs.gaps.answerCount = document.getElementById('gapsAnswerCount').value;
-      sectionConfigs.gaps.markPerItem = document.getElementById('gapsMarkPerItem').value;
-
-      let inputs = document.querySelectorAll('#gapsInputsWrapper .gap-item');
-      let items = [];
-      inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-      if (items.length === 0) return alert('কমপক্ষে একটি বাক্য লিখুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'gaps', items: items });
-
-    } else if (type === 'tf') {
-      sectionConfigs.tf.header = document.getElementById('tfHeader').value;
-      sectionConfigs.tf.answerCount = document.getElementById('tfAnswerCount').value;
-      sectionConfigs.tf.markPerItem = document.getElementById('tfMarkPerItem').value;
-
-      let inputs = document.querySelectorAll('#tfInputsWrapper .tf-item');
-      let items = [];
-      inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-      if (items.length === 0) return alert('কমপক্ষে একটি বাক্য লিখুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'tf', items: items });
-
-    } else if (type === 'match') {
-      sectionConfigs.match.header = document.getElementById('matchHeader').value;
-      sectionConfigs.match.answerCount = document.getElementById('matchAnswerCount').value;
-      sectionConfigs.match.markPerItem = document.getElementById('matchMarkPerItem').value;
-
-      let lefts = document.querySelectorAll('#matchRowsWrapper .match-left');
-      let rights = document.querySelectorAll('#matchRowsWrapper .match-right');
-      let items = [];
-      lefts.forEach((l, idx) => {
-        let leftVal = l.value.trim();
-        let rightVal = rights[idx] ? rights[idx].value.trim() : '';
-        if (leftVal || rightVal) items.push({ left: leftVal, right: rightVal });
-      });
-
-      if (items.length === 0) return alert('কমপক্ষে একটি মিলকরণ সারি লিখুন!');
-      questionsList.push({ id: 'q_' + Date.now(), type: 'match', items: items });
-    }
-
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  /* ADD ENGLISH QUESTIONS FUNCTIONS */
-  function addEngPassage() {
-    let header = document.getElementById('engPassageHeader').value.trim();
-    let text = document.getElementById('engPassageText').value.trim();
-    if (!text) return alert('Enter passage text!');
-
-    questionsList.push({
-      id: 'q_' + Date.now(),
-      type: 'eng_passage',
-      header: header,
-      text: text
-    });
-
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngMcq() {
-    sectionConfigs.eng_mcq.header = document.getElementById('engMcqHeader').value;
-    sectionConfigs.eng_mcq.answerCount = document.getElementById('engMcqCount').value;
-    sectionConfigs.eng_mcq.markPerItem = document.getElementById('engMcqMark').value;
-
-    let blocks = document.querySelectorAll('#engMcqInputsWrapper .eng-mcq-block');
-    let items = [];
-    blocks.forEach(b => {
-      let title = b.querySelector('.eng-mcq-title').value.trim();
-      let img = b.querySelector('.eng-mcq-img-input').value.trim();
-      let opt1 = b.querySelector('.eng-mcq-opt1').value.trim();
-      let opt2 = b.querySelector('.eng-mcq-opt2').value.trim();
-      let opt3 = b.querySelector('.eng-mcq-opt3').value.trim();
-      let opt4 = b.querySelector('.eng-mcq-opt4').value.trim();
-
-      if (title || opt1) {
-        items.push({ title, img, options: [opt1, opt2, opt3, opt4] });
-      }
-    });
-
-    if (items.length === 0) return alert('Add at least one English MCQ question!');
-    questionsList.push({ id: 'q_' + Date.now(), type: 'eng_mcq', items: items });
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngQA() {
-    sectionConfigs.eng_qa.header = document.getElementById('engQaHeader').value;
-    sectionConfigs.eng_qa.answerCount = document.getElementById('engQaCount').value;
-    sectionConfigs.eng_qa.markPerItem = document.getElementById('engQaMark').value;
-
-    let inputs = document.querySelectorAll('#engQaWrapper .eng-qa-item');
-    let items = [];
-    inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-    if (items.length === 0) return alert('Enter at least one question!');
-
-    questionsList.push({ id: 'q_' + Date.now(), type: 'eng_qa', items: items });
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngTF() {
-    sectionConfigs.eng_tf.header = document.getElementById('engTfHeader').value;
-    sectionConfigs.eng_tf.answerCount = document.getElementById('engTfCount').value;
-    sectionConfigs.eng_tf.markPerItem = document.getElementById('engTfMark').value;
-
-    let inputs = document.querySelectorAll('#engTfWrapper .eng-tf-item');
-    let items = [];
-    inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-    if (items.length === 0) return alert('Enter at least one statement!');
-
-    questionsList.push({ id: 'q_' + Date.now(), type: 'eng_tf', items: items });
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngGaps() {
-    sectionConfigs.eng_gaps.header = document.getElementById('engGapsHeader').value;
-    sectionConfigs.eng_gaps.answerCount = document.getElementById('engGapsCount').value;
-    sectionConfigs.eng_gaps.markPerItem = document.getElementById('engGapsMark').value;
-
-    let clues = document.getElementById('engGapsClues').value.trim();
-    let inputs = document.querySelectorAll('#engGapsWrapper .eng-gap-item');
-    let items = [];
-    inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-    if (items.length === 0) return alert('Enter at least one gap sentence!');
-
-    questionsList.push({ id: 'q_' + Date.now(), type: 'eng_gaps', clues: clues, items: items });
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngMatch() {
-    sectionConfigs.eng_match.header = document.getElementById('engMatchHeader').value;
-    sectionConfigs.eng_match.answerCount = document.getElementById('engMatchCount').value;
-    sectionConfigs.eng_match.markPerItem = document.getElementById('engMatchMark').value;
-
-    let colMode = document.getElementById('engMatchCols').value;
-    let rows = document.querySelectorAll('#engMatchRowsWrapper .eng-match-row');
-    let items = [];
-    rows.forEach(r => {
-      let a = r.querySelector('.match-col-a').value.trim();
-      let b = r.querySelector('.match-col-b').value.trim();
-      let c = r.querySelector('.match-col-c') ? r.querySelector('.match-col-c').value.trim() : '';
-      if (a || b || c) items.push({ colA: a, colB: b, colC: c });
-    });
-
-    if (items.length === 0) return alert('Enter at least one matching row!');
-    questionsList.push({ id: 'q_' + Date.now(), type: 'eng_match', colMode: colMode, items: items });
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngWriting() {
-    let header = document.getElementById('engWritingHeader').value.trim();
-    let category = document.getElementById('engWritingType').value;
-    let mark = document.getElementById('engWritingMark').value;
-    let title = document.getElementById('engWritingTitle').value.trim();
-    let prompt = document.getElementById('engWritingPrompt').value.trim();
-
-    if (!title) return alert('Enter topic/title for writing item!');
-
-    questionsList.push({
-      id: 'q_' + Date.now(),
-      type: 'eng_writing',
-      header: header,
-      category: category,
-      mark: mark,
-      title: title,
-      prompt: prompt
-    });
-
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function addEngRearrange() {
-    sectionConfigs.eng_rearrange.header = document.getElementById('engRearrangeHeader').value;
-    sectionConfigs.eng_rearrange.answerCount = document.getElementById('engRearrangeCount').value;
-    sectionConfigs.eng_rearrange.markPerItem = document.getElementById('engRearrangeMark').value;
-
-    let inputs = document.querySelectorAll('#engRearrangeWrapper .eng-rearrange-item');
-    let items = [];
-    inputs.forEach(inp => { if (inp.value.trim()) items.push(inp.value.trim()); });
-    if (items.length === 0) return alert('Enter at least one sentence!');
-
-    questionsList.push({ id: 'q_' + Date.now(), type: 'eng_rearrange', items: items });
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  /* RENDER QUESTIONS & NUMBERS FORMATTING */
-  function renderQuestions() {
-    let container = document.getElementById('questionsContainer');
-    container.innerHTML = '';
-
-    let mainStyle = document.getElementById('mainNumStyle').value;
-    let subStyle = document.getElementById('subNumStyle').value;
-
-    let mainCounter = 1;
-
-    questionsList.forEach((q, index) => {
-      let qDiv = document.createElement('div');
-      qDiv.className = 'q-item';
-      qDiv.setAttribute('data-id', q.id);
-
-      // Action Buttons overlay (Edit, Move, Delete)
-      let actionsHtml = `
-        <div class="q-actions">
-          <button class="btn-edit" onclick="editQuestion('${q.id}')">✏️ এডিট</button>
-          <button class="btn-move" onclick="moveQuestion(${index}, -1)">▲</button>
-          <button class="btn-move" onclick="moveQuestion(${index}, 1)">▼</button>
-          <button class="btn-danger" onclick="deleteQuestion('${q.id}')">✕</button>
-        </div>
-      `;
-
-      if (q.type === 'extra_text') {
-        qDiv.innerHTML = `${actionsHtml}<div contenteditable="true" onblur="updateExtraText('${q.id}', this.innerText)">${q.content}</div>`;
-        container.appendChild(qDiv);
-        return;
-      }
-
-      if (q.type === 'image_block') {
-        let alignStyle = q.align === 'center' ? 'margin: 0 auto;' : q.align === 'right' ? 'margin-left: auto;' : 'margin-right: auto;';
-        qDiv.innerHTML = `
-          ${actionsHtml}
-          <div class="custom-img-block" style="text-align:${q.align};">
-            <img src="${q.src}" style="width:${q.width}; ${alignStyle}">
-            ${q.caption ? `<div class="custom-img-caption" contenteditable="true">${q.caption}</div>` : ''}
-          </div>
-        `;
-        container.appendChild(qDiv);
-        return;
-      }
-
-      if (q.type === 'eng_passage') {
-        qDiv.innerHTML = `
-          ${actionsHtml}
-          <div class="passage-box">
-            ${q.header ? `<div style="font-weight:bold; margin-bottom:4px;" contenteditable="true">${q.header}</div>` : ''}
-            <div style="text-align:justify;" contenteditable="true">${q.text}</div>
-          </div>
-        `;
-        container.appendChild(qDiv);
-        return;
-      }
-
-      if (q.type === 'eng_writing') {
-        let mainNumStr = formatNumber(mainCounter, mainStyle);
-        mainCounter++;
-        qDiv.innerHTML = `
-          ${actionsHtml}
-          <div class="q-group-header">
-            <div class="q-group-title">
-              <span>${mainNumStr}. </span>
-              <span contenteditable="true">${q.header ? q.header + ' ' : ''}${q.title}</span>
-            </div>
-            <div style="font-weight:bold; font-size:12px;">[${q.mark}]</div>
-          </div>
-          ${q.prompt ? `<div style="font-size:12px; margin-top:3px; text-align:justify;" contenteditable="true">${q.prompt}</div>` : ''}
-        `;
-        container.appendChild(qDiv);
-        return;
-      }
-
-      // Standard Question Types (CQ, MCQ, Short, etc.)
-      let cfg = sectionConfigs[q.type] || { answerCount: 5, markPerItem: 1, header: "" };
-      let mainNumStr = formatNumber(mainCounter, mainStyle);
-      mainCounter++;
-
-      let totalMark = (parseFloat(cfg.answerCount) || 1) * (parseFloat(cfg.markPerItem) || 1);
-      let headerText = cfg.header.replace(/\[ক\]/g, formatNumber(cfg.answerCount, 'bn_num')).replace(/\[x\]/g, cfg.answerCount);
-      let markText = `[${formatNumber(cfg.answerCount, 'bn_num')} × ${formatNumber(cfg.markPerItem, 'bn_num')} = ${formatNumber(totalMark, 'bn_num')}]`;
-      
-      if (q.type.startsWith('eng_')) {
-        markText = `[${cfg.answerCount} × ${cfg.markPerItem} = ${totalMark}]`;
-      }
-
-      let innerHtml = `${actionsHtml}
-        <div class="q-group-header">
-          <div class="q-group-title">
-            <span>${mainNumStr}. </span>
-            <span contenteditable="true" onblur="updateSectionHeader('${q.type}', this.innerText)">${headerText}</span>
-          </div>
-          <div style="font-weight:bold; font-size:12px; font-family:inherit;">${markText}</div>
-        </div>
-      `;
-
-      if (q.type === 'cq') {
-        q.items.forEach((item, iIndex) => {
-          let itemNum = formatNumber(iIndex + 1, 'bn_num');
-          innerHtml += `<div style="margin-bottom:8px;">`;
-          if (item.stem) innerHtml += `<div class="cq-stem-box" contenteditable="true">${itemNum}. ${item.stem}</div>`;
-          if (item.img) innerHtml += `<img src="${item.img}" class="cq-img">`;
-          
-          let subLabels = getSubLabels(subStyle);
-          if (item.a) innerHtml += `<div class="cq-sub-q"><span contenteditable="true">${subLabels[0]}) ${item.a}</span><span style="font-weight:bold;">১</span></div>`;
-          if (item.b) innerHtml += `<div class="cq-sub-q"><span contenteditable="true">${subLabels[1]}) ${item.b}</span><span style="font-weight:bold;">২</span></div>`;
-          if (item.c) innerHtml += `<div class="cq-sub-q"><span contenteditable="true">${subLabels[2]}) ${item.c}</span><span style="font-weight:bold;">৩</span></div>`;
-          if (item.d) innerHtml += `<div class="cq-sub-q"><span contenteditable="true">${subLabels[3]}) ${item.d}</span><span style="font-weight:bold;">৪</span></div>`;
-          innerHtml += `</div>`;
-        });
-
-      } else if (q.type === 'mcq' || q.type === 'eng_mcq') {
-        q.items.forEach((item, iIndex) => {
-          let itemNum = formatNumber(iIndex + 1, q.type === 'eng_mcq' ? 'en_num' : 'bn_num');
-          innerHtml += `<div style="margin-bottom:6px;">`;
-          innerHtml += `<div contenteditable="true"><strong>${itemNum}.</strong> ${item.title}</div>`;
-          if (item.img) innerHtml += `<img src="${item.img}" class="mcq-img">`;
-
-          if (item.mcqType === 'multi' && item.stmts) {
-            innerHtml += `<div class="mcq-statements">`;
-            if (item.stmts[0]) innerHtml += `<div>i. ${item.stmts[0]}</div>`;
-            if (item.stmts[1]) innerHtml += `<div>ii. ${item.stmts[1]}</div>`;
-            if (item.stmts[2]) innerHtml += `<div>iii. ${item.stmts[2]}</div>`;
-            innerHtml += `</div>`;
-          }
-
-          let subLabels = getSubLabels(q.type === 'eng_mcq' ? 'en_alpha' : subStyle);
-          innerHtml += `<div class="mcq-options">`;
-          if (item.options[0]) innerHtml += `<div contenteditable="true">(${subLabels[0]}) ${item.options[0]}</div>`;
-          if (item.options[1]) innerHtml += `<div contenteditable="true">(${subLabels[1]}) ${item.options[1]}</div>`;
-          if (item.options[2]) innerHtml += `<div contenteditable="true">(${subLabels[2]}) ${item.options[2]}</div>`;
-          if (item.options[3]) innerHtml += `<div contenteditable="true">(${subLabels[3]}) ${item.options[3]}</div>`;
-          innerHtml += `</div></div>`;
-        });
-
-      } else if (q.type === 'short' || q.type === 'descriptive' || q.type === 'tf' || q.type === 'eng_qa' || q.type === 'eng_tf') {
-        let isEng = q.type.startsWith('eng_');
-        let subLabels = getSubLabels(isEng ? 'en_alpha' : subStyle);
-        q.items.forEach((itemText, iIndex) => {
-          let label = subLabels[iIndex % subLabels.length];
-          innerHtml += `<div style="margin-bottom:3px; text-align:justify;" contenteditable="true"><strong>${label})</strong> ${itemText}</div>`;
-        });
-
-      } else if (q.type === 'gaps' || q.type === 'eng_gaps') {
-        if (q.clues) {
-          innerHtml += `<div class="clues-box" contenteditable="true">${q.clues}</div>`;
-        }
-        let isEng = q.type === 'eng_gaps';
-        let subLabels = getSubLabels(isEng ? 'en_alpha' : subStyle);
-        q.items.forEach((itemText, iIndex) => {
-          let label = subLabels[iIndex % subLabels.length];
-          innerHtml += `<div style="margin-bottom:3px; text-align:justify;" contenteditable="true"><strong>${label})</strong> ${itemText}</div>`;
-        });
-
-      } else if (q.type === 'match' || q.type === 'eng_match') {
-        let is3Col = q.colMode === '3';
-        innerHtml += `<table class="matching-table">`;
-        q.items.forEach((mItem) => {
-          innerHtml += `<tr>`;
-          innerHtml += `<td contenteditable="true">${mItem.left || mItem.colA}</td>`;
-          innerHtml += `<td contenteditable="true">${mItem.right || mItem.colB}</td>`;
-          if (is3Col) innerHtml += `<td contenteditable="true">${mItem.colC}</td>`;
-          innerHtml += `</tr>`;
-        });
-        innerHtml += `</table>`;
-
-      } else if (q.type === 'eng_rearrange') {
-        let subLabels = getSubLabels('en_alpha');
-        q.items.forEach((itemText, iIndex) => {
-          let label = subLabels[iIndex % subLabels.length];
-          innerHtml += `<div style="margin-bottom:3px;" contenteditable="true"><strong>(${label})</strong> ${itemText}</div>`;
-        });
-      }
-
-      qDiv.innerHTML = innerHtml;
-      container.appendChild(qDiv);
-    });
-  }
-
-  /* HELPERS & FORMATTING */
-  function formatNumber(num, style) {
-    let bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
-    let romanDigits = ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii','xiv','xv'];
-    let bnAlpha = ['ক','খ','গ','ঘ','ঙ','চ','ছ','জ','ঝ','ঞ','ট','ঠ','ড','ঢ','ণ'];
-
-    let str = String(num);
-
-    if (style === 'bn_num') {
-      return str.replace(/\d/g, d => bnDigits[d]);
-    } else if (style === 'roman') {
-      let val = parseInt(num);
-      return romanDigits[val - 1] || val;
-    } else if (style === 'bn_alpha') {
-      let val = parseInt(num);
-      return bnAlpha[val - 1] || val;
-    }
-    return str;
-  }
-
-  function getSubLabels(style) {
-    if (style === 'bn_alpha') return ['ক','খ','গ','ঘ','ঙ','চ','ছ','জ','ঝ','ঞ'];
-    if (style === 'en_alpha') return ['a','b','c','d','e','f','g','h','i','j'];
-    if (style === 'bn_num') return ['১','২','৩','৪','৫','৬','৭','৮','৯','১০'];
-    return ['a','b','c','d','e','f','g','h','i','j'];
-  }
-
-  function moveQuestion(index, direction) {
-    let target = index + direction;
-    if (target < 0 || target >= questionsList.length) return;
-    let temp = questionsList[index];
-    questionsList[index] = questionsList[target];
-    questionsList[target] = temp;
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function deleteQuestion(id) {
-    if (!confirm('আপনি কি এই প্রশ্নটি মুছে ফেলতে চান?')) return;
-    questionsList = questionsList.filter(q => q.id !== id);
-    renderQuestions();
-    saveDraftToLocalStorage();
-  }
-
-  function editQuestion(id) {
-    let q = questionsList.find(item => item.id === id);
-    if (!q) return;
-
-    editingQuestionId = id;
-
-    if (q.type === 'extra_text') {
-      document.getElementById('extraTextContent').value = q.content;
-      document.getElementById('extraTextModal').style.display = 'flex';
-      deleteQuestion(id);
-      return;
-    }
-
-    if (q.type === 'eng_passage') {
-      switchNavTab('eng-q');
-      switchEngQTab('passage');
-      document.getElementById('engPassageHeader').value = q.header || '';
-      document.getElementById('engPassageText').value = q.text || '';
-      deleteQuestion(id);
-      return;
-    }
-
-    if (q.type === 'eng_writing') {
-      switchNavTab('eng-q');
-      switchEngQTab('writing');
-      document.getElementById('engWritingHeader').value = q.header || '';
-      document.getElementById('engWritingType').value = q.category || 'Paragraph';
-      document.getElementById('engWritingMark').value = q.mark || 10;
-      document.getElementById('engWritingTitle').value = q.title || '';
-      document.getElementById('engWritingPrompt').value = q.prompt || '';
-      deleteQuestion(id);
-      return;
-    }
-
-    if (['cq', 'mcq', 'short', 'descriptive', 'gaps', 'tf', 'match'].includes(q.type)) {
-      switchNavTab('add-q');
-      switchQTab(q.type);
-      populateFormForEdit(q);
-      deleteQuestion(id);
-      return;
-    }
-
-    if (['eng_mcq', 'eng_qa', 'eng_tf', 'eng_gaps', 'eng_match', 'eng_rearrange'].includes(q.type)) {
-      switchNavTab('eng-q');
-      let subTab = q.type.replace('eng_', '');
-      switchEngQTab(subTab);
-      populateEngFormForEdit(q);
-      deleteQuestion(id);
-      return;
-    }
-  }
-
-  function populateFormForEdit(q) {
-    if (q.type === 'cq') {
-      let wrapper = document.getElementById('cqInputsWrapper');
-      wrapper.innerHTML = '';
-      q.items.forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'q-input-card cq-block';
-        div.innerHTML = `
-          <div style="text-align:right;"><button class="btn btn-danger" style="padding:1px 5px; font-size:10px;" onclick="this.closest('.cq-block').remove()">মুছুন</button></div>
-          <div class="form-group"><label>উদ্দীপক / অনুচ্ছেদ</label><textarea class="form-control cq-stem" rows="3">${item.stem || ''}</textarea></div>
-          <div class="form-group"><label>উদ্দীপকের ছবি (URL)</label><input type="text" class="form-control cq-img-input" value="${item.img || ''}"></div>
-          <div class="form-group"><input type="text" class="form-control cq-a" value="${item.a || ''}" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
-          <div class="form-group"><input type="text" class="form-control cq-b" value="${item.b || ''}" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
-          <div class="form-group"><input type="text" class="form-control cq-c" value="${item.c || ''}" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
-          <div class="form-group"><input type="text" class="form-control cq-d" value="${item.d || ''}" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
-        `;
-        wrapper.appendChild(div);
-      });
-    } else if (q.type === 'mcq') {
-      let wrapper = document.getElementById('mcqInputsWrapper');
-      wrapper.innerHTML = '';
-      q.items.forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'q-input-card mcq-block';
-        let isMulti = item.mcqType === 'multi';
-        div.innerHTML = `
-          <div style="text-align:right;"><button class="btn btn-danger" style="padding:1px 5px; font-size:10px;" onclick="this.closest('.mcq-block').remove()">মুছুন</button></div>
-          <div class="form-group"><label>MCQ টাইপ</label><select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)"><option value="single" ${!isMulti ? 'selected' : ''}>সাধারণ MCQ (একপদী)</option><option value="multi" ${isMulti ? 'selected' : ''}>বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option></select></div>
-          <div class="form-group"><label>মূল প্রশ্ন</label><textarea class="form-control mcq-title" rows="2">${item.title || ''}</textarea></div>
-          <div class="form-group"><label>ছবি (URL)</label><input type="text" class="form-control mcq-img-input" value="${item.img || ''}"></div>
-          <div class="multi-statements-wrap" style="display:${isMulti ? 'block' : 'none'}; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
-            <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
-            <div class="form-group"><input type="text" class="form-control mcq-stmt1" value="${item.stmts ? item.stmts[0] || '' : ''}"></div>
-            <div class="form-group"><input type="text" class="form-control mcq-stmt2" value="${item.stmts ? item.stmts[1] || '' : ''}"></div>
-            <div class="form-group"><input type="text" class="form-control mcq-stmt3" value="${item.stmts ? item.stmts[2] || '' : ''}"></div>
-          </div>
-          <div class="row-2"><div class="form-group"><input type="text" class="form-control mcq-opt1" value="${item.options[0] || ''}"></div><div class="form-group"><input type="text" class="form-control mcq-opt2" value="${item.options[1] || ''}"></div></div>
-          <div class="row-2"><div class="form-group"><input type="text" class="form-control mcq-opt3" value="${item.options[2] || ''}"></div><div class="form-group"><input type="text" class="form-control mcq-opt4" value="${item.options[3] || ''}"></div></div>
-        `;
-        wrapper.appendChild(div);
-      });
-    } else if (['short', 'descriptive', 'gaps', 'tf'].includes(q.type)) {
-      let map = { short: ['shortInputsWrapper', 'short-item'], descriptive: ['descInputsWrapper', 'desc-item'], gaps: ['gapsInputsWrapper', 'gap-item'], tf: ['tfInputsWrapper', 'tf-item'] };
-      let [wrapperId, itemClass] = map[q.type];
-      let wrapper = document.getElementById(wrapperId);
-      wrapper.innerHTML = '';
-      q.items.forEach(val => {
-        let div = document.createElement('div');
-        div.className = 'form-group';
-        div.style.display = 'flex';
-        div.style.gap = '4px';
-        let isTextarea = q.type === 'descriptive';
-        let inputHtml = isTextarea ? `<textarea class="form-control ${itemClass}" rows="2">${val}</textarea>` : `<input type="text" class="form-control ${itemClass}" value="${val}">`;
-        div.innerHTML = `${inputHtml}<button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-        wrapper.appendChild(div);
-      });
-    } else if (q.type === 'match') {
-      let wrapper = document.getElementById('matchRowsWrapper');
-      wrapper.innerHTML = '';
-      q.items.forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'row-2';
-        div.style.marginBottom = '4px';
-        div.innerHTML = `<input type="text" class="form-control match-left" value="${item.left || ''}"><input type="text" class="form-control match-right" value="${item.right || ''}"><button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-        wrapper.appendChild(div);
-      });
-    }
-  }
-
-  function populateEngFormForEdit(q) {
-    if (q.type === 'eng_mcq') {
-      let wrapper = document.getElementById('engMcqInputsWrapper');
-      wrapper.innerHTML = '';
-      q.items.forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'q-input-card eng-mcq-block';
-        div.innerHTML = `
-          <div style="text-align:right;"><button class="btn btn-danger" style="padding:1px 5px; font-size:10px;" onclick="this.closest('.eng-mcq-block').remove()">Delete</button></div>
-          <div class="form-group"><label>Question Title</label><textarea class="form-control eng-mcq-title" rows="2">${item.title || ''}</textarea></div>
-          <div class="form-group"><label>Image (URL)</label><input type="text" class="form-control eng-mcq-img-input" value="${item.img || ''}"></div>
-          <div class="row-2"><div class="form-group"><input type="text" class="form-control eng-mcq-opt1" value="${item.options[0] || ''}"></div><div class="form-group"><input type="text" class="form-control eng-mcq-opt2" value="${item.options[1] || ''}"></div></div>
-          <div class="row-2"><div class="form-group"><input type="text" class="form-control eng-mcq-opt3" value="${item.options[2] || ''}"></div><div class="form-group"><input type="text" class="form-control eng-mcq-opt4" value="${item.options[3] || ''}"></div></div>
-        `;
-        wrapper.appendChild(div);
-      });
-    } else if (['eng_qa', 'eng_tf', 'eng_gaps', 'eng_rearrange'].includes(q.type)) {
-      let map = { eng_qa: ['engQaWrapper', 'eng-qa-item'], eng_tf: ['engTfWrapper', 'eng-tf-item'], eng_gaps: ['engGapsWrapper', 'eng-gap-item'], eng_rearrange: ['engRearrangeWrapper', 'eng-rearrange-item'] };
-      let [wrapperId, itemClass] = map[q.type];
-      let wrapper = document.getElementById(wrapperId);
-      wrapper.innerHTML = '';
-      if (q.type === 'eng_gaps' && q.clues) {
-        document.getElementById('engGapsClues').value = q.clues;
-      }
-      q.items.forEach(val => {
-        let div = document.createElement('div');
-        div.className = 'form-group';
-        div.style.display = 'flex';
-        div.style.gap = '4px';
-        div.innerHTML = `<input type="text" class="form-control ${itemClass}" value="${val}"><button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-        wrapper.appendChild(div);
-      });
-    } else if (q.type === 'eng_match') {
-      let wrapper = document.getElementById('engMatchRowsWrapper');
-      wrapper.innerHTML = '';
-      document.getElementById('engMatchCols').value = q.colMode || '2';
-      q.items.forEach(item => {
-        let div = document.createElement('div');
-        div.className = 'row-3 eng-match-row';
-        div.style.marginBottom = '4px';
-        div.innerHTML = `<input type="text" class="form-control match-col-a" value="${item.colA || ''}"><input type="text" class="form-control match-col-b" value="${item.colB || ''}"><input type="text" class="form-control match-col-c" value="${item.colC || ''}" style="${q.colMode === '3' ? '' : 'display:none;'}"><button class="btn btn-danger" style="padding:0 6px;" onclick="this.parentElement.remove()">✕</button>`;
-        wrapper.appendChild(div);
-      });
-    }
-  }
-
-  function updateExtraText(id, text) {
-    let q = questionsList.find(item => item.id === id);
-    if (q) {
-      q.content = text;
-      saveDraftToLocalStorage();
-    }
-  }
-
-  function updateSectionHeader(type, text) {
-    if (sectionConfigs[type]) {
-      sectionConfigs[type].header = text;
-      saveDraftToLocalStorage();
-    }
-  }
-
-  /* HEADER & SETTINGS UPDATERS */
-  function updateHeaderData(shouldSave = true) {
-    let school = document.getElementById('schoolNameInput').value;
-    let addr = document.getElementById('schoolAddressInput').value;
-    let phone = document.getElementById('schoolPhoneInput').value;
-    let logo = document.getElementById('logoUrl').value;
-    let exam = document.getElementById('examSelect').value;
-    let year = document.getElementById('examYear').value;
-    let cls = document.getElementById('classSelect').value;
-    let sub = document.getElementById('subjectSelect').value;
-    let code = document.getElementById('subCodeInput').value;
-    let setCode = document.getElementById('setCodeInput').value;
-    let time = document.getElementById('timeInput').value;
-    let marks = document.getElementById('marksInput').value;
-
-    document.getElementById('displaySchoolName').innerText = school;
-    document.getElementById('displaySchoolAddress').innerText = addr;
-    document.getElementById('displaySchoolPhone').innerText = phone;
-    document.getElementById('displayExamName').innerText = exam;
-    document.getElementById('displayExamYear').innerText = year;
-    document.getElementById('displayClass').innerText = cls;
-    document.getElementById('displaySubject').innerText = sub;
-    document.getElementById('displaySubCode').innerText = code;
-    document.getElementById('displaySetCode').innerText = setCode;
-    document.getElementById('displayTime').innerText = time;
-    document.getElementById('displayMarks').innerText = marks;
-
-    let logoImg = document.getElementById('displayLogo');
-    if (logo) {
-      logoImg.src = logo;
-      logoImg.style.display = 'block';
-    } else {
-      logoImg.style.display = 'none';
-    }
-
-    if (shouldSave) saveDraftToLocalStorage();
-  }
-
-  function toggleHeaderElements(shouldSave = true) {
-    let togSchool = document.getElementById('togSchool').checked;
-    let togAddr = document.getElementById('togAddress').checked;
-    let togPhone = document.getElementById('togPhone').checked;
-    let togSubCode = document.getElementById('togSubCode').checked;
-    let togSetCode = document.getElementById('togSetCode').checked;
-    let togStudent = document.getElementById('togStudentInfo').checked;
-    let togExam = document.getElementById('togExam').checked;
-    let togObtained = document.getElementById('togObtainedMarks').checked;
-
-    document.getElementById('displaySchoolName').style.display = togSchool ? 'block' : 'none';
-    document.getElementById('displaySchoolAddress').style.display = togAddr ? 'block' : 'none';
-    document.getElementById('displaySchoolPhoneWrap').style.display = togPhone ? 'block' : 'none';
-    document.getElementById('displaySubCodeWrap').style.display = togSubCode ? 'block' : 'none';
-    document.getElementById('displaySetCodeWrap').style.display = togSetCode ? 'block' : 'none';
-    document.getElementById('displayStudentBar').style.display = togStudent ? 'flex' : 'none';
-    document.getElementById('displayExamBadge').style.display = togExam ? 'inline-block' : 'none';
-    document.getElementById('displayObtainedMarks').style.display = togObtained ? 'block' : 'none';
-
-    if (shouldSave) saveDraftToLocalStorage();
-  }
-
-  function changeFont() {
-    let font = document.getElementById('fontSelect').value;
-    document.documentElement.style.setProperty('--paper-font', font);
-    saveDraftToLocalStorage();
-  }
-
-  function changeFontSize() {
-    let size = document.getElementById('fontSizeSelect').value;
-    document.documentElement.style.setProperty('--paper-font-size', size);
-    saveDraftToLocalStorage();
-  }
-
-  function changeLineHeight() {
-    let lh = document.getElementById('lineHeightSelect').value;
-    document.documentElement.style.setProperty('--paper-line-height', lh);
-    saveDraftToLocalStorage();
-  }
-
-  function changeOrientation() {
-    let orient = document.getElementById('orientationSelect').value;
-    let paper = document.getElementById('paperPage');
-    if (orient === 'landscape') {
-      paper.classList.add('landscape');
-      document.body.classList.add('print-landscape');
-    } else {
-      paper.classList.remove('landscape');
-      document.body.classList.remove('print-landscape');
-    }
-    saveDraftToLocalStorage();
-  }
-
-  function applyLayoutSettings() {
-    let col = document.getElementById('columnMode').value;
-    let qWrap = document.getElementById('questionsContainer');
-    qWrap.className = 'questions-wrapper ' + col;
-    saveDraftToLocalStorage();
-  }
-
-  function updateWatermark() {
-    let type = document.getElementById('wmType').value;
-    let val = document.getElementById('wmValue').value.trim();
-    let scale = document.getElementById('wmScale').value;
-    let container = document.getElementById('watermarkContainer');
-
-    container.innerHTML = '';
-    if (!val) return;
-
-    if (type === 'text') {
-      container.innerHTML = `<div class="watermark-text" style="font-size: ${scale}px;">${val}</div>`;
-    } else {
-      container.innerHTML = `<img src="${val}" class="watermark-img" style="max-width: ${scale * 5}px;">`;
-    }
-    saveDraftToLocalStorage();
-  }
-
-  /* DRAFT & LOCAL STORAGE */
-  function saveDraftToLocalStorage() {
-    let draft = getDraftData();
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(draft));
-  }
-
-  function loadDraftFromLocalStorage() {
-    let data = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!data) return;
-    try {
-      let draft = JSON.parse(data);
-      applyDraftData(draft);
-    } catch (e) {
-      console.error('Draft load error', e);
-    }
-  }
-
   function exportData() {
     if (questionsList.length === 0) {
       if(!confirm("প্রশ্নপত্রে কোনো প্রশ্ন নেই। তবুও কি এক্সপোর্ট করতে চান?")) return;
@@ -2419,50 +1413,1107 @@
     if (draft.sectionConfigs) sectionConfigs = draft.sectionConfigs;
 
     if (draft.headerData) {
-      let h = draft.headerData;
-      if (h.schoolName !== undefined) document.getElementById('schoolNameInput').value = h.schoolName;
-      if (h.schoolAddress !== undefined) document.getElementById('schoolAddressInput').value = h.schoolAddress;
-      if (h.schoolPhone !== undefined) document.getElementById('schoolPhoneInput').value = h.schoolPhone;
-      if (h.examName !== undefined) document.getElementById('examSelect').value = h.examName;
-      if (h.examYear !== undefined) document.getElementById('examYear').value = h.examYear;
-      if (h.className !== undefined) document.getElementById('classSelect').value = h.className;
-      if (h.subjectName !== undefined) document.getElementById('subjectSelect').value = h.subjectName;
-      if (h.subCode !== undefined) document.getElementById('subCodeInput').value = h.subCode;
-      if (h.setCode !== undefined) document.getElementById('setCodeInput').value = h.setCode;
-      if (h.time !== undefined) document.getElementById('timeInput').value = h.time;
-      if (h.marks !== undefined) document.getElementById('marksInput').value = h.marks;
-      if (h.logoUrl !== undefined) document.getElementById('logoUrl').value = h.logoUrl;
-      updateHeaderData(false);
+      if(draft.headerData.schoolName !== undefined) document.getElementById('schoolNameInput').value = draft.headerData.schoolName;
+      if(draft.headerData.schoolAddress !== undefined) document.getElementById('schoolAddressInput').value = draft.headerData.schoolAddress;
+      if(draft.headerData.schoolPhone !== undefined) document.getElementById('schoolPhoneInput').value = draft.headerData.schoolPhone;
+      
+      if(draft.headerData.displaySchoolName) document.getElementById('displaySchoolName').innerText = draft.headerData.displaySchoolName;
+      if(draft.headerData.displaySchoolAddress) document.getElementById('displaySchoolAddress').innerText = draft.headerData.displaySchoolAddress;
+      if(draft.headerData.displaySchoolPhone) document.getElementById('displaySchoolPhone').innerText = draft.headerData.displaySchoolPhone;
+
+      if(draft.headerData.examName !== undefined) document.getElementById('examSelect').value = draft.headerData.examName;
+      if(draft.headerData.examYear !== undefined) document.getElementById('examYear').value = draft.headerData.examYear;
+      if(draft.headerData.className !== undefined) document.getElementById('classSelect').value = draft.headerData.className;
+      if(draft.headerData.subjectName !== undefined) document.getElementById('subjectSelect').value = draft.headerData.subjectName;
+      if(draft.headerData.subCode !== undefined) document.getElementById('subCodeInput').value = draft.headerData.subCode;
+      if(draft.headerData.setCode !== undefined) document.getElementById('setCodeInput').value = draft.headerData.setCode;
+      if(draft.headerData.time !== undefined) document.getElementById('timeInput').value = draft.headerData.time;
+      if(draft.headerData.marks !== undefined) document.getElementById('marksInput').value = draft.headerData.marks;
+      if(draft.headerData.logoUrl !== undefined) document.getElementById('logoUrl').value = draft.headerData.logoUrl;
     }
 
     if (draft.settings) {
-      let s = draft.settings;
-      if (s.font) { document.getElementById('fontSelect').value = s.font; changeFont(); }
-      if (s.fontSize) { document.getElementById('fontSizeSelect').value = s.fontSize; changeFontSize(); }
-      if (s.lineHeight) { document.getElementById('lineHeightSelect').value = s.lineHeight; changeLineHeight(); }
-      if (s.orientation) { document.getElementById('orientationSelect').value = s.orientation; changeOrientation(); }
-      if (s.mainStyle) document.getElementById('mainNumStyle').value = s.mainStyle;
-      if (s.subStyle) document.getElementById('subNumStyle').value = s.subStyle;
-      if (s.columnMode) { document.getElementById('columnMode').value = s.columnMode; applyLayoutSettings(); }
-      if (s.wmType) document.getElementById('wmType').value = s.wmType;
-      if (s.wmValue !== undefined) document.getElementById('wmValue').value = s.wmValue;
-      if (s.wmScale !== undefined) document.getElementById('wmScale').value = s.wmScale;
+      if(draft.settings.font) {
+        document.getElementById('fontSelect').value = draft.settings.font;
+        changeFont(false);
+      }
+      if(draft.settings.fontSize) {
+        document.getElementById('fontSizeSelect').value = draft.settings.fontSize;
+        changeFontSize(false);
+      }
+      if(draft.settings.lineHeight) {
+        document.getElementById('lineHeightSelect').value = draft.settings.lineHeight;
+        changeLineHeight(false);
+      }
+      if(draft.settings.orientation) {
+        document.getElementById('orientationSelect').value = draft.settings.orientation;
+        changeOrientation(false);
+      }
+      if(draft.settings.mainStyle) document.getElementById('mainNumStyle').value = draft.settings.mainStyle;
+      if(draft.settings.subStyle) document.getElementById('subNumStyle').value = draft.settings.subStyle;
+      if(draft.settings.columnMode) {
+        document.getElementById('columnMode').value = draft.settings.columnMode;
+        applyLayoutSettings(false);
+      }
+      if(draft.settings.wmType) document.getElementById('wmType').value = draft.settings.wmType;
+      if(draft.settings.wmValue) document.getElementById('wmValue').value = draft.settings.wmValue;
+      if(draft.settings.wmScale) document.getElementById('wmScale').value = draft.settings.wmScale;
       updateWatermark();
 
-      if (s.toggles) {
-        document.getElementById('togSchool').checked = !!s.toggles.school;
-        document.getElementById('togAddress').checked = !!s.toggles.address;
-        document.getElementById('togPhone').checked = !!s.toggles.phone;
-        document.getElementById('togSubCode').checked = !!s.toggles.subCode;
-        document.getElementById('togSetCode').checked = !!s.toggles.setCode;
-        document.getElementById('togStudentInfo').checked = !!s.toggles.studentInfo;
-        document.getElementById('togExam').checked = !!s.toggles.exam;
-        document.getElementById('togObtainedMarks').checked = !!s.toggles.obtainedMarks;
-        toggleHeaderElements(false);
+      if(draft.settings.toggles) {
+        document.getElementById('togSchool').checked = draft.settings.toggles.school;
+        document.getElementById('togAddress').checked = draft.settings.toggles.address;
+        document.getElementById('togPhone').checked = draft.settings.toggles.phone;
+        document.getElementById('togSubCode').checked = draft.settings.toggles.subCode;
+        document.getElementById('togSetCode').checked = draft.settings.toggles.setCode;
+        document.getElementById('togStudentInfo').checked = draft.settings.toggles.studentInfo;
+        document.getElementById('togExam').checked = draft.settings.toggles.exam;
+        document.getElementById('togObtainedMarks').checked = draft.settings.toggles.obtainedMarks;
       }
     }
 
+    updateHeaderData(false);
+    toggleHeaderElements(false);
+    renderQuestions(false);
+  }
+
+  function saveDraftToLocalStorage() {
+    let draft = getDraftData();
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(draft));
+  }
+
+  function loadDraftFromLocalStorage() {
+    let raw = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (!raw) return;
+    try {
+      let draft = JSON.parse(raw);
+      applyDraftData(draft);
+    } catch(e) {
+      console.error('Failed to parse draft from storage', e);
+    }
+  }
+
+  function switchNavTab(tabName) {
+    document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    
+    let btnIndex = tabName === 'add-q' ? 0 : tabName === 'eng-q' ? 1 : 2;
+    let btns = document.querySelectorAll('.nav-tab-btn');
+    if (btns[btnIndex]) btns[btnIndex].classList.add('active');
+
+    document.getElementById('tab-' + tabName).classList.add('active');
+  }
+
+  function switchQTab(tab, isBtnClick = true) {
+    document.querySelectorAll('#tab-add-q .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#tab-add-q .q-type-form').forEach(f => f.classList.remove('active'));
+    
+    let targetBtn = document.getElementById('tabbtn-' + tab);
+    if(targetBtn) targetBtn.classList.add('active');
+    document.getElementById('form-' + tab).classList.add('active');
+
+    if(isBtnClick && editingQuestionId) {
+      resetSubmitButtons();
+    }
+  }
+
+  function switchEngQTab(tab) {
+    document.querySelectorAll('#tab-eng-q .tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('#tab-eng-q .q-type-form').forEach(f => f.classList.remove('active'));
+    
+    let targetBtn = document.getElementById('tabbtn-eng-' + tab);
+    if(targetBtn) targetBtn.classList.add('active');
+    document.getElementById('form-eng-' + tab).classList.add('active');
+  }
+
+  function toggleEngMatchColC() {
+    let cols = document.getElementById('engMatchCols').value;
+    document.querySelectorAll('#engMatchRowsWrapper .match-col-c').forEach(c => {
+      c.style.display = cols === '3' ? 'block' : 'none';
+    });
+  }
+
+  function addEngMatchRow() {
+    let cols = document.getElementById('engMatchCols').value;
+    let wrap = document.getElementById('engMatchRowsWrapper');
+    let div = document.createElement('div');
+    div.className = 'row-3 eng-match-row';
+    div.style.marginBottom = '4px';
+    div.innerHTML = `
+      <input type="text" class="form-control match-col-a" placeholder="Column A">
+      <input type="text" class="form-control match-col-b" placeholder="Column B">
+      <input type="text" class="form-control match-col-c" placeholder="Column C" style="${cols === '3' ? '' : 'display:none;'}">
+    `;
+    wrap.appendChild(div);
+  }
+
+  function updateHeaderData(shouldSave = true) {
+    document.getElementById('displaySchoolName').innerText = document.getElementById('schoolNameInput').value || 'প্রতিষ্ঠানের নাম';
+    document.getElementById('displaySchoolAddress').innerText = document.getElementById('schoolAddressInput').value || 'প্রতিষ্ঠানের ঠিকানা';
+    document.getElementById('displaySchoolPhone').innerText = document.getElementById('schoolPhoneInput').value || '...';
+    document.getElementById('displayExamName').innerText = document.getElementById('examSelect').value || 'পরীক্ষার নাম';
+    document.getElementById('displayExamYear').innerText = document.getElementById('examYear').value || '২০২৬';
+    document.getElementById('displayClass').innerText = document.getElementById('classSelect').value || '...';
+    document.getElementById('displaySubject').innerText = document.getElementById('subjectSelect').value || '...';
+    document.getElementById('displaySubCode').innerText = document.getElementById('subCodeInput').value;
+    document.getElementById('displaySetCode').innerText = document.getElementById('setCodeInput').value;
+    document.getElementById('displayTime').innerText = document.getElementById('timeInput').value;
+    document.getElementById('displayMarks').innerText = document.getElementById('marksInput').value;
+
+    let logoUrl = document.getElementById('logoUrl').value.trim();
+    let logoImg = document.getElementById('displayLogo');
+    if(logoUrl !== '') {
+      logoImg.src = logoUrl;
+      logoImg.style.display = 'block';
+    } else {
+      logoImg.style.display = 'none';
+    }
+
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function toggleHeaderElements(shouldSave = true) {
+    document.getElementById('displaySchoolName').style.display = document.getElementById('togSchool').checked ? 'block' : 'none';
+    document.getElementById('displaySchoolAddress').style.display = document.getElementById('togAddress').checked ? 'block' : 'none';
+    document.getElementById('displaySchoolPhoneWrap').style.display = document.getElementById('togPhone').checked ? 'block' : 'none';
+    document.getElementById('displaySubCodeWrap').style.display = document.getElementById('togSubCode').checked ? 'inline-block' : 'none';
+    document.getElementById('displaySetCodeWrap').style.display = document.getElementById('togSetCode').checked ? 'inline-block' : 'none';
+    document.getElementById('displayStudentBar').style.display = document.getElementById('togStudentInfo').checked ? 'flex' : 'none';
+    document.getElementById('displayExamBadge').style.display = document.getElementById('togExam').checked ? 'inline-block' : 'none';
+    document.getElementById('displayObtainedMarks').style.display = document.getElementById('togObtainedMarks').checked ? 'block' : 'none';
+
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function updateWatermark() {
+    let type = document.getElementById('wmType').value;
+    let val = document.getElementById('wmValue').value.trim();
+    let scale = document.getElementById('wmScale').value;
+    let container = document.getElementById('watermarkContainer');
+
+    if (!val) {
+      container.innerHTML = '';
+      return;
+    }
+
+    if (type === 'text') {
+      container.innerHTML = `<div class="watermark-text" style="font-size: ${scale}px;">${val}</div>`;
+    } else {
+      container.innerHTML = `<img src="${val}" class="watermark-img" style="max-width: ${scale * 5}px;">`;
+    }
+  }
+
+  function changeFont(shouldSave = true) {
+    let font = document.getElementById('fontSelect').value;
+    document.documentElement.style.setProperty('--paper-font', font);
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function changeFontSize(shouldSave = true) {
+    let sz = document.getElementById('fontSizeSelect').value;
+    document.documentElement.style.setProperty('--paper-font-size', sz);
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function changeLineHeight(shouldSave = true) {
+    let lh = document.getElementById('lineHeightSelect').value;
+    document.documentElement.style.setProperty('--paper-line-height', lh);
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function changeOrientation(shouldSave = true) {
+    let ori = document.getElementById('orientationSelect').value;
+    let paper = document.getElementById('paperPage');
+    if (ori === 'landscape') {
+      paper.classList.add('landscape');
+      document.body.classList.add('print-landscape');
+    } else {
+      paper.classList.remove('landscape');
+      document.body.classList.remove('print-landscape');
+    }
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function applyLayoutSettings(shouldSave = true) {
+    let col = document.getElementById('columnMode').value;
+    let container = document.getElementById('questionsContainer');
+    container.className = 'questions-wrapper ' + col;
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function formatNum(num, style) {
+    const bnDigits = ['০','১','২','৩','৪','৫','৬','৭','৮','৯'];
+    const bnAlpha = ['ক','খ','গ','ঘ','ঙ','চ','ছ','জ','ঝ','ঞ','ট','ঠ','ড','ঢ','ণ','ত','থ','দ','ধ','ন','প','ফ','ব','ভ','ম'];
+    const enAlpha = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+    const romanNums = ['i','ii','iii','iv','v','vi','vii','viii','ix','x','xi','xii','xiii','xiv','xv','xvi','xvii','xviii','xix','xx'];
+
+    if (style === 'bn_num') {
+      return num.toString().split('').map(d => bnDigits[d] || d).join('');
+    } else if (style === 'en_num') {
+      return num.toString();
+    } else if (style === 'roman') {
+      return romanNums[num - 1] || num.toString();
+    } else if (style === 'bn_alpha') {
+      return bnAlpha[num - 1] || num.toString();
+    } else if (style === 'en_alpha') {
+      return enAlpha[num - 1] || num.toString();
+    }
+    return num.toString();
+  }
+
+  function updateSectionConfigFromInput(type) {
+    if (sectionConfigs[type]) {
+      let countEl = document.getElementById(type + 'AnswerCount') || document.getElementById('eng' + type.charAt(0).toUpperCase() + type.slice(1) + 'Count');
+      let markEl = document.getElementById(type + 'MarkPerItem') || document.getElementById('eng' + type.charAt(0).toUpperCase() + type.slice(1) + 'Mark');
+      let headerEl = document.getElementById(type + 'Header') || document.getElementById('eng' + type.charAt(0).toUpperCase() + type.slice(1) + 'Header');
+      
+      if(countEl && markEl) {
+        sectionConfigs[type].answerCount = parseInt(countEl.value) || 0;
+        sectionConfigs[type].markPerItem = parseInt(markEl.value) || 0;
+      }
+      if(headerEl) {
+        sectionConfigs[type].header = headerEl.value.trim();
+      }
+    }
+  }
+
+  function resetSubmitButtons() {
+    editingQuestionId = null;
+    document.getElementById('btnCQSubmit').innerText = '+ সৃজনশীল প্রশ্ন যোগ করুন';
+    document.getElementById('btnMCQSubmit').innerText = '+ MCQ প্রশ্ন যোগ করুন';
+    document.getElementById('btnShortSubmit').innerText = '+ সংক্ষিপ্ত প্রশ্ন সেকশন যোগ করুন';
+    document.getElementById('btnDescSubmit').innerText = '+ বর্ণনামূলক প্রশ্ন সেকশন যোগ করুন';
+    document.getElementById('btnGapsSubmit').innerText = '+ শূন্যস্থান সেকশন যোগ করুন';
+    document.getElementById('btnTFSubmit').innerText = '+ সত্য/মিথ্যা সেকশন যোগ করুন';
+    document.getElementById('btnMatchSubmit').innerText = '+ মিলকরণ সেকশন যোগ করুন';
+  }
+
+  function addMoreCQBlock() {
+    let wrap = document.getElementById('cqInputsWrapper');
+    let div = document.createElement('div');
+    div.className = 'q-input-card cq-block';
+    div.innerHTML = `
+      <div class="form-group"><label>উদ্দীপক / অনুচ্ছেদ</label><textarea class="form-control cq-stem" rows="3" placeholder="উদ্দীপকটি লিখুন..."></textarea></div>
+      <div class="form-group"><label>উদ্দীপকের ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control cq-img-input" placeholder="https://..."></div>
+      <div class="form-group"><input type="text" class="form-control cq-a" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
+      <div class="form-group"><input type="text" class="form-control cq-b" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
+      <div class="form-group"><input type="text" class="form-control cq-c" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
+      <div class="form-group"><input type="text" class="form-control cq-d" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addMoreMCQBlock() {
+    let wrap = document.getElementById('mcqInputsWrapper');
+    let div = document.createElement('div');
+    div.className = 'q-input-card mcq-block';
+    div.innerHTML = `
+      <div class="form-group">
+        <label>MCQ টাইপ</label>
+        <select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)">
+          <option value="single">সাধারণ MCQ (একপদী)</option>
+          <option value="multi">বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option>
+        </select>
+      </div>
+      <div class="form-group"><label>মূল প্রশ্ন</label><textarea class="form-control mcq-title" rows="2" placeholder="প্রশ্ন লিখুন..."></textarea></div>
+      <div class="form-group"><label>ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control mcq-img-input" placeholder="https://..."></div>
+
+      <div class="multi-statements-wrap" style="display:none; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
+        <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
+        <div class="form-group"><input type="text" class="form-control mcq-stmt1" placeholder="i. প্রথম তথ্য"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-stmt2" placeholder="ii. দ্বিতীয় তথ্য"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-stmt3" placeholder="iii. তৃতীয় তথ্য"></div>
+      </div>
+
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control mcq-opt1" placeholder="অপশন ১ / (ক)"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-opt2" placeholder="অপশন ২ / (খ)"></div>
+      </div>
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control mcq-opt3" placeholder="অপশন ৩ / (গ)"></div>
+        <div class="form-group"><input type="text" class="form-control mcq-opt4" placeholder="অপশন ৪ / (ঘ)"></div>
+      </div>
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addMoreEngMcqBlock() {
+    let wrap = document.getElementById('engMcqInputsWrapper');
+    let div = document.createElement('div');
+    div.className = 'q-input-card eng-mcq-block';
+    div.innerHTML = `
+      <div class="form-group"><label>Question Title</label><textarea class="form-control eng-mcq-title" rows="2" placeholder="Question title..."></textarea></div>
+      <div class="form-group"><label>Image (URL - Optional)</label><input type="text" class="form-control eng-mcq-img-input" placeholder="https://..."></div>
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt1" placeholder="Option A"></div>
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt2" placeholder="Option B"></div>
+      </div>
+      <div class="row-2">
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt3" placeholder="Option C"></div>
+        <div class="form-group"><input type="text" class="form-control eng-mcq-opt4" placeholder="Option D"></div>
+      </div>
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addMoreInput(wrapperId, className, placeholderText, isTextArea = false) {
+    let wrap = document.getElementById(wrapperId);
+    let div = document.createElement('div');
+    div.className = 'form-group';
+    if(isTextArea) {
+      div.innerHTML = `<textarea class="form-control ${className}" rows="2" placeholder="${placeholderText}"></textarea>`;
+    } else {
+      div.innerHTML = `<input type="text" class="form-control ${className}" placeholder="${placeholderText}">`;
+    }
+    wrap.appendChild(div);
+  }
+
+  function addMatchRow() {
+    let wrap = document.getElementById('matchRowsWrapper');
+    let div = document.createElement('div');
+    div.className = 'row-2';
+    div.style.marginBottom = '4px';
+    div.innerHTML = `
+      <input type="text" class="form-control match-left" placeholder="বাম কলাম">
+      <input type="text" class="form-control match-right" placeholder="ডান কলাম">
+    `;
+    wrap.appendChild(div);
+  }
+
+  function addQuestion(type) {
+    updateSectionConfigFromInput(type);
+
+    if (type === 'cq') {
+      let blocks = document.querySelectorAll('.cq-block');
+      let addedAny = false;
+
+      blocks.forEach(block => {
+        let stem = block.querySelector('.cq-stem').value.trim();
+        if (stem) {
+          let qObj = {
+            id: editingQuestionId ? editingQuestionId : 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            type: 'cq',
+            header: document.getElementById('cqHeader').value.trim(),
+            stem: stem,
+            img: block.querySelector('.cq-img-input').value.trim(),
+            a: block.querySelector('.cq-a').value.trim(),
+            b: block.querySelector('.cq-b').value.trim(),
+            c: block.querySelector('.cq-c').value.trim(),
+            d: block.querySelector('.cq-d').value.trim()
+          };
+          if(editingQuestionId) {
+            let idx = questionsList.findIndex(q => q.id === editingQuestionId);
+            if(idx !== -1) questionsList[idx] = qObj;
+          } else {
+            questionsList.push(qObj);
+          }
+          addedAny = true;
+        }
+      });
+
+      if(!addedAny && !editingQuestionId) return alert('কমপক্ষে একটি উদ্দীপক লিখুন!');
+    } 
+    else if (type === 'mcq') {
+      let blocks = document.querySelectorAll('.mcq-block');
+      let addedAny = false;
+
+      blocks.forEach(block => {
+        let title = block.querySelector('.mcq-title').value.trim();
+        let mcqType = block.querySelector('.mcq-type-select').value;
+        if (title) {
+          let optsRaw = [
+            block.querySelector('.mcq-opt1').value.trim(),
+            block.querySelector('.mcq-opt2').value.trim(),
+            block.querySelector('.mcq-opt3').value.trim(),
+            block.querySelector('.mcq-opt4').value.trim()
+          ];
+          let opts = optsRaw.filter(o => o !== '');
+
+          let stmts = [];
+          if (mcqType === 'multi') {
+            let s1 = block.querySelector('.mcq-stmt1').value.trim();
+            let s2 = block.querySelector('.mcq-stmt2').value.trim();
+            let s3 = block.querySelector('.mcq-stmt3').value.trim();
+            if (s1) stmts.push(s1);
+            if (s2) stmts.push(s2);
+            if (s3) stmts.push(s3);
+          }
+
+          let qObj = {
+            id: editingQuestionId ? editingQuestionId : 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+            type: 'mcq',
+            header: document.getElementById('mcqHeader').value.trim(),
+            mcqType: mcqType,
+            title: title,
+            img: block.querySelector('.mcq-img-input').value.trim(),
+            stmts: stmts,
+            opts: opts
+          };
+          if(editingQuestionId) {
+            let idx = questionsList.findIndex(q => q.id === editingQuestionId);
+            if(idx !== -1) questionsList[idx] = qObj;
+          } else {
+            questionsList.push(qObj);
+          }
+          addedAny = true;
+        }
+      });
+
+      if(!addedAny && !editingQuestionId) return alert('কমপক্ষে একটি প্রশ্ন লিখুন!');
+    } 
+    else {
+      let qObj = { 
+        id: editingQuestionId ? editingQuestionId : 'q_' + Date.now(), 
+        type: type,
+        header: document.getElementById(type + 'Header') ? document.getElementById(type + 'Header').value.trim() : ''
+      };
+
+      if (type === 'short' || type === 'descriptive' || type === 'gaps' || type === 'tf') {
+        let className = type === 'short' ? 'short-item' : type === 'descriptive' ? 'desc-item' : type === 'gaps' ? 'gap-item' : 'tf-item';
+        let inputs = document.querySelectorAll('.' + className);
+        let items = [];
+        inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+        if (items.length === 0) return alert('কমপক্ষে একটি ইনপুট দিন!');
+        qObj.items = items;
+      }
+      else if (type === 'match') {
+        let lefts = document.querySelectorAll('.match-left');
+        let rights = document.querySelectorAll('.match-right');
+        let pairs = [];
+        for(let i=0; i<lefts.length; i++) {
+          if(lefts[i].value.trim() || rights[i].value.trim()) {
+            pairs.push({ left: lefts[i].value.trim(), right: rights[i].value.trim() });
+          }
+        }
+        if (pairs.length === 0) return alert('কমপক্ষে একটি জোড়া দিন!');
+        qObj.pairs = pairs;
+      }
+
+      if(editingQuestionId) {
+        let idx = questionsList.findIndex(q => q.id === editingQuestionId);
+        if(idx !== -1) questionsList[idx] = qObj;
+      } else {
+        questionsList.push(qObj);
+      }
+    }
+
+    resetSubmitButtons();
     renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  /* ENGLISH QUESTION ADD HANDLERS */
+  function addEngPassage() {
+    let header = document.getElementById('engPassageHeader').value.trim();
+    let text = document.getElementById('engPassageText').value.trim();
+    if(!text) return alert('Enter passage text!');
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_passage',
+      header: header,
+      text: text
+    });
+
+    document.getElementById('engPassageText').value = '';
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngMcq() {
+    let count = parseInt(document.getElementById('engMcqCount').value) || 5;
+    let mark = parseInt(document.getElementById('engMcqMark').value) || 1;
+    let header = document.getElementById('engMcqHeader').value.trim();
+    let blocks = document.querySelectorAll('.eng-mcq-block');
+    let addedAny = false;
+
+    blocks.forEach(block => {
+      let title = block.querySelector('.eng-mcq-title').value.trim();
+      if (title) {
+        let optsRaw = [
+          block.querySelector('.eng-mcq-opt1').value.trim(),
+          block.querySelector('.eng-mcq-opt2').value.trim(),
+          block.querySelector('.eng-mcq-opt3').value.trim(),
+          block.querySelector('.eng-mcq-opt4').value.trim()
+        ];
+        let opts = optsRaw.filter(o => o !== '');
+
+        questionsList.push({
+          id: 'q_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+          type: 'eng_mcq',
+          header: header,
+          title: title,
+          img: block.querySelector('.eng-mcq-img-input').value.trim(),
+          opts: opts,
+          mark: mark
+        });
+        addedAny = true;
+      }
+    });
+
+    if(!addedAny) return alert('Enter at least one English MCQ question!');
+    sectionConfigs.eng_mcq = { answerCount: count, markPerItem: mark, header: header };
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngQA() {
+    let count = parseInt(document.getElementById('engQaCount').value) || 5;
+    let mark = parseInt(document.getElementById('engQaMark').value) || 2;
+    let header = document.getElementById('engQaHeader').value.trim();
+    let inputs = document.querySelectorAll('.eng-qa-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+    if(items.length === 0) return alert('Enter at least one question!');
+
+    sectionConfigs.eng_qa = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_qa',
+      header: header,
+      items: items,
+      totalMark: count * mark,
+      count: count,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngTF() {
+    let count = parseInt(document.getElementById('engTfCount').value) || 5;
+    let mark = parseInt(document.getElementById('engTfMark').value) || 1;
+    let header = document.getElementById('engTfHeader').value.trim();
+    let inputs = document.querySelectorAll('.eng-tf-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+    if(items.length === 0) return alert('Enter at least one statement!');
+
+    sectionConfigs.eng_tf = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_tf',
+      header: header,
+      items: items,
+      totalMark: count * mark,
+      count: count,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngGaps() {
+    let count = parseInt(document.getElementById('engGapsCount').value) || 5;
+    let mark = parseInt(document.getElementById('engGapsMark').value) || 1;
+    let header = document.getElementById('engGapsHeader').value.trim();
+    let clues = document.getElementById('engGapsClues').value.trim();
+    let inputs = document.querySelectorAll('.eng-gap-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+    if(items.length === 0) return alert('Enter at least one sentence!');
+
+    sectionConfigs.eng_gaps = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_gaps',
+      header: header,
+      clues: clues,
+      items: items,
+      totalMark: count * mark,
+      count: count,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngMatch() {
+    let count = parseInt(document.getElementById('engMatchCount').value) || 5;
+    let mark = parseInt(document.getElementById('engMatchMark').value) || 1;
+    let header = document.getElementById('engMatchHeader').value.trim();
+    let rows = document.querySelectorAll('.eng-match-row');
+    let colsMode = document.getElementById('engMatchCols').value;
+    let rowsData = [];
+
+    rows.forEach(r => {
+      let a = r.querySelector('.match-col-a').value.trim();
+      let b = r.querySelector('.match-col-b').value.trim();
+      let c = r.querySelector('.match-col-c').value.trim();
+      if(a || b || c) {
+        rowsData.push({ a, b, c });
+      }
+    });
+
+    if(rowsData.length === 0) return alert('Enter at least one row!');
+
+    sectionConfigs.eng_match = { answerCount: count, markPerItem: mark, header: header };
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_match',
+      header: header,
+      colsMode: colsMode,
+      rows: rowsData,
+      totalMark: count * mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngWriting() {
+    let header = document.getElementById('engWritingHeader').value.trim();
+    let typeCategory = document.getElementById('engWritingType').value;
+    let mark = parseInt(document.getElementById('engWritingMark').value) || 10;
+    let title = document.getElementById('engWritingTitle').value.trim();
+    let prompt = document.getElementById('engWritingPrompt').value.trim();
+
+    if(!title) return alert('Enter title / topic!');
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_writing',
+      header: header,
+      category: typeCategory,
+      title: title,
+      prompt: prompt,
+      mark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  function addEngRearrange() {
+    let count = parseInt(document.getElementById('engRearrangeCount').value) || 8;
+    let mark = parseInt(document.getElementById('engRearrangeMark').value) || 8;
+    let header = document.getElementById('engRearrangeHeader').value.trim();
+    let inputs = document.querySelectorAll('.eng-rearrange-item');
+    let items = [];
+    inputs.forEach(i => { if(i.value.trim()) items.push(i.value.trim()); });
+
+    if(items.length === 0) return alert('Enter sentences!');
+
+    questionsList.push({
+      id: 'q_' + Date.now(),
+      type: 'eng_rearrange',
+      header: header,
+      items: items,
+      totalMark: mark
+    });
+
+    renderQuestions();
+    saveDraftToLocalStorage();
+  }
+
+  /* RENDER QUESTIONS ON PAPER PREVIEW */
+  function renderQuestions(shouldSave = true) {
+    let container = document.getElementById('questionsContainer');
+    container.innerHTML = '';
+
+    let mainStyle = document.getElementById('mainNumStyle').value;
+    let subStyle = document.getElementById('subNumStyle').value;
+
+    let questionNumber = 1;
+
+    questionsList.forEach((q, index) => {
+      let qDiv = document.createElement('div');
+      qDiv.className = 'q-item';
+      qDiv.dataset.id = q.id;
+
+      // Action buttons (edit button added)
+      let actionsHtml = `
+        <div class="q-actions">
+          <button class="btn-move" title="উপরে তুলুন" onclick="moveQuestion(${index}, -1)">▲</button>
+          <button class="btn-move" title="নিচে নামান" onclick="moveQuestion(${index}, 1)">▼</button>
+          <button class="btn-edit" title="এডিট করুন" onclick="editQuestion('${q.id}')">✎</button>
+          <button class="btn-danger" title="মুছে ফেলুন" onclick="deleteQuestion('${q.id}')">🗑️</button>
+        </div>
+      `;
+
+      let numLabel = formatNum(questionNumber, mainStyle);
+
+      if (q.type === 'cq') {
+        let config = sectionConfigs.cq;
+        let totalMark = config.answerCount * config.markPerItem;
+        let headerText = q.header || config.header || "নিচের উদ্দীপকগুলো পড়ে যেকোনো [ক]টি প্রশ্নের উত্তর দাও:";
+        headerText = headerText.replace('[ক]', formatNum(config.answerCount, mainStyle));
+
+        let html = `
+          ${actionsHtml}
+          ${index === 0 || questionsList[index-1].type !== 'cq' ? `
+            <div class="q-group-header">
+              <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+              <div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>
+            </div>
+          ` : ''}
+          <div style="font-weight:bold; margin-bottom:2px;">
+            ${numLabel}. <span class="cq-stem-box" contenteditable="true" onblur="updateQuestionContent('${q.id}', 'stem', this.innerText)">${q.stem}</span>
+          </div>
+          ${q.img ? `<img src="${q.img}" class="cq-img">` : ''}
+          ${q.a ? `<div class="cq-sub-q"><span>(${formatNum(1, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'a', this.innerText)">${q.a}</span></span> <span></span></div>` : ''}
+          ${q.b ? `<div class="cq-sub-q"><span>(${formatNum(2, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'b', this.innerText)">${q.b}</span></span> <span></span></div>` : ''}
+          ${q.c ? `<div class="cq-sub-q"><span>(${formatNum(3, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'c', this.innerText)">${q.c}</span></span> <span></span></div>` : ''}
+          ${q.d ? `<div class="cq-sub-q"><span>(${formatNum(4, subStyle)}) <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'd', this.innerText)">${q.d}</span></span> <span></span></div>` : ''}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'mcq') {
+        let config = sectionConfigs.mcq;
+        let totalMark = config.answerCount * config.markPerItem;
+        let headerText = q.header || config.header || "সঠিক উত্তরে টিক (✓) চিহ্ন দাও:";
+
+        let stmtsHtml = '';
+        if (q.stmts && q.stmts.length > 0) {
+          stmtsHtml = `<div class="mcq-statements">`;
+          q.stmts.forEach((s, sIdx) => {
+            stmtsHtml += `<div>${formatNum(sIdx+1, 'roman')}. ${s}</div>`;
+          });
+          stmtsHtml += `</div>`;
+        }
+
+        let optsHtml = '<div class="mcq-options">';
+        q.opts.forEach((opt, oIdx) => {
+          optsHtml += `<div>(${formatNum(oIdx+1, subStyle)}) <span contenteditable="true">${opt}</span></div>`;
+        });
+        optsHtml += '</div>';
+
+        let html = `
+          ${actionsHtml}
+          ${index === 0 || questionsList[index-1].type !== 'mcq' ? `
+            <div class="q-group-header">
+              <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+              <div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>
+            </div>
+          ` : ''}
+          <div><strong>${numLabel}.</strong> <span contenteditable="true" onblur="updateQuestionContent('${q.id}', 'title', this.innerText)">${q.title}</span></div>
+          ${q.img ? `<img src="${q.img}" class="mcq-img">` : ''}
+          ${stmtsHtml}
+          ${optsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (['short', 'descriptive', 'gaps', 'tf'].includes(q.type)) {
+        let config = sectionConfigs[q.type];
+        let totalMark = config ? config.answerCount * config.markPerItem : 0;
+        let headerText = q.header || (config ? config.header : '');
+
+        let itemsHtml = '';
+        if (q.items) {
+          q.items.forEach((item, iIdx) => {
+            let itemNum = formatNum(iIdx + 1, subStyle);
+            itemsHtml += `<div style="margin-top:4px;"><strong>(${itemNum})</strong> <span contenteditable="true">${item}</span></div>`;
+          });
+        }
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+            ${totalMark ? `<div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>` : ''}
+          </div>
+          ${itemsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'match') {
+        let config = sectionConfigs.match;
+        let totalMark = config ? config.answerCount * config.markPerItem : 0;
+        let headerText = q.header || (config ? config.header : '');
+
+        let rowsHtml = '';
+        if (q.pairs) {
+          q.pairs.forEach(p => {
+            rowsHtml += `<tr><td>${p.left}</td><td>${p.right}</td></tr>`;
+          });
+        }
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${headerText}</div>
+            ${totalMark ? `<div>[${formatNum(config.answerCount, mainStyle)} × ${formatNum(config.markPerItem, mainStyle)} =${formatNum(totalMark, mainStyle)}]</div>` : ''}
+          </div>
+          <table class="matching-table">
+            <thead><tr><th>বাম কলাম</th><th>ডান কলাম</th></tr></thead>
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_passage') {
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+          </div>
+          <div class="passage-box" contenteditable="true" onblur="q.text = this.innerText; saveDraftToLocalStorage()">${q.text}</div>
+        `;
+        qDiv.innerHTML = html;
+      }
+      else if (q.type === 'eng_mcq') {
+        let optsHtml = '<div class="mcq-options">';
+        q.opts.forEach((opt, oIdx) => {
+          optsHtml += `<div>(${formatNum(oIdx+1, 'en_alpha')}) <span contenteditable="true">${opt}</span></div>`;
+        });
+        optsHtml += '</div>';
+
+        let html = `
+          ${actionsHtml}
+          ${index === 0 || questionsList[index-1].type !== 'eng_mcq' ? `
+            <div class="q-group-header">
+              <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header || 'Choose the correct answer:'}</div>
+            </div>
+          ` : ''}
+          <div><strong>${numLabel}.</strong> <span contenteditable="true">${q.title}</span></div>
+          ${q.img ? `<img src="${q.img}" class="mcq-img">` : ''}
+          ${optsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (['eng_qa', 'eng_tf', 'eng_gaps'].includes(q.type)) {
+        let itemsHtml = '';
+        if (q.items) {
+          q.items.forEach((item, iIdx) => {
+            itemsHtml += `<div style="margin-top:3px;"><strong>(${formatNum(iIdx+1, 'en_alpha')})</strong> <span contenteditable="true">${item}</span></div>`;
+          });
+        }
+
+        let cluesHtml = q.clues ? `<div class="clues-box">${q.clues}</div>` : '';
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.count || q.items.length} × ${q.mark || 1} = ${q.totalMark || (q.items.length * (q.mark||1))}]</div>
+          </div>
+          ${cluesHtml}
+          ${itemsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_match') {
+        let rowsHtml = '';
+        if(q.rows) {
+          q.rows.forEach(r => {
+            if(q.colsMode === '3') {
+              rowsHtml += `<tr><td>${r.a}</td><td>${r.b}</td><td>${r.c}</td></tr>`;
+            } else {
+              rowsHtml += `<tr><td>${r.a}</td><td>${r.b}</td></tr>`;
+            }
+          });
+        }
+
+        let theadHtml = q.colsMode === '3' ? 
+          `<thead><tr><th>Column A</th><th>Column B</th><th>Column C</th></tr></thead>` :
+          `<thead><tr><th>Column A</th><th>Column B</th></tr></thead>`;
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.totalMark || ''}]</div>
+          </div>
+          <table class="matching-table">
+            ${theadHtml}
+            <tbody>${rowsHtml}</tbody>
+          </table>
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_writing') {
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.mark}]</div>
+          </div>
+          <div style="font-weight:bold; margin-bottom:2px;">
+            ${numLabel}. <span contenteditable="true" onblur="q.title = this.innerText; saveDraftToLocalStorage()">${q.title}</span>
+          </div>
+          ${q.prompt ? `<div style="font-size:11.5px; font-style:italic; color:#475569; margin-left:12px;" contenteditable="true" onblur="q.prompt = this.innerText; saveDraftToLocalStorage()">${q.prompt}</div>` : ''}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'eng_rearrange') {
+        let itemsHtml = '';
+        if(q.items) {
+          q.items.forEach((item, iIdx) => {
+            itemsHtml += `<div style="margin-top:2px;"><strong>(${formatNum(iIdx+1, 'en_alpha')})</strong> <span contenteditable="true">${item}</span></div>`;
+          });
+        }
+
+        let html = `
+          ${actionsHtml}
+          <div class="q-group-header">
+            <div class="q-group-title" contenteditable="true" onblur="q.header = this.innerText; saveDraftToLocalStorage()">${q.header}</div>
+            <div>[${q.totalMark}]</div>
+          </div>
+          ${itemsHtml}
+        `;
+        qDiv.innerHTML = html;
+        questionNumber++;
+      }
+      else if (q.type === 'extra_text') {
+        let html = `
+          ${actionsHtml}
+          <div class="passage-box" style="font-weight:600; font-style:italic;" contenteditable="true" onblur="q.content = this.innerText; saveDraftToLocalStorage()">${q.content}</div>
+        `;
+        qDiv.innerHTML = html;
+      }
+      else if (q.type === 'image_block') {
+        let alignStyle = q.align === 'center' ? 'margin: 0 auto;' : q.align === 'right' ? 'margin-left: auto; margin-right: 0;' : 'margin-right: auto; margin-left: 0;';
+        let html = `
+          ${actionsHtml}
+          <div class="custom-img-block">
+            <img src="${q.src}" style="width: ${q.width || '100%'}; ${alignStyle}">
+            ${q.caption ? `<div class="custom-img-caption">${q.caption}</div>` : ''}
+          </div>
+        `;
+        qDiv.innerHTML = html;
+      }
+
+      container.appendChild(qDiv);
+    });
+
+    if(shouldSave) saveDraftToLocalStorage();
+  }
+
+  function editQuestion(id) {
+    let q = questionsList.find(item => item.id === id);
+    if (!q) return;
+
+    editingQuestionId = id;
+    switchNavTab('add-q');
+    switchQTab(q.type, false);
+
+    if (q.type === 'cq') {
+      document.getElementById('cqHeader').value = q.header || '';
+      let wrap = document.getElementById('cqInputsWrapper');
+      wrap.innerHTML = `
+        <div class="q-input-card cq-block">
+          <div class="form-group"><label>উদ্দীপক / অনুচ্ছেদ</label><textarea class="form-control cq-stem" rows="3">${q.stem || ''}</textarea></div>
+          <div class="form-group"><label>উদ্দীপকের ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control cq-img-input" value="${q.img || ''}"></div>
+          <div class="form-group"><input type="text" class="form-control cq-a" value="${q.a || ''}" placeholder="ক) প্রশ্ন (জ্ঞানমূলক)"></div>
+          <div class="form-group"><input type="text" class="form-control cq-b" value="${q.b || ''}" placeholder="খ) প্রশ্ন (অনুধাবনমূলক)"></div>
+          <div class="form-group"><input type="text" class="form-control cq-c" value="${q.c || ''}" placeholder="গ) প্রশ্ন (প্রয়োগমূলক)"></div>
+          <div class="form-group"><input type="text" class="form-control cq-d" value="${q.d || ''}" placeholder="ঘ) প্রশ্ন (উচ্চতর দক্ষতা)"></div>
+        </div>
+      `;
+      document.getElementById('btnCQSubmit').innerText = '💾 আপডেট করুন';
+    } else if (q.type === 'mcq') {
+      document.getElementById('mcqHeader').value = q.header || '';
+      let wrap = document.getElementById('mcqInputsWrapper');
+      let stmts = q.stmts || [];
+      wrap.innerHTML = `
+        <div class="q-input-card mcq-block">
+          <div class="form-group">
+            <label>MCQ টাইপ</label>
+            <select class="form-control mcq-type-select" onchange="toggleMcqTypeInputs(this)">
+              <option value="single" ${q.mcqType === 'single' ? 'selected' : ''}>সাধারণ MCQ (একপদী)</option>
+              <option value="multi" ${q.mcqType === 'multi' ? 'selected' : ''}>বহুপদী সমাপ্তিসূচক MCQ (i, ii, iii)</option>
+            </select>
+          </div>
+          <div class="form-group"><label>মূল প্রশ্ন</label><textarea class="form-control mcq-title" rows="2">${q.title || ''}</textarea></div>
+          <div class="form-group"><label>ছবি (URL - ঐচ্ছিক)</label><input type="text" class="form-control mcq-img-input" value="${q.img || ''}"></div>
+          <div class="multi-statements-wrap" style="display:${q.mcqType === 'multi' ? 'block' : 'none'}; background:#f1f5f9; padding:6px; border-radius:5px; margin-bottom:8px;">
+            <label style="font-weight:bold; font-size:11px; color:#1e293b; margin-bottom:4px; display:block;">বহুপদী তথ্যসমূহ (i, ii, iii):</label>
+            <div class="form-group"><input type="text" class="form-control mcq-stmt1" value="${stmts[0] || ''}" placeholder="i. প্রথম তথ্য"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-stmt2" value="${stmts[1] || ''}" placeholder="ii. দ্বিতীয় তথ্য"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-stmt3" value="${stmts[2] || ''}" placeholder="iii. তৃতীয় তথ্য"></div>
+          </div>
+          <div class="row-2">
+            <div class="form-group"><input type="text" class="form-control mcq-opt1" value="${q.opts && q.opts[0] ? q.opts[0] : ''}" placeholder="অপশন ১ / (ক)"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-opt2" value="${q.opts && q.opts[1] ? q.opts[1] : ''}" placeholder="অপশন ২ / (খ)"></div>
+          </div>
+          <div class="row-2">
+            <div class="form-group"><input type="text" class="form-control mcq-opt3" value="${q.opts && q.opts[2] ? q.opts[2] : ''}" placeholder="অপশন ৩ / (গ)"></div>
+            <div class="form-group"><input type="text" class="form-control mcq-opt4" value="${q.opts && q.opts[3] ? q.opts[3] : ''}" placeholder="অপশন ৪ / (ঘ)"></div>
+          </div>
+        </div>
+      `;
+      document.getElementById('btnMCQSubmit').innerText = '💾 আপডেট করুন';
+    } else if (['short', 'descriptive', 'gaps', 'tf'].includes(q.type)) {
+      if (document.getElementById(q.type + 'Header')) document.getElementById(q.type + 'Header').value = q.header || '';
+      let wrapperId = q.type + 'InputsWrapper';
+      let wrap = document.getElementById(wrapperId);
+      let className = q.type === 'short' ? 'short-item' : q.type === 'descriptive' ? 'desc-item' : q.type === 'gaps' ? 'gap-item' : 'tf-item';
+      wrap.innerHTML = '';
+      if (q.items && q.items.length > 0) {
+        q.items.forEach(item => {
+          let div = document.createElement('div');
+          div.className = 'form-group';
+          if (q.type === 'descriptive') {
+            div.innerHTML = `<textarea class="form-control ${className}" rows="2">${item}</textarea>`;
+          } else {
+            div.innerHTML = `<input type="text" class="form-control ${className}" value="${item}">`;
+          }
+          wrap.appendChild(div);
+        });
+      }
+      let btnId = 'btn' + q.type.charAt(0).toUpperCase() + q.type.slice(1) + 'Submit';
+      if (document.getElementById(btnId)) document.getElementById(btnId).innerText = '💾 আপডেট করুন';
+    } else if (q.type === 'match') {
+      document.getElementById('matchHeader').value = q.header || '';
+      let wrap = document.getElementById('matchRowsWrapper');
+      wrap.innerHTML = '';
+      if (q.pairs && q.pairs.length > 0) {
+        q.pairs.forEach(p => {
+          let div = document.createElement('div');
+          div.className = 'row-2';
+          div.style.marginBottom = '4px';
+          div.innerHTML = `
+            <input type="text" class="form-control match-left" value="${p.left || ''}" placeholder="বাম কলাম">
+            <input type="text" class="form-control match-right" value="${p.right || ''}" placeholder="ডান কলাম">
+          `;
+          wrap.appendChild(div);
+        });
+      }
+      document.getElementById('btnMatchSubmit').innerText = '💾 আপডেট করুন';
+    }
+  }
+
+  function updateQuestionContent(id, prop, val) {
+    let q = questionsList.find(item => item.id === id);
+    if(q) {
+      q[prop] = val;
+      saveDraftToLocalStorage();
+    }
+  }
+
+  function deleteQuestion(id) {
+    if(confirm('আপনি কি এই প্রশ্নটি মুছে ফেলতে চান?')) {
+      questionsList = questionsList.filter(q => q.id !== id);
+      renderQuestions();
+      saveDraftToLocalStorage();
+    }
+  }
+
+  function moveQuestion(index, direction) {
+    let newIndex = index + direction;
+    if(newIndex >= 0 && newIndex < questionsList.length) {
+      let temp = questionsList[index];
+      questionsList[index] = questionsList[newIndex];
+      questionsList[newIndex] = temp;
+      renderQuestions();
+      saveDraftToLocalStorage();
+    }
   }
 </script>
 </body>
