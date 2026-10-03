@@ -208,22 +208,84 @@
     }
 
     /* Print CSS */
-    @media print {
-      html, body { height: auto !important; overflow: visible !important; background: #fff !important; }
-      ::-webkit-scrollbar { display: none !important; }
-      * { -ms-overflow-style: none !important; scrollbar-width: none !important; }
-      body, .paper-page, .paper-page * { font-family: var(--paper-font) !important; }
-      .sidebar, .app-header, .q-actions, .modal-overlay { display: none !important; }
-      .main-container { margin: 0 !important; padding: 0 !important; width: 100% !important; max-width: 100% !important; display: block !important; }
-      .preview-area { width: 100% !important; display: block !important; overflow: visible !important; }
-      .paper-page { box-shadow: none !important; width: 100% !important; min-height: auto !important; height: auto !important; margin: 0 !important; padding: 0 !important; overflow: visible !important; }
-      
-      .questions-wrapper.column-2 { column-count: 2 !important; column-gap: 20px !important; column-fill: auto !important; }
-      .sec-block, .q-item { break-inside: auto !important; page-break-inside: auto !important; -webkit-column-break-inside: auto !important; }
-      [contenteditable="true"]:hover, [contenteditable="true"]:focus { outline: none !important; background: transparent !important; }
-      @page { size: A4 portrait; margin: 10mm 12mm 10mm 12mm; }
-      body.print-landscape @page { size: A4 landscape; margin: 10mm 12mm 10mm 12mm; }
-    }
+   /* ১০০% গাঢ় কালো এবং স্পষ্ট প্রিন্ট নিশ্চিত করার প্রিন্ট CSS */
+@media print {
+  /* পেজের সাইজ ও মার্জিন */
+  @page {
+    size: A4 portrait;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+  body.print-landscape @page {
+    size: A4 landscape;
+    margin: 10mm 12mm 10mm 12mm;
+  }
+
+  /* ব্যাকগ্রাউন্ড ও স্ক্রোলবার লেআউট রিসেট */
+  html, body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* প্রিন্ট মোডে সাইডবার, হেডার, বাটন ইত্যাদি হাইড করা */
+  .sidebar, .app-header, .q-actions, .modal-overlay, ::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  /* লেআউট প্রিন্ট ফিট */
+  .main-container, .preview-area {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    display: block !important;
+    overflow: visible !important;
+  }
+
+  .paper-page {
+    box-shadow: none !important;
+    border: none !important;
+    width: 100% !important;
+    min-height: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  /* প্রতিটি উপাদান ও টেক্সট ১০০% গভীর কালো করা */
+  .paper-page, .paper-page * {
+    color: #000000 !important;
+    border-color: #000000 !important;
+    text-shadow: none !important;
+    filter: none !important;
+    -webkit-filter: none !important;
+  }
+
+  /* কলাম এবং পেজ ব্রেক সেটিংস */
+  .questions-wrapper.column-2 {
+    column-count: 2 !important;
+    column-gap: 20px !important;
+    column-fill: auto !important;
+  }
+
+  .sec-block, .q-item {
+    break-inside: avoid !important;
+    page-break-inside: avoid !important;
+    -webkit-column-break-inside: avoid !important;
+  }
+
+  /* ইডিটেবল বর্ডার ও আউটলাইন হাইড করা */
+  [contenteditable="true"]:hover, 
+  [contenteditable="true"]:focus {
+    outline: none !important;
+    background: transparent !important;
+  }
+}
   </style>
 </head>
 <body>
